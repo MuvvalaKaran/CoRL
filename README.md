@@ -1,4 +1,4 @@
-#Project Description 
+# Project Description 
 
 This is repo for the deep learning project  : Correct-by-synthesis reinforcement learning with temporal logic constraints.
 
@@ -6,7 +6,7 @@ The main aim of this paper is implementation and evaluating the results for the 
 
 ## Introduction 
 
-Autonomous systems are gradually becoming ubiquitous. Beyond simply
+<div align="center"> Autonomous systems are gradually becoming ubiquitous. Beyond simply
 demonstrating these systems, it is becoming increasingly important to pro-
 vide guarantees that they behave safely and reliably. We can leverage
 methods developed from the Formal methods community to synthesize con-
@@ -29,7 +29,7 @@ fications) and optimality (with respect to the a priori unknown performance
 criterion) in regards to the task in a stochastic environment for a fragment
 of temporal logic specification. Hence, we can guarantee both qualitative
 (encoded as the winning condition) and quantitative (optimal reactive con-
-trollers ) performance for a system operating in an unknown environment.
+trollers ) performance for a system operating in an unknown environment.</div>
 
 ## Proposed approach 
 
