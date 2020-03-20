@@ -3,6 +3,7 @@ from src.two_player_game.GridWorld import GridWorld
 import sys
 import random
 import yaml
+import re
 import numpy as np
 
 random.seed(1)
@@ -129,7 +130,49 @@ class TwoPlayerGame:
         :type state:
         :return: None
         """
+        # A_c : [up_s, down_s, left_s, right_s, stay_s]
+        # A_uc: [up_e, down_e, left_e, right_e]
+        up_action = re.compile('^up')
+        down_action = re.compile('^down')
+        left_action = re.compile('^left')
+        right_action = re.compile('^right')
+
         state.action = self.A_c if state.get_state_player(state) else self.A_uc
+        if state.x == 0:
+            # no left action is available
+            if any(left_action.match(act) for act in state.action):
+                # get the exact literal name and remove it
+                act = [act for act in state.action if left_action.match(act)]
+                state.action = list(state.action)
+                state.action.remove(act[0])
+                state.action = tuple(state.action)
+
+        if state.x == self.env.env_data["env_size"]["m"]**2 - 1:
+            # no right action is available
+            if any(right_action.match(act) for act in state.action):
+                # get the exact literal name and remove it
+                act = [act for act in state.action if right_action.match(act)]
+                state.action = list(state.action)
+                state.action.remove(act[0])
+                state.action = tuple(state.action)
+
+        if state.y == 0:
+            # no down action
+            if any(down_action.match(act) for act in state.action):
+                # get the exact literal name and remove it
+                act = [act for act in state.action if down_action.match(act)]
+                state.action = list(state.action)
+                state.action.remove(act[0])
+                state.action = tuple(state.action)
+
+        if state.y == self.env.env_data["env_size"]["n"]**2 - 1:
+            # no up action
+            if any(up_action.match(act) for act in state.action):
+                # get the exact literal name and remove it
+                act = [act for act in state.action if up_action.match(act)]
+                state.action = list(state.action)
+                state.action.remove(act[0])
+                state.action = tuple(state.action)
 
     def get_state_actions(self, state):
         return state.action
@@ -178,6 +221,20 @@ class TwoPlayerGame:
     def add_config_filename(self, key, value):
         return self.conf.update({key: value})
 
+    def tranisition_function(self, state):
+        """
+        A mapping from a state and action to the next state
+        Note : Our game is deterministic i.e |T(.)| <= 1
+
+        :return:
+        :rtype:
+        """
+
+        next_state = None
+
+        #
+        # return next_state
+
 def main():
 
     # create yaml paths
@@ -208,10 +265,12 @@ def main():
 
     # set init state
     game.set_initial_state()
-    game.set_state_actions(game.Init)
+    sample_state = game.S[15][0]
+    game.set_state_actions(sample_state)
+    print(sample_state.action)
     # get controlled and uncontrolled action
-    print(game.get_initial_state().x,game.get_initial_state().y, game.get_initial_state().t)
-    print(game.get_state_actions(game.Init))
+    # print(game.get_initial_state().x, game.get_initial_state().y, game.get_initial_state().t)
+    # print(game.get_state_actions(game.Init))
 
 if __name__ == "__main__":
    main()

@@ -21,9 +21,9 @@ class GridWorld(object):
         # grifdorld will have a collection of states
         GridWorld.clear_shell_screen()
         self.filename = filename
-        env_data = GridWorld.read_yaml_file(filename)
-        self.pos_x = range(0, env_data["env_size"]["n"]**2, 1)
-        self.pos_y = range(0, env_data["env_size"]["m"]**2, 1)
+        self.env_data = GridWorld.read_yaml_file(filename)
+        self.pos_x = range(0, self.env_data["env_size"]["n"]**2, 1)
+        self.pos_y = range(0, self.env_data["env_size"]["m"]**2, 1)
         self.states = []
 
     @staticmethod
