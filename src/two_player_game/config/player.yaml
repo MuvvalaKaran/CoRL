@@ -1,0 +1,11 @@
+# config file for each player
+
+system_player:
+  # set of controlled actions and states available to system_player
+  A_c : [up_s, down_s, left_s, right_s, stay_s]
+  S_s : []
+
+env_player:
+  # set of uncontrolled actions and states avialable to env_player
+  A_uc : [up_e, down_e, left_e, right_e]
+  S_e : []

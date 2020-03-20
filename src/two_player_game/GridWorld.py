@@ -69,7 +69,7 @@ class GridWorld(object):
         return self.states
 
     # @staticmethod
-    def set_state_player(self,state, player):
+    def set_state_player(self, state, player):
         """
         Function to assign a state to each player
         :param state: state of the gridworld
@@ -116,12 +116,14 @@ class State:
         t_value = which player does the state belong to
         t_value = 0 - system
         t_value = 1 - environment
+        actions = actions avaiable to a state (depends on owner of the state)
         """
         # super().__init__(filename)
         self.state = {}
         self.x = None
         self.y = None
         self.t = None
+        self.action = None
 
     def setstate(self, x=None, y=None, player=None):
         """
@@ -151,3 +153,24 @@ class State:
     # is this method required?
     def getstate(self):
         return self
+
+    def set_state_player(self, state, player):
+        """
+           Function to assign a state to each player
+           :param state: state of the gridworld
+           :type state: instance of State
+           :param player:
+           :type player:
+           :return:
+           :rtype:
+           """
+        if player is None:
+            message = "Player is set to None. You should assign a state to a player"
+            warnings.warn(message)
+
+        # state = self.get_state(state.x, state.y)
+        state.t = player
+        state.state = {(self.x, self.y): self.t}
+
+    def get_state_player(self, state):
+        return state.t
