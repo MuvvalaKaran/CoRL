@@ -18,14 +18,13 @@ class GridWorld(object):
         :param filename:
         :type filename:
         """
+        # grifdorld will have a collection of states
         GridWorld.clear_shell_screen()
         self.filename = filename
         env_data = GridWorld.read_yaml_file(filename)
         self.pos_x = range(0, env_data["env_size"]["n"]**2, 1)
         self.pos_y = range(0, env_data["env_size"]["m"]**2, 1)
         self.states = []
-        # grifworld will have a collection of states
-
 
     @staticmethod
     def clear_shell_screen():
@@ -61,23 +60,22 @@ class GridWorld(object):
                 # create states and add them to the dictionary of states
                 s = State()
                 # assuming a state with (x,y) exists
-                s.setstate(ix, iy)
+                s.setstate(ix, iy, player)
                 # self.states.update(s.state)
                 col_list.append(s)
             # a list of lists
             self.states.append(col_list)
 
-    #TODO write get and set state methods too
-    @staticmethod
-    def set_state_player(state, player, gm):
+        return self.states
+
+    # @staticmethod
+    def set_state_player(self,state, player):
         """
         Function to assign a state to each player
         :param state: state of the gridworld
         :type state: instance of State
         :param player:
         :type player:
-        :param player: girdworld instance
-        :type player:GridWorld
         :return:
         :rtype:
         """
@@ -85,12 +83,12 @@ class GridWorld(object):
             message = "Player is set to None. You should assign a state to a player"
             warnings.warn(message)
 
-        state = GridWorld.get_state(state.x, state.y, gm)
+        state = self.get_state(state.x, state.y)
         state.t = player
 
         # return (s.x, s.y), s.t
-    @staticmethod
-    def get_state(x, y, gm):
+    # @staticmethod
+    def get_state(self, x, y):
         """
         Function to get a state
         :param x:
@@ -105,9 +103,7 @@ class GridWorld(object):
         # if gm.states.get((x, y)) is None:
         #     print("State with ({},{}) position does not exist".format(x, y))
         #     return
-        return gm.states[x][y]
-
-
+        return self.states[x][y]
 
 
 class State:
@@ -127,7 +123,7 @@ class State:
         self.y = None
         self.t = None
 
-    def setstate(self, x=None, y=None, player=2):
+    def setstate(self, x=None, y=None, player=None):
         """
 
         :param x: {0 , n^2 - 1}
