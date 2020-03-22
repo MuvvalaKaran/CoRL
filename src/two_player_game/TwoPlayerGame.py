@@ -6,6 +6,9 @@ import yaml
 import re
 import numpy as np
 
+from itertools import product
+
+# seed randomness for testing
 random.seed(1)
 
 def create_yaml_path_name(yaml_file_name):
@@ -36,6 +39,7 @@ class TwoPlayerGame:
         T : Transition function (T : S x {A_c U A_uc} -> 2^S)
         Note : We assume G to be deterministic i.e | T(s, a) | for all (s that belong to S) and (a that belong to A(s))
         W : Winning condition
+        Ap ; Set of atomic proposiitons
     """
 
     def __init__(self):
@@ -57,6 +61,7 @@ class TwoPlayerGame:
         self.Init = None
         self.T = None
         self.W = None
+        self.AP = None
 
     @staticmethod
     def read_yaml_file(configFiles):
@@ -221,20 +226,97 @@ class TwoPlayerGame:
     def add_config_filename(self, key, value):
         return self.conf.update({key: value})
 
-    def tranisition_function(self, state):
+    def tranisition_function(self, state, action):
         """
         A mapping from a state and action to the next state
         Note : Our game is deterministic i.e |T(.)| <= 1
-
-        :return:
-        :rtype:
+        The controlled actions only manipulate the x values while
+        the uncontrolled actions only manipulate the y values
+        :return: Nest state
+        :rtype: state
         """
 
-        next_state = None
+        # create a dictionary of mapping for the system and the player
+        # act_state_dct = {
+        #     "up" : "+4",
+        #     "down" : "-4",
+        #     "left" : "+1",
+        #     "right" : "-1"
+        # }
 
-        #
-        # return next_state
+        # TODO add regex expression to make this more roboust in future
 
+        # get the x and y values of the state
+        state_x = state.x
+        state_y = state.y
+        # check which player the current state belongs and according change the x/y values of the state
+        # if the state belongs to the env
+
+        if state.t == 0:
+            if action == "left_e":
+                state_y -= 1
+            elif action == "right_e":
+                state_y += 1
+            elif action == "up_e":
+                state_y += 4
+            else:
+                state_y -= 4
+
+        # if the state belongs to the system
+        elif state.t == 1:
+            if action == "left_s":
+                state_x -= 1
+            elif action == "right_s":
+                state_x += 1
+            elif action == "up_s":
+                state_x += 4
+            else:
+                state_x -= 4
+
+        return self.S[state_x][state_y]
+
+    def create_atomic_propositions(self):
+
+        # number of atomic proposition
+        print("creating set of atomic proposition")
+
+        # create set of pos_x and pos_y
+        set_pos_x = set(a for a in self.env.pos_x)
+        set_pos_y = set(b for b in self.env.pos_y)
+        set_player_t = ("t0", "t1")
+        self.AP = set((a, b, c) for a in set_pos_x for b in set_pos_y for c in set_player_t)
+
+    def get_atomic_propositons(self):
+        return self.AP
+
+    # define a labelling function
+    def labeling_function(self, state):
+        """
+        Labeling function is a mapping from each state to an atomic proposition
+        :param state:
+        :type state: state
+        :return: an atomic proposition p
+        :rtype: AP
+        """
+        # need to iterate through the set
+        for ele in self.AP:
+            if ele == (state.x, state.y, "t0" if state.t == 0 else "t1"):
+                break
+
+        return ele
+        # return self.AP(state.x, state.y, "t0" if state.t == 0 else "t1")
+
+    # def left_action(self, pos):
+    #     pass
+    #
+    # def right_action(self,pos):
+    #     pass
+    #
+    # def down_action(self,pos):
+    #     pass
+    #
+    # def up_action(self, pos):
+    #     pass
 def main():
 
     # create yaml paths
@@ -254,7 +336,7 @@ def main():
 
     # set fake player states
     # TODO replace this in future with some useful feature
-    # game.set_state_players()
+    game.set_state_players()
 
     # method to print all the states in the environment
     game.print_env_states()
@@ -265,9 +347,16 @@ def main():
 
     # set init state
     game.set_initial_state()
-    sample_state = game.S[15][0]
+    sample_state = game.S[5][1]
     game.set_state_actions(sample_state)
-    print(sample_state.action)
+
+    # create set of atomic proposition
+    game.create_atomic_propositions()
+    # print(game.get_atomic_propositons())
+
+    #testing labeling function
+    state_label =  game.labeling_function(state=sample_state)
+    # print(sample_state.action)
     # get controlled and uncontrolled action
     # print(game.get_initial_state().x, game.get_initial_state().y, game.get_initial_state().t)
     # print(game.get_state_actions(game.Init))
