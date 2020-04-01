@@ -1,2 +1,7 @@
+# ignore all pycham created files
 *.idea
+# ignorea all cache files
 **__pycache__
+sr/two_player_game/__pycache__/
+
+*.pyc

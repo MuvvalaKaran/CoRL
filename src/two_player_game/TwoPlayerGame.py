@@ -10,6 +10,7 @@ from itertools import product
 
 # seed randomness for testing
 random.seed(1)
+prompt_user = False
 
 def create_yaml_path_name(yaml_file_name):
     """
@@ -60,7 +61,7 @@ class TwoPlayerGame:
         self.A_uc = None
         self.Init = None
         self.T = None
-        self.W = None
+        self.W = {"labeling_func": self.labeling_function}
         self.AP = None
 
     @staticmethod
@@ -182,7 +183,6 @@ class TwoPlayerGame:
     def get_state_actions(self, state):
         return state.action
 
-
     def get_uncontrolled_actions(self):
         return self.A_uc
 
@@ -204,7 +204,7 @@ class TwoPlayerGame:
 
     def create_env(self):
         """
-        Method yo create an instance of the environment which holds the range of the cells and an
+        Method to create an instance of the environment which holds the range of the cells and an
         empty list of states is initialized.
         :return:
         :rtype:
@@ -281,10 +281,15 @@ class TwoPlayerGame:
         print("creating set of atomic proposition")
 
         # create set of pos_x and pos_y
-        set_pos_x = set(a for a in self.env.pos_x)
-        set_pos_y = set(b for b in self.env.pos_y)
+        set_pos_x = set(f"x{a}" for a in self.env.pos_x)
+        set_pos_y = set(f"y{b}" for b in self.env.pos_y)
         set_player_t = ("t0", "t1")
         self.AP = set((a, b, c) for a in set_pos_x for b in set_pos_y for c in set_player_t)
+
+        # check to make sure the no. of atomic propositions id equal to N**2 x N**2 x 2
+        assert len(self.AP) == int(self.env.pos_x.stop * self.env.pos_y.stop * len(set_player_t)), \
+            f"Make sure number of atomic proposition is equals pos_x * pos_y * (t_0, t_ 1) " \
+            f": {int(self.env.pos_x * self.env.pos_y * len(set_player_t))} "
 
     def get_atomic_propositons(self):
         return self.AP
@@ -300,23 +305,24 @@ class TwoPlayerGame:
         """
         # need to iterate through the set
         for ele in self.AP:
-            if ele == (state.x, state.y, "t0" if state.t == 0 else "t1"):
+            if ele == (f"x{state.x}", f"y{state.y}", "t0" if state.t == 0 else "t1"):
                 break
-
         return ele
-        # return self.AP(state.x, state.y, "t0" if state.t == 0 else "t1")
 
-    # def left_action(self, pos):
-    #     pass
-    #
-    # def right_action(self,pos):
-    #     pass
-    #
-    # def down_action(self,pos):
-    #     pass
-    #
-    # def up_action(self, pos):
-    #     pass
+    def read_formula(self):
+        """
+        A function to prompt user to input a specification and use slugs to check if that winning condition
+        is realizable for the constructed graph or not
+        :return:
+        :rtype:
+        """
+        if prompt_user:
+            spec = input("Enter a winning formula")
+        else:
+            spec = "something gibberish for now"
+
+        self.W.update({"spec": spec})
+
 def main():
 
     # create yaml paths
@@ -353,10 +359,14 @@ def main():
     # create set of atomic proposition
     game.create_atomic_propositions()
     # print(game.get_atomic_propositons())
+    # print(len(game.AP))
 
     #testing labeling function
-    state_label =  game.labeling_function(state=sample_state)
-    # print(sample_state.action)
+    state_label = game.labeling_function(state=sample_state)
+    # add instance of labeling function to
+    # game.W.update({"labeling_func": game.labeling_function})
+    print(game.W.get("labeling_func")(sample_state))
+    print(sample_state.action)
     # get controlled and uncontrolled action
     # print(game.get_initial_state().x, game.get_initial_state().y, game.get_initial_state().t)
     # print(game.get_state_actions(game.Init))
