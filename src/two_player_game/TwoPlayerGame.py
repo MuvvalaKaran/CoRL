@@ -4,6 +4,7 @@ import sys
 import random
 import yaml
 import re
+import os
 import numpy as np
 
 from itertools import product
@@ -12,13 +13,16 @@ from itertools import product
 random.seed(1)
 prompt_user = False
 
+def get_cwd_path():
+    return os.path.dirname(os.path.realpath(__file__))
+
 def create_yaml_path_name(yaml_file_name):
     """
     helper class to create paths that can then be directly used in the TwoPlayerGame class
     :return:
     :rtype: path
     """
-    file_path = (str(sys.path[0]) + "/config/" + yaml_file_name)
+    file_path = (get_cwd_path() + "/config/" + yaml_file_name)
     return file_path
 
 
@@ -370,6 +374,8 @@ def main():
     # get controlled and uncontrolled action
     # print(game.get_initial_state().x, game.get_initial_state().y, game.get_initial_state().t)
     # print(game.get_state_actions(game.Init))
+
+    return game
 
 if __name__ == "__main__":
    main()
