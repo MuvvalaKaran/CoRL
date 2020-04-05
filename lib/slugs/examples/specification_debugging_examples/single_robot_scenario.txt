@@ -1,0 +1,3768 @@
+State 0 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 1 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+1
+6
+57
+62
+118
+174
+
+State 2 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+2
+4
+32
+58
+60
+88
+116
+144
+172
+200
+
+State 3 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+5
+33
+61
+89
+117
+145
+173
+201
+
+State 4 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 5 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+1
+5
+33
+57
+61
+89
+113
+169
+
+State 6 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+2
+6
+58
+62
+114
+170
+
+State 7 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+42
+63
+98
+154
+210
+
+State 8 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+48
+69
+104
+160
+216
+
+State 9 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+9
+13
+48
+65
+69
+104
+160
+216
+
+State 10 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+68
+159
+215
+
+State 11 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+9
+42
+63
+65
+98
+154
+210
+
+State 12 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+12
+68
+159
+215
+
+State 13 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+9
+13
+48
+65
+69
+104
+160
+216
+
+State 14 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+14
+18
+28
+32
+70
+74
+84
+88
+140
+144
+196
+200
+
+State 15 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+15
+20
+48
+71
+76
+104
+132
+160
+188
+216
+
+State 16 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+16
+18
+32
+72
+74
+88
+144
+200
+
+State 17 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+19
+33
+75
+89
+131
+145
+159
+187
+201
+215
+
+State 18 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+14
+16
+18
+28
+32
+70
+72
+74
+84
+88
+140
+144
+196
+200
+
+State 19 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+15
+19
+33
+71
+75
+89
+127
+183
+
+State 20 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+16
+20
+48
+72
+76
+104
+128
+184
+
+State 21 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+21
+25
+35
+77
+81
+91
+147
+203
+
+State 22 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+41
+97
+153
+209
+
+State 23 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+23
+25
+37
+41
+79
+81
+93
+97
+149
+153
+205
+209
+
+State 24 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+26
+40
+82
+96
+152
+208
+
+State 25 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+21
+23
+25
+35
+37
+77
+79
+81
+91
+93
+147
+149
+203
+205
+
+State 26 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+26
+40
+50
+82
+96
+106
+152
+208
+
+State 27 with rank 0
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+23
+37
+41
+79
+93
+97
+149
+153
+205
+209
+
+State 28 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 29 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+1
+6
+15
+20
+57
+62
+71
+76
+118
+132
+174
+188
+
+State 30 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+2
+4
+16
+18
+32
+58
+60
+72
+74
+88
+116
+144
+172
+200
+
+State 31 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+5
+19
+33
+61
+75
+89
+117
+131
+145
+173
+187
+201
+
+State 32 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 33 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+1
+5
+15
+19
+33
+57
+61
+71
+75
+89
+113
+127
+169
+183
+
+State 34 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+2
+6
+16
+20
+58
+62
+72
+76
+114
+128
+170
+184
+
+State 35 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+35
+63
+147
+175
+
+State 36 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+41
+69
+97
+125
+181
+
+State 37 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+9
+13
+37
+41
+65
+69
+93
+97
+121
+125
+177
+181
+
+State 38 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+40
+68
+96
+124
+180
+
+State 39 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+9
+37
+63
+65
+93
+121
+175
+177
+
+State 40 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+12
+40
+68
+96
+124
+180
+
+State 41 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+9
+13
+37
+41
+65
+69
+93
+97
+121
+125
+177
+181
+
+State 42 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+14
+18
+42
+70
+74
+98
+126
+130
+182
+186
+
+State 43 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+15
+20
+48
+69
+71
+76
+104
+132
+160
+188
+216
+
+State 44 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+16
+18
+20
+48
+72
+74
+76
+104
+128
+130
+184
+186
+
+State 45 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+19
+68
+75
+131
+159
+187
+215
+
+State 46 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+14
+16
+18
+42
+70
+72
+74
+98
+126
+128
+130
+182
+184
+186
+
+State 47 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+15
+19
+71
+75
+127
+183
+
+State 48 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+16
+20
+48
+72
+76
+104
+128
+184
+
+State 49 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+21
+25
+49
+53
+77
+81
+105
+109
+133
+137
+189
+193
+
+State 50 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+26
+50
+55
+82
+106
+111
+167
+223
+
+State 51 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+23
+25
+51
+53
+55
+79
+81
+107
+109
+111
+135
+137
+191
+193
+
+State 52 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+26
+54
+82
+110
+138
+194
+
+State 53 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+21
+23
+25
+49
+51
+53
+77
+79
+81
+105
+107
+109
+133
+135
+137
+189
+191
+193
+
+State 54 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+26
+50
+54
+82
+106
+110
+138
+162
+194
+218
+
+State 55 with rank 0
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+23
+51
+55
+79
+107
+111
+135
+191
+
+State 56 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 57 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+1
+6
+57
+62
+118
+174
+
+State 58 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+2
+4
+32
+58
+60
+88
+116
+144
+172
+200
+
+State 59 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+5
+33
+61
+89
+117
+145
+173
+201
+
+State 60 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 61 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+1
+5
+33
+57
+61
+89
+113
+169
+
+State 62 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+2
+6
+58
+62
+114
+170
+
+State 63 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+42
+63
+98
+154
+210
+
+State 64 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+48
+69
+104
+160
+216
+
+State 65 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+9
+13
+48
+65
+69
+104
+160
+216
+
+State 66 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+68
+159
+215
+
+State 67 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+9
+42
+63
+65
+98
+154
+210
+
+State 68 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+12
+68
+159
+215
+
+State 69 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+9
+13
+48
+65
+69
+104
+160
+216
+
+State 70 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+14
+18
+28
+32
+70
+74
+84
+88
+140
+144
+196
+200
+
+State 71 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+15
+20
+48
+71
+76
+104
+132
+160
+188
+216
+
+State 72 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+16
+18
+32
+72
+74
+88
+144
+200
+
+State 73 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+19
+33
+75
+89
+131
+145
+159
+187
+201
+215
+
+State 74 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+14
+16
+18
+28
+32
+70
+72
+74
+84
+88
+140
+144
+196
+200
+
+State 75 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+15
+19
+33
+71
+75
+89
+127
+183
+
+State 76 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+16
+20
+48
+72
+76
+104
+128
+184
+
+State 77 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+21
+25
+35
+77
+81
+91
+147
+203
+
+State 78 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+41
+97
+153
+209
+
+State 79 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+23
+25
+37
+41
+79
+81
+93
+97
+149
+153
+205
+209
+
+State 80 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+26
+40
+82
+96
+152
+208
+
+State 81 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+21
+23
+25
+35
+37
+77
+79
+81
+91
+93
+147
+149
+203
+205
+
+State 82 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+26
+40
+50
+82
+96
+106
+152
+208
+
+State 83 with rank 0
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+23
+37
+41
+79
+93
+97
+149
+153
+205
+209
+
+State 84 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 85 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+1
+6
+15
+20
+57
+62
+71
+76
+118
+132
+174
+188
+
+State 86 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+2
+4
+16
+18
+32
+58
+60
+72
+74
+88
+116
+144
+172
+200
+
+State 87 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+5
+19
+33
+61
+75
+89
+117
+131
+145
+173
+187
+201
+
+State 88 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 89 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+1
+5
+15
+19
+33
+57
+61
+71
+75
+89
+113
+127
+169
+183
+
+State 90 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+2
+6
+16
+20
+58
+62
+72
+76
+114
+128
+170
+184
+
+State 91 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+35
+63
+147
+175
+
+State 92 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+41
+69
+97
+125
+181
+
+State 93 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+9
+13
+37
+41
+65
+69
+93
+97
+121
+125
+177
+181
+
+State 94 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+40
+68
+96
+124
+180
+
+State 95 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+9
+37
+63
+65
+93
+121
+175
+177
+
+State 96 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+12
+40
+68
+96
+124
+180
+
+State 97 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+9
+13
+37
+41
+65
+69
+93
+97
+121
+125
+177
+181
+
+State 98 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+14
+18
+42
+70
+74
+98
+126
+130
+182
+186
+
+State 99 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+15
+20
+48
+69
+71
+76
+104
+132
+160
+188
+216
+
+State 100 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+16
+18
+20
+48
+72
+74
+76
+104
+128
+130
+184
+186
+
+State 101 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+19
+68
+75
+131
+159
+187
+215
+
+State 102 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+14
+16
+18
+42
+70
+72
+74
+98
+126
+128
+130
+182
+184
+186
+
+State 103 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+15
+19
+71
+75
+127
+183
+
+State 104 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+16
+20
+48
+72
+76
+104
+128
+184
+
+State 105 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+21
+25
+49
+53
+77
+81
+105
+109
+133
+137
+189
+193
+
+State 106 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+26
+50
+55
+82
+106
+111
+167
+223
+
+State 107 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+23
+25
+51
+53
+55
+79
+81
+107
+109
+111
+135
+137
+191
+193
+
+State 108 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+26
+54
+82
+110
+138
+194
+
+State 109 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+21
+23
+25
+49
+51
+53
+77
+79
+81
+105
+107
+109
+133
+135
+137
+189
+191
+193
+
+State 110 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+26
+50
+54
+82
+106
+110
+138
+162
+194
+218
+
+State 111 with rank 0
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+23
+51
+55
+79
+107
+111
+135
+191
+
+State 112 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 113 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+1
+6
+57
+62
+118
+174
+
+State 114 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+2
+4
+32
+58
+60
+88
+116
+144
+172
+200
+
+State 115 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+5
+33
+61
+89
+117
+145
+173
+201
+
+State 116 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 117 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+1
+5
+33
+57
+61
+89
+113
+169
+
+State 118 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+2
+6
+58
+62
+114
+170
+
+State 119 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+42
+63
+98
+154
+210
+
+State 120 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+48
+69
+104
+160
+216
+
+State 121 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+9
+13
+48
+65
+69
+104
+160
+216
+
+State 122 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+68
+159
+215
+
+State 123 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+9
+42
+63
+65
+98
+154
+210
+
+State 124 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+12
+68
+159
+215
+
+State 125 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+9
+13
+48
+65
+69
+104
+160
+216
+
+State 126 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+14
+18
+28
+32
+70
+74
+84
+88
+140
+144
+196
+200
+
+State 127 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+15
+20
+48
+71
+76
+104
+132
+160
+188
+216
+
+State 128 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+16
+18
+32
+72
+74
+88
+144
+200
+
+State 129 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+19
+33
+75
+89
+131
+145
+159
+187
+201
+215
+
+State 130 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+14
+16
+18
+28
+32
+70
+72
+74
+84
+88
+140
+144
+196
+200
+
+State 131 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+15
+19
+33
+71
+75
+89
+127
+183
+
+State 132 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+16
+20
+48
+72
+76
+104
+128
+184
+
+State 133 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+21
+25
+35
+77
+81
+91
+147
+203
+
+State 134 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+41
+97
+153
+209
+
+State 135 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+23
+25
+37
+41
+79
+81
+93
+97
+149
+153
+205
+209
+
+State 136 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+26
+40
+82
+96
+152
+208
+
+State 137 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+21
+23
+25
+35
+37
+77
+79
+81
+91
+93
+147
+149
+203
+205
+
+State 138 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+26
+40
+50
+82
+96
+106
+152
+208
+
+State 139 with rank 0
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+23
+37
+41
+79
+93
+97
+149
+153
+205
+209
+
+State 140 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 141 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+1
+6
+15
+20
+57
+62
+71
+76
+118
+132
+174
+188
+
+State 142 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+2
+4
+16
+18
+32
+58
+60
+72
+74
+88
+116
+144
+172
+200
+
+State 143 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+5
+19
+33
+61
+75
+89
+117
+131
+145
+173
+187
+201
+
+State 144 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 145 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+1
+5
+15
+19
+33
+57
+61
+71
+75
+89
+113
+127
+169
+183
+
+State 146 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+2
+6
+16
+20
+58
+62
+72
+76
+114
+128
+170
+184
+
+State 147 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+35
+63
+147
+175
+
+State 148 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+41
+69
+97
+125
+181
+
+State 149 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+9
+13
+37
+41
+65
+69
+93
+97
+121
+125
+177
+181
+
+State 150 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+40
+68
+96
+124
+180
+
+State 151 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+9
+37
+63
+65
+93
+121
+175
+177
+
+State 152 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+12
+40
+68
+96
+124
+180
+
+State 153 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+9
+13
+37
+41
+65
+69
+93
+97
+121
+125
+177
+181
+
+State 154 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+14
+18
+42
+70
+74
+98
+126
+130
+182
+186
+
+State 155 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+15
+20
+48
+69
+71
+76
+104
+132
+160
+188
+216
+
+State 156 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+16
+18
+20
+48
+72
+74
+76
+104
+128
+130
+184
+186
+
+State 157 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+19
+68
+75
+131
+159
+187
+215
+
+State 158 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+14
+16
+18
+42
+70
+72
+74
+98
+126
+128
+130
+182
+184
+186
+
+State 159 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+15
+19
+71
+75
+127
+183
+
+State 160 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+16
+20
+48
+72
+76
+104
+128
+184
+
+State 161 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+21
+25
+49
+53
+77
+81
+105
+109
+133
+137
+189
+193
+
+State 162 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+26
+50
+55
+82
+106
+111
+167
+223
+
+State 163 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+23
+25
+51
+53
+55
+79
+81
+107
+109
+111
+135
+137
+191
+193
+
+State 164 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+26
+54
+82
+110
+138
+194
+
+State 165 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+21
+23
+25
+49
+51
+53
+77
+79
+81
+105
+107
+109
+133
+135
+137
+189
+191
+193
+
+State 166 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+26
+50
+54
+82
+106
+110
+138
+162
+194
+218
+
+State 167 with rank 0
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+23
+51
+55
+79
+107
+111
+135
+191
+
+State 168 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 169 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+1
+6
+57
+62
+118
+174
+
+State 170 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+2
+4
+32
+58
+60
+88
+116
+144
+172
+200
+
+State 171 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+5
+33
+61
+89
+117
+145
+173
+201
+
+State 172 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 173 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+1
+5
+33
+57
+61
+89
+113
+169
+
+State 174 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+2
+6
+58
+62
+114
+170
+
+State 175 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+42
+63
+98
+154
+210
+
+State 176 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+48
+69
+104
+160
+216
+
+State 177 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+9
+13
+48
+65
+69
+104
+160
+216
+
+State 178 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+68
+159
+215
+
+State 179 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+9
+42
+63
+65
+98
+154
+210
+
+State 180 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+12
+68
+159
+215
+
+State 181 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+9
+13
+48
+65
+69
+104
+160
+216
+
+State 182 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+14
+18
+28
+32
+70
+74
+84
+88
+140
+144
+196
+200
+
+State 183 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+15
+20
+48
+71
+76
+104
+132
+160
+188
+216
+
+State 184 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+16
+18
+32
+72
+74
+88
+144
+200
+
+State 185 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+19
+33
+75
+89
+131
+145
+159
+187
+201
+215
+
+State 186 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+14
+16
+18
+28
+32
+70
+72
+74
+84
+88
+140
+144
+196
+200
+
+State 187 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+15
+19
+33
+71
+75
+89
+127
+183
+
+State 188 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+16
+20
+48
+72
+76
+104
+128
+184
+
+State 189 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+21
+25
+35
+77
+81
+91
+147
+203
+
+State 190 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+41
+97
+153
+209
+
+State 191 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+23
+25
+37
+41
+79
+81
+93
+97
+149
+153
+205
+209
+
+State 192 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+26
+40
+82
+96
+152
+208
+
+State 193 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+21
+23
+25
+35
+37
+77
+79
+81
+91
+93
+147
+149
+203
+205
+
+State 194 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+26
+40
+50
+82
+96
+106
+152
+208
+
+State 195 with rank 0
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+23
+37
+41
+79
+93
+97
+149
+153
+205
+209
+
+State 196 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 197 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+1
+6
+15
+20
+57
+62
+71
+76
+118
+132
+174
+188
+
+State 198 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+2
+4
+16
+18
+32
+58
+60
+72
+74
+88
+116
+144
+172
+200
+
+State 199 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+5
+19
+33
+61
+75
+89
+117
+131
+145
+173
+187
+201
+
+State 200 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+4
+28
+32
+225
+60
+84
+88
+226
+227
+
+State 201 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+1
+5
+15
+19
+33
+57
+61
+71
+75
+89
+113
+127
+169
+183
+
+State 202 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+2
+6
+16
+20
+58
+62
+72
+76
+114
+128
+170
+184
+
+State 203 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+35
+63
+147
+175
+
+State 204 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+41
+69
+97
+125
+181
+
+State 205 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+9
+13
+37
+41
+65
+69
+93
+97
+121
+125
+177
+181
+
+State 206 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+40
+68
+96
+124
+180
+
+State 207 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+9
+37
+63
+65
+93
+121
+175
+177
+
+State 208 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+12
+40
+68
+96
+124
+180
+
+State 209 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+9
+13
+37
+41
+65
+69
+93
+97
+121
+125
+177
+181
+
+State 210 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+14
+18
+42
+70
+74
+98
+126
+130
+182
+186
+
+State 211 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+13
+15
+20
+48
+69
+71
+76
+104
+132
+160
+188
+216
+
+State 212 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+16
+18
+20
+48
+72
+74
+76
+104
+128
+130
+184
+186
+
+State 213 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:1
+12
+19
+68
+75
+131
+159
+187
+215
+
+State 214 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+14
+16
+18
+42
+70
+72
+74
+98
+126
+128
+130
+182
+184
+186
+
+State 215 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:1
+15
+19
+71
+75
+127
+183
+
+State 216 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+16
+20
+48
+72
+76
+104
+128
+184
+
+State 217 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+21
+25
+49
+53
+77
+81
+105
+109
+133
+137
+189
+193
+
+State 218 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:1
+26
+50
+55
+82
+106
+111
+167
+223
+
+State 219 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+23
+25
+51
+53
+55
+79
+81
+107
+109
+111
+135
+137
+191
+193
+
+State 220 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:1
+26
+54
+82
+110
+138
+194
+
+State 221 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+21
+23
+25
+49
+51
+53
+77
+79
+81
+105
+107
+109
+133
+135
+137
+189
+191
+193
+
+State 222 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:1
+26
+50
+54
+82
+106
+110
+138
+162
+194
+218
+
+State 223 with rank 0
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+23
+51
+55
+79
+107
+111
+135
+191
+
+State 224 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+228
+229
+230
+225
+231
+232
+233
+234
+235
+236
+237
+
+State 225 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+228
+229
+230
+225
+231
+232
+233
+234
+235
+236
+237
+
+State 226 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+228
+229
+230
+225
+231
+232
+233
+234
+235
+236
+237
+
+State 227 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+224
+228
+229
+230
+225
+231
+232
+233
+234
+235
+236
+237
+
+State 228 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+238
+228
+229
+230
+225
+239
+231
+232
+233
+234
+235
+236
+237
+
+State 229 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+240
+241
+229
+230
+242
+243
+232
+233
+244
+245
+246
+247
+
+State 230 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+240
+248
+241
+229
+230
+242
+249
+243
+232
+233
+244
+250
+245
+246
+251
+247
+
+State 231 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+224
+238
+228
+229
+230
+225
+239
+231
+232
+233
+234
+235
+236
+237
+
+State 232 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+240
+241
+229
+230
+242
+243
+232
+233
+244
+245
+246
+247
+
+State 233 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+240
+248
+241
+229
+230
+242
+249
+243
+232
+233
+244
+250
+245
+246
+251
+247
+
+State 234 with rank 1
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+240
+241
+229
+230
+242
+243
+232
+233
+244
+245
+246
+247
+
+State 235 with rank 1
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+240
+248
+241
+229
+230
+242
+249
+243
+232
+233
+244
+250
+245
+246
+251
+247
+
+State 236 with rank 1
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+240
+241
+229
+230
+242
+243
+232
+233
+244
+245
+246
+247
+
+State 237 with rank 1
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+240
+248
+241
+229
+230
+242
+249
+243
+232
+233
+244
+250
+245
+246
+251
+247
+
+State 238 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+238
+228
+230
+239
+231
+233
+235
+237
+
+State 239 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+238
+228
+230
+239
+231
+233
+235
+237
+
+State 240 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+240
+241
+252
+242
+243
+253
+254
+255
+
+State 241 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+240
+248
+241
+252
+242
+249
+243
+253
+254
+255
+
+State 242 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+240
+241
+252
+242
+243
+253
+254
+255
+
+State 243 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+240
+248
+241
+252
+242
+249
+243
+253
+254
+255
+
+State 244 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+240
+241
+252
+242
+243
+253
+254
+255
+
+State 245 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+240
+248
+241
+252
+242
+249
+243
+253
+254
+255
+
+State 246 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+240
+241
+252
+242
+243
+253
+254
+255
+
+State 247 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:0, mry@2:0
+240
+248
+241
+252
+242
+249
+243
+253
+254
+255
+
+State 248 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+248
+241
+256
+257
+249
+243
+258
+259
+260
+261
+
+State 249 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+248
+241
+256
+257
+249
+243
+258
+259
+260
+261
+
+State 250 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+248
+241
+256
+257
+249
+243
+258
+259
+260
+261
+
+State 251 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:1, mry@2:0
+248
+241
+256
+257
+249
+243
+258
+259
+260
+261
+
+State 252 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+252
+262
+254
+263
+
+State 253 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+252
+262
+254
+263
+
+State 254 with rank 1
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+252
+262
+254
+263
+
+State 255 with rank 1
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:0
+252
+262
+254
+263
+
+State 256 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+264
+248
+256
+257
+265
+249
+258
+259
+260
+261
+
+State 257 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+257
+268
+269
+259
+270
+271
+272
+273
+
+State 258 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+264
+248
+256
+257
+265
+249
+258
+259
+260
+261
+
+State 259 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+257
+268
+269
+259
+270
+271
+272
+273
+
+State 260 with rank 1
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+257
+268
+269
+259
+270
+271
+272
+273
+
+State 261 with rank 1
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:0, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+257
+268
+269
+259
+270
+271
+272
+273
+
+State 262 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+274
+262
+275
+276
+277
+
+State 263 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+274
+262
+275
+276
+277
+
+State 264 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+264
+256
+257
+265
+258
+259
+260
+261
+
+State 265 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:0, mry@0.0.5:0, mry@1:0, mry@2:1
+264
+256
+257
+265
+258
+259
+260
+261
+
+State 266 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+266
+267
+278
+279
+268
+269
+280
+281
+282
+283
+
+State 267 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+278
+279
+268
+269
+280
+281
+282
+283
+
+State 268 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+266
+267
+278
+279
+268
+269
+280
+281
+282
+283
+
+State 269 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+278
+279
+268
+269
+280
+281
+282
+283
+
+State 270 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+266
+267
+278
+279
+268
+269
+280
+281
+282
+283
+
+State 271 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+278
+279
+268
+269
+280
+281
+282
+283
+
+State 272 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+266
+267
+278
+279
+268
+269
+280
+281
+282
+283
+
+State 273 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+278
+279
+268
+269
+280
+281
+282
+283
+
+State 274 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+284
+285
+274
+286
+287
+275
+288
+289
+290
+291
+
+State 275 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+284
+285
+274
+286
+287
+275
+288
+289
+290
+291
+
+State 276 with rank 1
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+284
+285
+274
+286
+287
+275
+288
+289
+290
+291
+
+State 277 with rank 1
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+284
+285
+274
+286
+287
+275
+288
+289
+290
+291
+
+State 278 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+278
+293
+287
+280
+289
+291
+
+State 279 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+292
+278
+279
+268
+269
+293
+280
+281
+294
+282
+295
+283
+
+State 280 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+278
+293
+287
+280
+289
+291
+
+State 281 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:1, mry@1:1, mry@2:0
+266
+267
+292
+278
+279
+268
+269
+293
+280
+281
+294
+282
+295
+283
+
+State 282 with rank 1
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+278
+293
+287
+280
+289
+291
+
+State 283 with rank 1
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:0, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+278
+293
+287
+280
+289
+291
+
+State 284 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 285 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 286 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 287 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 288 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 289 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 290 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 291 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 292 with rank 1
+door1:0, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+278
+298
+296
+293
+287
+280
+299
+297
+289
+300
+291
+301
+
+State 293 with rank 1
+door1:0, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+278
+298
+296
+293
+287
+280
+299
+297
+289
+300
+291
+301
+
+State 294 with rank 1
+door1:1, door2:0, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+278
+298
+296
+293
+287
+280
+299
+297
+289
+300
+291
+301
+
+State 295 with rank 1
+door1:1, door2:1, mrx@0.0.7:0, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+278
+298
+296
+293
+287
+280
+299
+297
+289
+300
+291
+301
+
+State 296 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 297 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 298 with rank 1
+door1:0, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+298
+296
+293
+287
+299
+297
+289
+300
+291
+301
+
+State 299 with rank 1
+door1:0, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:0, mry@1:1, mry@2:0
+292
+285
+298
+296
+293
+287
+299
+297
+289
+300
+291
+301
+
+State 300 with rank 1
+door1:1, door2:0, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+
+State 301 with rank 1
+door1:1, door2:1, mrx@0.0.7:1, mrx@1:1, mrx@2:1, mry@0.0.5:1, mry@1:0, mry@2:0
+284
+285
+49
+296
+286
+287
+105
+297
+161
+217
+

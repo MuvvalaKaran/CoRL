@@ -1,0 +1,22 @@
+[INPUT]
+
+
+[OUTPUT]
+x@0.0.3
+x@1
+c@0.0.3
+c@1
+
+
+[SYS_TRANS]
+## As before -- x may only increase by at most one except it x=3
+| $ 1 & ! ^ x@1 1 & ! ^ x@0.0.3 1 1 $ 5 ^ 1 x@0.0.3 & 1 x@0.0.3 ^ x@1 ? 1 & x@1 ? 1 | ? 3 | & ! x@1' ? 2 & | ? 2 ! x@1' | & ! x@0.0.3' ? 0 & | ? 0 ! x@0.0.3' 1
+
+## Counter value can only increase until the old goal "x'=3" is satisfied
+| $ 1 & ! ^ x@1' 1 & ! ^ x@0.0.3' 1 1 $ 1 | & c@1' ! c@1 & | ! c@1 c@1' | & c@0.0.3' ! c@0.0.3 & | ! c@0.0.3 c@0.0.3' 1
+
+
+[SYS_LIVENESS]
+| $ 1 & ! ^ x@1' 1 & ! ^ x@0.0.3' 1 1 $ 1 | & c@1' ! c@1 & | ! c@1 c@1' | & c@0.0.3' ! c@0.0.3 & | ! c@0.0.3 c@0.0.3' 0
+
+

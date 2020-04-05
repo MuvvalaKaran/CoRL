@@ -437,7 +437,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/karan/Documents/correct-by-synthesis reinforcement learning with temporal logic constraints/lib/slugs/lib/cudd-3.0.0'
+ac_pwd='/home/karan/Documents/learning slugs/slugs/lib/cudd-3.0.0'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -961,18 +961,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="strip"
-S["install_sh"]="${SHELL} '/home/karan/Documents/correct-by-synthesis reinforcement learning with temporal logic constraints/lib/slugs/lib/cudd-3.0.0/build-aux/insta"\
-"ll-sh'"
-S["MAKEINFO"]="${SHELL} \"/home/karan/Documents/correct-by-synthesis reinforcement learning with temporal logic constraints/lib/slugs/lib/cudd-3.0.0/build-aux/missi"\
-"ng\" makeinfo"
-S["AUTOHEADER"]="${SHELL} \"/home/karan/Documents/correct-by-synthesis reinforcement learning with temporal logic constraints/lib/slugs/lib/cudd-3.0.0/build-aux/missi"\
-"ng\" autoheader"
-S["AUTOMAKE"]="${SHELL} \"/home/karan/Documents/correct-by-synthesis reinforcement learning with temporal logic constraints/lib/slugs/lib/cudd-3.0.0/build-aux/missi"\
-"ng\" automake-1.14"
-S["AUTOCONF"]="${SHELL} \"/home/karan/Documents/correct-by-synthesis reinforcement learning with temporal logic constraints/lib/slugs/lib/cudd-3.0.0/build-aux/missi"\
-"ng\" autoconf"
-S["ACLOCAL"]="${SHELL} \"/home/karan/Documents/correct-by-synthesis reinforcement learning with temporal logic constraints/lib/slugs/lib/cudd-3.0.0/build-aux/missi"\
-"ng\" aclocal-1.14"
+S["install_sh"]="${SHELL} '/home/karan/Documents/learning slugs/slugs/lib/cudd-3.0.0/build-aux/install-sh'"
+S["MAKEINFO"]="${SHELL} \"/home/karan/Documents/learning slugs/slugs/lib/cudd-3.0.0/build-aux/missing\" makeinfo"
+S["AUTOHEADER"]="${SHELL} \"/home/karan/Documents/learning slugs/slugs/lib/cudd-3.0.0/build-aux/missing\" autoheader"
+S["AUTOMAKE"]="${SHELL} \"/home/karan/Documents/learning slugs/slugs/lib/cudd-3.0.0/build-aux/missing\" automake-1.14"
+S["AUTOCONF"]="${SHELL} \"/home/karan/Documents/learning slugs/slugs/lib/cudd-3.0.0/build-aux/missing\" autoconf"
+S["ACLOCAL"]="${SHELL} \"/home/karan/Documents/learning slugs/slugs/lib/cudd-3.0.0/build-aux/missing\" aclocal-1.14"
 S["VERSION"]="3.0.0"
 S["PACKAGE"]="cudd"
 S["CYGPATH_W"]="echo"

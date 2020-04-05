@@ -1,0 +1,32 @@
+# Variable controlled by the env robot
+[INPUT]
+y:0...15
+
+# Variable controlled by the system robot
+[OUTPUT]
+x:0...15
+
+[SYS_TRANS]
+x+1>=x'
+x'+1>=x
+
+# system robot should not enforce collision with the env robot
+x'!=y'
+
+# the env cannot stay in its cell as it need to keep on moving 
+[ENV_TRANS]
+y+1>=y'
+y'+1>=y
+
+# the env robot should never try to enforce collision with the sys robot
+x!=y'
+
+# *********************There are no liveness assumptions****************************
+
+# lets assume system robot starts at the bottom left cell 
+[SYS_INIT]
+x = 4
+
+#lets assumes env robot starts at the top right cell
+[ENV_INIT]
+y = 7

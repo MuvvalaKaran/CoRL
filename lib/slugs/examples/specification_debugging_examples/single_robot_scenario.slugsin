@@ -1,0 +1,70 @@
+[INPUT]
+door1
+door2
+
+
+[OUTPUT]
+mrx@0.0.7
+mrx@1
+mrx@2
+mry@0.0.5
+mry@1
+mry@2
+
+
+[ENV_TRANS]
+
+
+[ENV_INIT]
+
+
+[SYS_TRANS]
+$ 7 ^ 1 mrx@0.0.7 & 1 mrx@0.0.7 ^ mrx@1 ? 1 & mrx@1 ? 1 ^ mrx@2 ? 3 & mrx@2 ? 3 | ? 5 | & ? 4 ! mrx@2' & | ! mrx@2' ? 4 | & ? 2 ! mrx@1' & | ! mrx@1' ? 2 | & ? 0 ! mrx@0.0.7' & | ! mrx@0.0.7' ? 0 1
+$ 7 ^ 1 mrx@0.0.7' & 1 mrx@0.0.7' ^ mrx@1' ? 1 & mrx@1' ? 1 ^ mrx@2' ? 3 & mrx@2' ? 3 | ? 5 | & ? 4 ! mrx@2 & | ! mrx@2 ? 4 | & ? 2 ! mrx@1 & | ! mrx@1 ? 2 | & ? 0 ! mrx@0.0.7 & | ! mrx@0.0.7 ? 0 1
+$ 7 ^ 1 mry@0.0.5 & 1 mry@0.0.5 ^ mry@1 ? 1 & mry@1 ? 1 ^ mry@2 ? 3 & mry@2 ? 3 | ? 5 | & ? 4 ! mry@2' & | ! mry@2' ? 4 | & ? 2 ! mry@1' & | ! mry@1' ? 2 | & ? 0 ! mry@0.0.5' & | ! mry@0.0.5' ? 0 1
+$ 7 ^ 1 mry@0.0.5' & 1 mry@0.0.5' ^ mry@1' ? 1 & mry@1' ? 1 ^ mry@2' ? 3 & mry@2' ? 3 | ? 5 | & ? 4 ! mry@2 & | ! mry@2 ? 4 | & ? 2 ! mry@1 & | ! mry@1 ? 2 | & ? 0 ! mry@0.0.5 & | ! mry@0.0.5 ? 0 1
+
+## no Collisions with the obstacles (part 1)
+| | $ 1 ! & ! mrx@2' & ! mrx@1' & ! ^ mrx@0.0.7' 1 1 $ 1 | & mry@2' ! 1 & | ! 1 mry@2' | & mry@1' ! 0 & | ! 0 mry@1' | & mry@0.0.5' ! 0 & | ! 0 mry@0.0.5' 0 $ 1 & ! mry@2' | & ! mry@1' 1 & | 1 ! mry@1' | & ! mry@0.0.5' 0 & | 0 ! mry@0.0.5' 0
+
+## no Collisions with the obstacles (part 2)
+| | $ 1 ! & ! ^ mry@2' 1 & ! ^ mry@1' 0 & ! ^ mry@0.0.5' 0 1 $ 1 & ! mrx@2' | & ! mrx@1' 1 & | 1 ! mrx@1' | & ! mrx@0.0.7' 1 & | 1 ! mrx@0.0.7' 0 $ 1 | & mrx@2' ! 1 & | ! 1 mrx@2' | & mrx@1' ! 1 & | ! 1 mrx@1' | & mrx@0.0.7' ! 0 & | ! 0 mrx@0.0.7' 0
+
+## no Collisions with the obstacles (part 3)
+| | $ 1 ! & ! mry@2' & ! ^ mry@1' 1 & ! ^ mry@0.0.5' 1 1 $ 1 | & ! mrx@2' 1 & | 1 ! mrx@2' | & ! mrx@1' 1 & | 1 ! mrx@1' | & ! mrx@0.0.7' 0 & | 0 ! mrx@0.0.7' 0 $ 1 | & mrx@2' ! 1 & | ! 1 mrx@2' | & mrx@1' ! 1 & | ! 1 mrx@1' | & mrx@0.0.7' ! 0 & | ! 0 mrx@0.0.7' 0
+
+## no Collisions with the obstacles (part 4)
+| | $ 1 ! & ! mry@2' & ! ^ mry@1' 1 & ! ^ mry@0.0.5' 0 1 $ 1 & ! mrx@2' | & ! mrx@1' 1 & | 1 ! mrx@1' | & ! mrx@0.0.7' 1 & | 1 ! mrx@0.0.7' 0 $ 1 | mrx@2' | & mrx@1' ! 1 & | ! 1 mrx@1' | & mrx@0.0.7' ! 1 & | ! 1 mrx@0.0.7' 0
+
+## no Collisions with the obstacles (part 4)
+| | $ 1 ! & ! mry@2' & ! mry@1' & ! ^ mry@0.0.5' 1 1 $ 1 & ! mrx@2' | & ! mrx@1' 1 & | 1 ! mrx@1' | & ! mrx@0.0.7' 1 & | 1 ! mrx@0.0.7' 0 $ 1 | & mrx@2' ! 1 & | ! 1 mrx@2' | & mrx@1' ! 0 & | ! 0 mrx@1' | & mrx@0.0.7' ! 1 & | ! 1 mrx@0.0.7' 0
+
+## no Collisions with the door 1
+| | $ 1 ! & ! ^ mry@2' 1 & ! ^ mry@1' 0 & ! ^ mry@0.0.5' 1 1 $ 1 ! & ! mrx@2' & ! ^ mrx@1' 1 & ! ^ mrx@0.0.7' 1 1 door1'
+
+## no Collisions with the door 2
+| | $ 1 ! & ! mry@2' & ! mry@1' & ! mry@0.0.5' 1 $ 1 ! & ! ^ mrx@2' 1 & ! ^ mrx@1' 0 & ! ^ mrx@0.0.7' 0 1 door2'
+
+## Variable limits: 0<=mry'<=5
+| ! mry@2' | ! mry@1' & ! mry@0.0.5' 0
+
+[SYS_INIT]
+$ 1 & ! mrx@2 & ! mrx@1 & ! mrx@0.0.7 1
+$ 1 & ! mry@2 & ! mry@1 & ! mry@0.0.5 1
+
+## Variable limits: 0<=mry<=5
+| ! mry@2 | ! mry@1 & ! mry@0.0.5 0
+
+[ENV_LIVENESS]
+## Door1 is infinitely often open
+door1'
+
+## Door2 is infinitely often open
+door2'
+
+
+[SYS_LIVENESS]
+& $ 1 & ! mrx@2' & ! mrx@1' & ! mrx@0.0.7' 1 $ 1 & ! mry@2' & ! mry@1' & ! mry@0.0.5' 1
+& $ 1 & ! ^ mrx@2' 1 & ! ^ mrx@1' 1 & ! ^ mrx@0.0.7' 1 1 $ 1 & ! mry@2' & ! mry@1' & ! mry@0.0.5' 1
+
+

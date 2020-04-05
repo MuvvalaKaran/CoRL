@@ -1,0 +1,29 @@
+# This section defines the variables controlled by the env
+[INPUT]
+y:0...15
+
+# This section defines the variables controlled by the system
+[OUTPUT]
+x:0...15
+
+
+# Initial conditions for the system
+[SYS_INIT]
+y != x'
+x != y'
+
+# Intial conditions for the env
+#[ENV_INIT]
+#! y
+
+# no ENV_TRANS given
+
+[SYS_TRANS]
+x !=y' 
+x'<=x+1
+y'<=y+1
+x<=x'+1
+y<=y'+1
+
+[ENV_TRANS]
+y !=x'

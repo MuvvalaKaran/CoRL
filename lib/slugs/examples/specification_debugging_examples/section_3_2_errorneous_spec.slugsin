@@ -1,0 +1,27 @@
+[INPUT]
+p
+q
+
+
+[OUTPUT]
+r
+rough
+
+
+[ENV_TRANS]
+| q q'
+| ! q r
+
+
+[SYS_TRANS]
+| & ! r' ! | & ! r ! ! p & r ! p & r' | & ! r ! ! p & r ! p
+rough'
+
+
+[SYS_INIT]
+! r
+
+
+[SYS_LIVENESS]
+! rough'
+
