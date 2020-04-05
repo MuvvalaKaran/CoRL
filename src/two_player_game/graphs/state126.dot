@@ -1,0 +1,35 @@
+digraph "DD" { size = "8,8" 
+  center = true; 
+edge [dir = none];
+{ node [shape = plaintext];
+  edge [style = invis];
+ "CONST NODES" [style = invis];
+"y@0.0.15- (0)" -> "y@1- (2)" -> "y@2- (4)" -> "y@3- (6)" -> "x@0.0.15- (8)" -> "x@1- (10)" -> "x@2- (12)" -> "x@3- (14)" -> "CONST NODES"
+}
+{ rank = same; "y@0.0.15- (0)";  "0_0"; 
+}
+{ rank = same; "y@1- (2)";  "1_0"; 
+}
+{ rank = same; "y@2- (4)";  "2_0"; 
+}
+{ rank = same; "y@3- (6)";  "3_0"; 
+}
+{ rank = same; "x@0.0.15- (8)";  "4_0"; 
+}
+{ rank = same; "x@1- (10)";  "5_0"; 
+}
+{ rank = same; "x@2- (12)";  "6_0"; 
+}
+{ rank = same; "x@3- (14)";  "7_0"; 
+}
+{ rank = same; "CONST NODES";
+{ node [shape = box]; "1"; }} "0_0" -> "1_0"[color=red];
+ "1_0" -> "2_0"[color=blue,style=bold,dir=forward];
+ "2_0" -> "3_0"[color=blue,style=bold,dir=forward];
+ "3_0" -> "4_0"[color=blue,style=bold,dir=forward];
+ "4_0" -> "5_0"[color=blue,style=bold,dir=forward];
+ "5_0" -> "6_0"[color=blue,style=bold,dir=forward];
+ "6_0" -> "7_0"[color=blue,style=bold,dir=forward];
+ "7_0" ->"1"[color=red];
+
+}

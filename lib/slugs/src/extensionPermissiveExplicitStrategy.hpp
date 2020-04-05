@@ -124,7 +124,7 @@ public:
                 }
             }
             positionalStrategiesForTheIndividualGoals[i] = strategy;
-            //BF_newDumpDot(*this,strategy,"PreInput PreOutput PostInput PostOutput","/tmp/generalStrategy.dot");
+            BF_newDumpDot(*this,strategy,"PreInput PreOutput PostInput PostOutput", "two_player_game/graphs/generalStrategy.dot");
         }
 
         // Extract strategy
@@ -134,11 +134,11 @@ public:
             unsigned int stateNum = lookupTableForPastStates[current];
             BF currentPossibilities = bfsUsedInTheLookupTable[stateNum];
 
-            /*{
+            {
                 std::ostringstream filename;
-                filename << "/tmp/state" << stateNum << ".dot";
+                filename << "two_player_game/graphs/state" << stateNum << ".dot";
                 BF_newDumpDot(*this,currentPossibilities,"PreInput PreOutput PostInput PostOutput",filename.str());
-            }*/
+            }
 
             // Print state information
             outputStream << "State " << stateNum << " with rank " << current.second << "\n";

@@ -1,7 +1,9 @@
 # a script to execute slugs and extract the permissive strategy
 import sys
 import os
+import time
 
+from graphviz import Source
 from subprocess import Popen, PIPE
 from pathlib import Path
 from os import system as system_call
@@ -47,6 +49,13 @@ class PermissiveStrategy:
     # def get_cwd_path(self):
     #     # return Path.cwd()
     #     return os.path.dirname(os.path.realpath(__file__))
+
+    def plot_graphs_from_dot_files(self, file_name, view=False):
+        s = Source.from_file(file_name)
+        if view:
+            s.view()
+            time.sleep(1)
+
 
     def convert_to_slugsin(self):
         compiler_path = self.get_compiler_file_path()
@@ -111,6 +120,7 @@ class PermissiveStrategy:
     def main(self):
         self.convert_to_slugsin()
         self.convert_slugsin_to_permissive_str()
+
 
 if __name__ == "__main__":
 

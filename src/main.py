@@ -16,10 +16,11 @@ def construct_game():
 
 def extract_permissive_str():
     slugsfile_path = "two_player_game/slugs_file/CoRL_1"
-    # permisivestr = PermissiveStrategy(slugsfile_path)
-    # permisivestr.main()
     str = extractExplicitPermissiveStrategy.PermissiveStrategy(slugsfile_path, run_local=False)
     str.main()
+    for i in range(50):
+        file_name = f"two_player_game/graphs/state{i}.dot"
+        str.plot_graphs_from_dot_files(file_name, view=True)
 
 if __name__ == "__main__":
     # construct_game()
