@@ -1,7 +1,13 @@
 # ignore all pycham created files
 *.idea
+
+# ignore all the trails slugsin, txt and structuredslugs file
+src/two_player_game/slugs_file/CoRL_2.txt
+src/two_player_game/slugs_file/CoRL_2.slugsin
+src/two_player_game/slugs_file/CoRL_2.structuredslugs
+
 # ignorea all cache files
 **__pycache__
-sr/two_player_game/__pycache__/
+src/two_player_game/__pycache__/
 
 *.pyc
