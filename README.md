@@ -27,7 +27,7 @@ of temporal logic specification. Hence, we can guarantee both qualitative
 
 This project can be decoupled into two major sub-problems : 
 
-- Computer a set of permissive (winning) strategies that are realizable for a given game
+- Compute a set of permissive (winning) strategies that are realizable for a given game
 - Choose a strategy that maximizes the underlying unknow reward function using maximin-Q learning algorithm.
 
 ## Conclusion

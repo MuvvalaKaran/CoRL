@@ -5,6 +5,11 @@
 src/two_player_game/slugs_file/CoRL_2.txt
 src/two_player_game/slugs_file/CoRL_2.slugsin
 src/two_player_game/slugs_file/CoRL_2.structuredslugs
+src/two_player_game/slugs_file/CoRL_2_1.slugsin
+src/two_player_game/slugs_file/CoRL_2_2.slugsin
+src/two_player_game/slugs_file/CoRL_3.slugsin
+src/two_player_game/slugs_file/CoRL_3.structuredslugs
+src/two_player_game/slugs_file/CoRL_3.txt
 
 # ignorea all cache files
 **__pycache__
