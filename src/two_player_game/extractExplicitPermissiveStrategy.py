@@ -2,6 +2,7 @@
 import sys
 import os
 import time
+import re
 
 from graphviz import Source
 from subprocess import Popen, PIPE
@@ -15,7 +16,7 @@ print_output = False
 print_str = False
 
 
-def get_cwd_path(self):
+def get_cwd_path():
     # return Path.cwd()
     return os.path.dirname(os.path.realpath(__file__))
 
@@ -117,10 +118,67 @@ class PermissiveStrategy:
 
         return str(compiler_path)
 
-    def main(self):
-        self.convert_to_slugsin()
-        self.convert_slugsin_to_permissive_str()
+    # added helper methods to read the strategy txt file to count the number of states,
+    # no. of states without any transitions
+    @staticmethod
+    def interpret_strategy_output(file_name):
+        # print("This is the name of the script", sys.argv[0])
+        # print("Number of arguments", len(sys.argv))
+        # print("The arguments are :", str(sys.argv))
 
+        if file_name is None:
+            file_name = str(get_cwd_path() + "/slugs_file/CoRL_3.txt")
+            print(file_name)
+        # intialize state counter
+        state_counter = 0
+        player0_counter = 0
+        player1_counter = 0
+        empty_state_counter = 0
+
+        file_handle = open(file_name, "r")
+        output = file_handle.read()
+
+        str_states = re.compile("^State")
+        str_player0 = re.compile("player0:1")
+        str_player1 = re.compile("player1:1")
+        split_txt = output.split("\n")
+        for il, line in enumerate(split_txt):
+            # count the number states
+            if str_states.match(line) is not None:
+                state_counter += 1
+                # print(line)
+                # count states without transitions
+                if split_txt[il + 2] is "":
+                    empty_state_counter += 1
+
+            # if str_player0.match(line) is not None:
+            if re.search("player0:1", line):
+                player0_counter += 1
+
+            # if str_player1.match(line) is not None:
+            if re.search("player1:1", line):
+                player1_counter += 1
+
+        print(state_counter)
+        print(empty_state_counter)
+        print(player0_counter)
+        print(player1_counter)
+
+            # count the number of states without any transitions
+
+            # count the number of states with some transitions to other states
+
+
+
+    def main(self):
+        # self.convert_to_slugsin()
+        # self.convert_slugsin_to_permissive_str()
+        PermissiveStrategy.clear_shell_screen()
+        # PermissiveStrategy.interpret_strategy_output(sys.argv[1])
+        if sys.argv[1] is None:
+            PermissiveStrategy.interpret_strategy_output(None)
+        else:
+            PermissiveStrategy.interpret_strategy_output(sys.argv[1])
 
 if __name__ == "__main__":
 
