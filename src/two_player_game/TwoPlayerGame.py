@@ -248,7 +248,7 @@ class TwoPlayerGame:
         #     "right" : "-1"
         # }
 
-        # TODO add regex expression to make this more roboust in future
+        # TODO add regex expression to make this more robust in future
 
         # get the x and y values of the state
         state_x = state.x
