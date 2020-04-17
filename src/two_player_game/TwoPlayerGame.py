@@ -13,6 +13,9 @@ from itertools import product
 random.seed(1)
 prompt_user = False
 
+# set random state players flag to test features
+set_fake_state_player = False
+
 def get_cwd_path():
     return os.path.dirname(os.path.realpath(__file__))
 
@@ -89,7 +92,8 @@ class TwoPlayerGame:
         """
         for s_r in self.S:
             for s_c in s_r:
-                print("state : ({},{},{})".format(s_c.x, s_c.y, s_c.t))
+                for s_t in s_c:
+                    print(f"state : ({s_t.x},{s_t.y},{s_t.t})")
 
     def initialize_states(self):
          """
@@ -97,14 +101,16 @@ class TwoPlayerGame:
          :return:
          :rtype:
          """
-         self.S = self.env.create_states()
+         # for i in range(0, 2):
+         self.S = self.env.create_states(2)
 
     def set_state_players(self):
         for row_state in self.S:
             for col_state in row_state:
-                self.env.set_state_player(col_state, random.randint(0, 1))
+                for state in col_state:
+                    self.env.set_state_player(state, random.randint(0, 1))
 
-    def get_state_player(self, location):
+    def get_state_player(self, state, location=None):
         """
         get the player assigned to each state
         :param location: x and y position of the state
@@ -112,7 +118,8 @@ class TwoPlayerGame:
         :return: state t (s.t) value
         :rtype: int {0, 1} env_player = 0 system_player = 1
         """
-        return self.S[location[0]][location[1]].t
+
+        return state.t
 
     def get_players_data(self):
         # converting the values in the controlled action and states into tuples
@@ -190,13 +197,13 @@ class TwoPlayerGame:
     def get_uncontrolled_actions(self):
         return self.A_uc
 
-    def get_controlled_action(self):
-        return self.A_c
+    # def get_controlled_action(self):
+    #     return self.A_c
 
     def set_initial_state(self):
 
         # get a random state and assing it to the system where x != y
-        init_state = random.choice(random.choice(self.S))
+        init_state = random.choice(random.choice(random.choice(self.S)))
         while init_state.x == init_state.y:
             init_state = random.choice(self.S)
 
@@ -279,6 +286,32 @@ class TwoPlayerGame:
 
         return self.S[state_x][state_y]
 
+    def create_transition_function(self):
+        # create an  empty dictionary of all the states possible
+        self.T = {}
+        for state_r in self.S:
+            for state_c in state_r:
+                for state in state_c:
+                    # if state belongs to the env
+                    if self.get_state_player(state) == 0:
+                        action_dict = {}
+                        for a in self.get_uncontrolled_actions():
+                            action_dict.update({a: None})
+                        self.T.update({(state.x, state.y, state.t): action_dict})
+                    else:
+                        action_dict = {}
+                        for a in self.get_controlled_actions():
+                            action_dict.update({a: None})
+                        self.T.update({(state.x, state.y, state.t): action_dict})
+
+
+
+    def get_transition_function(self):
+        return self.T
+
+    def set_transition_function(self, curr_state, action, next_state):
+        self.T[(curr_state.x, curr_state.y, curr_state.t)][action] = next_state
+
     def create_atomic_propositions(self):
 
         # number of atomic proposition
@@ -346,7 +379,8 @@ def main():
 
     # set fake player states
     # TODO replace this in future with some useful feature
-    game.set_state_players()
+    if set_fake_state_player:
+        game.set_state_players()
 
     # method to print all the states in the environment
     game.print_env_states()
@@ -357,7 +391,7 @@ def main():
 
     # set init state
     game.set_initial_state()
-    sample_state = game.S[5][1]
+    sample_state = game.S[5][1][0]
     game.set_state_actions(sample_state)
 
     # create set of atomic proposition
@@ -369,11 +403,18 @@ def main():
     state_label = game.labeling_function(state=sample_state)
     # add instance of labeling function to
     # game.W.update({"labeling_func": game.labeling_function})
-    print(game.W.get("labeling_func")(sample_state))
-    print(sample_state.action)
+    # print(game.W.get("labeling_func")(sample_state))
+    # print(sample_state.action)
     # get controlled and uncontrolled action
     # print(game.get_initial_state().x, game.get_initial_state().y, game.get_initial_state().t)
     # print(game.get_state_actions(game.Init))
+
+    game.create_transition_function()
+    # if sample_state.t == 0:
+    #     game.set_transition_function(sample_state, "up_e", game.S[0][0])
+    # else:
+    #     game.set_transition_function(sample_state, "up_s", game.S[0][0])
+    # print(game.get_transition_function())
 
     return game
 

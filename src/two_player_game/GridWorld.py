@@ -57,12 +57,16 @@ class GridWorld(object):
             # for every column
             col_list = []
             for iy in self.pos_y:
-                # create states and add them to the dictionary of states
-                s = State()
-                # assuming a state with (x,y) exists
-                s.setstate(ix, iy, player)
-                # self.states.update(s.state)
-                col_list.append(s)
+                # for the range of players
+                player_list = []
+                for p in range(player):
+                    # create states and add them to the dictionary of states
+                    s = State()
+                    # assuming a state with (x,y) exists
+                    s.setstate(ix, iy, p)
+                    # self.states.update(s.state)
+                    player_list.append(s)
+                col_list.append(player_list)
             # a list of lists
             self.states.append(col_list)
 

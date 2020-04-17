@@ -256,13 +256,14 @@ class PermissiveStrategy:
         return State
 
     def main(self):
+        pass
         # self.convert_to_slugsin()
         # self.convert_slugsin_to_permissive_str()
-        str_info = self.interpret_strategy_output(None)
+        # str_info = self.interpret_strategy_output(None)
 
 
 if __name__ == "__main__":
 
     slugsfile_path = "slugs_file/CoRL_5"
     permisivestr = PermissiveStrategy(slugsfile_path)
-    permisivestr.main()
+    # permisivestr.main()
