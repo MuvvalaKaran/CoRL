@@ -1,6 +1,7 @@
 # Project Description 
 
-This is a repo for the deep learning course project  : Correct-by-synthesis reinforcement learning with temporal logic constraints.
+This is a repo for the deep learning course project  : Correct-by-synthesis reinforcement learning with temporal logic constraints[1].
+
 More information regarding the course can be found [here](https://sites.google.com/colorado.edu/csci-5922-spring-2020)
 
 The main aim of this project is implementation and evaluating the results for the examples discussed by the authors in the paper. 
@@ -34,3 +35,6 @@ This project can be decoupled into two major sub-problems :
 
 This project is a work in progress and any kind of feedback is mostly welcome. Contact me at :karan.muvvala@colorado.edu
 
+## Reference 
+
+[1] Min Wen, Rüdiger Ehlers, and Ufuk Topcu. “Correct-by-synthesis reinforcement learning with  temporal logic constraints”. In: 2015 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS). IEEE. 2015, pp. 4983–4990.

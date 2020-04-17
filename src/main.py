@@ -1,8 +1,9 @@
 # parent script file
 # 1. Construct a game G and Extract a permissive str using slugs
-# 2. Check if the specification is realizable and if so apply the str to G to compute C_hat
+# 2. Check if the specification is realizable and if so apply the str to G to compute G_hat
 # 3. Compute the most optimal str that maximizes the reward while also satisfying the safety and liveness guarantees
 # 4. Map the optimal str back to G
+import time
 
 from src.two_player_game import TwoPlayerGame
 from src.two_player_game import extractExplicitPermissiveStrategy
@@ -19,11 +20,12 @@ def construct_game():
     return game
 
 def extract_permissive_str():
-    slugsfile_path = "two_player_game/slugs_file/CoRL_5"
+    slugsfile_path = "two_player_game/slugs_file/CoRL_1"
     str = extractExplicitPermissiveStrategy.PermissiveStrategy(slugsfile_path, run_local=False)
-    # str.main()
+    str.convert_to_slugsin()
+    str.convert_slugsin_to_permissive_str()
     env_str = None
-    system_str = str.interpret_strategy_output(None)
+    system_str = str.interpret_strategy_output("/slugs_file/CoRL_1.txt")
     for k, v in system_str.items():
         print(k , len(v['child_nodes']))
     if plot_graphs:

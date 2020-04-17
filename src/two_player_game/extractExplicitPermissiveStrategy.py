@@ -94,14 +94,15 @@ class PermissiveStrategy:
             slugstopermissivestr_args = [str(slugslink + "src/slugs"),
                                          addition_parameter,
                                          str(self.slugsfile_path + ".slugsin")]
-            Popen(slugstopermissivestr_args, stdout=permisivestr_file_handle)
+            process = Popen(slugstopermissivestr_args, stdout=permisivestr_file_handle)
+            # wait till the process is finished. Dumping usually takes some time
+            process.wait()
             if print_str:
                 process = Popen(slugstopermissivestr_args, stdout=PIPE)
                 (output, err) = process.communicate()
                 output = output.decode("utf-8")
                 print("Printing Permissive Str computed from slugs ")
                 print(output)
-
 
         except FileNotFoundError as e:
             PermissiveStrategy.eprint(f"{self.slugsfile_path + str('.slugsin')} : slugsin file not found ")
@@ -183,6 +184,8 @@ class PermissiveStrategy:
         if file_name is None:
             file_name = str(get_cwd_path() + "/slugs_file/CoRL_5.txt")
             print(file_name)
+        else:
+            file_name = str(get_cwd_path() + file_name)
         # intialize state counter
         state_counter = 0
         empty_state_counter = 0
@@ -264,6 +267,7 @@ class PermissiveStrategy:
 
     def main(self):
         pass
+
         # self.convert_to_slugsin()
         # self.convert_slugsin_to_permissive_str()
         # str_info = self.interpret_strategy_output(None)
