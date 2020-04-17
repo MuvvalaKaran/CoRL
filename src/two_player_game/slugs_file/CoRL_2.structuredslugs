@@ -1,0 +1,57 @@
+# Current state of the game - env
+[INPUT]
+x:0...15
+y:0...15
+player:0...1
+
+
+# mapping a state to the action - sys
+[OUTPUT]
+left_s
+right_s
+up_s
+down_s
+stay_s
+up_e
+down_e
+left_e
+right_e
+
+[ENV_INIT]
+x != y
+#y = 4
+# player0
+# player1
+
+[SYS_INIT]
+! left_s
+! right_s
+! up_s
+! down_s
+! stay_s
+! up_e
+! down_e
+! left_e
+! right_e
+
+[SYS_TRANS]
+# player0 -> left_s' | right_s' | up_s' | down_s' | stay_s'
+(player=0) -> ! left_e' & ! right_e' & ! up_e' & ! down_e'
+# player1 -> left_e' | right_e' | up_e' | down_e'
+(player=1) -> ! left_s' & ! right_s' & ! up_s' & ! down_s' & ! stay_s'
+
+# update robot positions according to requirements
+[ENV_TRANS]
+x>0 & (left_s & player=1) -> x'+1=x
+x<15 & (right_s & player=1) -> x'=x+1
+x<15 & (up_s & player=1) -> x'=x+4
+x>0 & (down_s & player=1) -> x'+4=x
+(stay_s & player=1) -> x'=x
+
+y>0 & (left_e & player=0) -> y'+1=y
+y<15 & (right_e & player=0) -> y'=y+1
+y<15 & (up_e & player=0)-> y'=y+4
+y>0 & (down_e & player=0)-> y'+4=y
+
+# system robot should not enforce collision with the env robot
+x'!=y'

@@ -47,17 +47,21 @@ if __name__ == "__main__":
     sys_str, env_str = extract_permissive_str()
     a_c = game.get_controlled_actions()
     # create a mapping from th state we get form the strategy and the state we have in our code
-    s = sys_str['State 1']['map']
+    # s = sys_str['State 1']['map']
     # print(s)
 
     # create a tmp_state_tuple
     for k, v in sys_str.items():
-        xy_sys = v['map'][0]
-        xy_env = v['map'][1]
+        xy_sys = v['state_xy_map'][0]
+        xy_env = v['state_xy_map'][1]
         pos_sys = create_xy_pos_mapping(xy_sys[0], xy_sys[1], x_length, y_length)
         pos_env = create_xy_pos_mapping(xy_env[0], xy_env[1], x_length, y_length)
         t = 1
-        print(f"{k} : {xy_sys}, {xy_env}0 : ({pos_env}, {pos_env}, {t})")
+        # print(f"{k} : {xy_sys}, {xy_env}0 : ({pos_env}, {pos_env}, {t})")
+
+        # update the state_pos mapping variable in sys_str
+        sys_str[k]['state_pos_map'] = (pos_sys, pos_env, t)
+        print(k, sys_str[k]['state_pos_map'])
 
         # game.set_transition_function(game.S[pos_sys][pos_env][t], )
 

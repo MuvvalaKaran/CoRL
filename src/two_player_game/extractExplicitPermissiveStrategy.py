@@ -228,7 +228,14 @@ class PermissiveStrategy:
                 y1 = int(''.join(input_bit[2:4]), 2)
                 x2 = int(''.join(output_bit[:2]), 2)
                 y2 = int(''.join(output_bit[2:4]), 2)
-                State.update({state_name: {'map': ((x1, y1), (x2, y2))}})
+
+                mapping_dict = {}
+                mapping_dict.update({'state_xy_map': ((x1, y1), (x2, y2))})
+                mapping_dict.update({'state_pos_map': None})
+                # mapping_dict = {{'state_xy_map': ((x1, y1), (x2, y2))}, {'state_pos_map': None}}
+                # State.update({state_name: {'state_xy_map': ((x1, y1), (x2, y2))}})
+                # State.update({state_name: {'state_pos_map': None}})
+                State.update({state_name:mapping_dict})
 
             # create a transition list from state to the all the other states
             state_transits_to = []
