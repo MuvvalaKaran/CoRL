@@ -58,7 +58,8 @@ if __name__ == "__main__":
         xy_env = v['state_xy_map'][1]
         pos_sys = create_xy_pos_mapping(xy_sys[0], xy_sys[1], x_length, y_length)
         pos_env = create_xy_pos_mapping(xy_env[0], xy_env[1], x_length, y_length)
-        t = 1
+        # t = 1
+        t = v['player']
         # print(f"{k} : {xy_sys}, {xy_env}0 : ({pos_env}, {pos_env}, {t})")
 
         # update the state_pos mapping variable in sys_str

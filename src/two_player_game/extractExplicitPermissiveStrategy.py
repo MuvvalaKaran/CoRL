@@ -16,7 +16,8 @@ print_output = False
 print_str = False
 # print states to x,y mapping flag
 print_state_mapping = True
-
+# flag to be set true when you use explicit player representation
+explicit_rep = True
 
 def get_cwd_path():
     # return Path.cwd()
@@ -70,7 +71,9 @@ class PermissiveStrategy:
             slugsin_file_handle = open(str(self.slugsfile_path + ".slugsin"), "w+")
 
             # write output to a file
-            Popen(structuredslugs2slugsin_args, stdout=slugsin_file_handle)
+            process = Popen(structuredslugs2slugsin_args, stdout=slugsin_file_handle)
+            # wait till the process is finished. Dumping usually takes some time
+            process.wait()
             if print_output:
                 process = Popen(structuredslugs2slugsin_args, stdout=PIPE)
                 (output, err) = process.communicate()
@@ -231,10 +234,16 @@ class PermissiveStrategy:
                 y1 = int(''.join(input_bit[2:4]), 2)
                 x2 = int(''.join(output_bit[:2]), 2)
                 y2 = int(''.join(output_bit[2:4]), 2)
+                # if we explicitly represent players in the slugs input file
+                if explicit_rep:
+                    p = input_bit[-1]
 
                 mapping_dict = {}
-                mapping_dict.update({'state_xy_map': ((x1, y1), (x2, y2))})
+                # x1,y1 belong to the env while x2,y2 belong to the controlled robot/system
+                mapping_dict.update({'state_xy_map': ((x2, y2), (x1, y1))})
                 mapping_dict.update({'state_pos_map': None})
+                if explicit_rep:
+                    mapping_dict.update({'player': p})
                 # mapping_dict = {{'state_xy_map': ((x1, y1), (x2, y2))}, {'state_pos_map': None}}
                 # State.update({state_name: {'state_xy_map': ((x1, y1), (x2, y2))}})
                 # State.update({state_name: {'state_pos_map': None}})
