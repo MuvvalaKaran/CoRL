@@ -216,28 +216,49 @@ class PermissiveStrategy:
 
                 input_bit = []
                 output_bit = []
-                # read the bit encoding of the respective state
+                # read the bit encoding of the respective state : the formatting is little endian
                 for i_ap, ip_bit_val in zip(input_ap, split_txt[il+1].split(", ")):
                     # split the bit name and val
                     if i_ap == ip_bit_val.split(":")[0]:
                         # if ip_bit_val.split(":")[1] == str(1):
-                        input_bit.append(ip_bit_val.split(":")[1])
-
+                        # input_bit.append(ip_bit_val.split(":")[1])
+                        input_bit.insert(0, ip_bit_val.split(":")[1])
                 for o_ap, ip_bit_val in zip(output_ap, split_txt[il+1].split(", ")[len(input_ap):]):
                     # split the bit name and val
                     if o_ap == ip_bit_val.split(":")[0]:
                         # if ip_bit_val.split(":")[1] == str(1):
-                        output_bit.append(ip_bit_val.split(":")[1])
-
+                        # output_bit.append(ip_bit_val.split(":")[1])
+                        output_bit.insert(0, ip_bit_val.split(":")[1])
                 # (x1, y1) and (x2, y2)
-                x1 = int(''.join(input_bit[:2]), 2)
-                y1 = int(''.join(input_bit[2:4]), 2)
-                x2 = int(''.join(output_bit[:2]), 2)
-                y2 = int(''.join(output_bit[2:4]), 2)
-                # if we explicitly represent players in the slugs input file
+                # y1 = int(''.join(input_bit[:2]), 2)
+                # x1 = int(''.join(input_bit[2:4]), 2)
+                # y2 = int(''.join(output_bit[:2]), 2)
+                # x2 = int(''.join(output_bit[2:4]), 2)
+                # if we explicitly represent players in the slugs input file in the [INPUT] section
                 if explicit_rep:
-                    p = input_bit[-1]
+                    # sample format we storing the bits into
+                    # t@0.0.1:0/1 y1@1:0/1 y1@0.0.3:0/1 x1@1:0/1 x1@0.0.3:0/1
+                    p = input_bit[0]
+                    y1 = int(''.join(input_bit[1:3]), 2)
+                    x1 = int(''.join(input_bit[3:5]), 2)
 
+                    # output bit has no player so we start form the start
+                    # sample format we are storing the bits into
+                    # y2@1:0/1 y2@0.0.3:0/1 x2@1:0/1 x2@0.0.3:0/1
+                    y2 = int(''.join(output_bit[:2]), 2)
+                    x2 = int(''.join(output_bit[2:4]), 2)
+                # if there is no explict player states in [INPUT]section of the slugs input file
+                else:
+                    # sample format we storing the bits into
+                    # y1@1:0/1 y1@0.0.3:0/1 x1@1:0/1 x1@0.0.3:0/1
+                    y1 = int(''.join(input_bit[:2]), 2)
+                    x1 = int(''.join(input_bit[2:4]), 2)
+
+                    # output bit has no player so we start form the start
+                    # sample format we are storing the bits into
+                    # y2@1:0/1 y2@0.0.3:0/1 x2@1:0/1 x2@0.0.3:0/1
+                    y2 = int(''.join(output_bit[:2]), 2)
+                    x2 = int(''.join(output_bit[2:4]), 2)
                 mapping_dict = {}
                 # x1,y1 belong to the env while x2,y2 belong to the controlled robot/system
                 mapping_dict.update({'state_xy_map': ((x2, y2), (x1, y1))})
