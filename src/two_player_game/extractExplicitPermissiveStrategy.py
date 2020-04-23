@@ -15,7 +15,7 @@ print_output = False
 #flag to print the output from the slugs code using --extractExplcitPermissiveStrategy flag
 print_str = False
 # print states to x,y mapping flag
-print_state_mapping = True
+print_state_mapping = False
 # flag to be set true when you use explicit player representation
 explicit_rep = True
 
@@ -290,10 +290,13 @@ class PermissiveStrategy:
                         break
 
         if print_state_mapping:
-            for k, v in State.items():
-                print(f"{k}: {v}")
+            self.print_str_output(State)
 
         return State
+
+    def print_str_output(self, str):
+        for k, v in str.items():
+            print(f"{k}: {v}")
 
     def main(self):
         pass

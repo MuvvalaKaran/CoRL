@@ -3,7 +3,7 @@ x1@0.0.3
 x1@1
 y1@0.0.3
 y1@1
-t@0.0.1
+t=0...1
 
 # Variable controlled by the system robot
 

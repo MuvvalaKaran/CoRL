@@ -2,7 +2,7 @@
 [INPUT]
 x1:0...3
 y1:0...3
-t:0...1
+t=0...1
 
 # Variable controlled by the system robot
 [OUTPUT]

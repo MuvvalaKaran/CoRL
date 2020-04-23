@@ -328,8 +328,15 @@ class TwoPlayerGame:
             f"Make sure number of atomic proposition is equals pos_x * pos_y * (t_0, t_ 1) " \
             f": {int(self.env.pos_x * self.env.pos_y * len(set_player_t))} "
 
-    def get_atomic_propositons(self):
+    def get_atomic_propositions(self):
         return self.AP
+
+    def print_transition_matrix(self):
+        for k, v in self.T.items():
+            # k is state and v a mapping of each action to the next state
+            for action in v.keys():
+                if v[action]:
+                    print(f"State {k} transits to {action}, ({v[action].x}, {v[action].y}, {v[action].t})")
 
     # define a labelling function
     def labeling_function(self, state):
@@ -396,7 +403,7 @@ def main():
 
     # create set of atomic proposition
     game.create_atomic_propositions()
-    # print(game.get_atomic_propositons())
+    # print(game.get_atomic_propositions())
     # print(len(game.AP))
 
     #testing labeling function
