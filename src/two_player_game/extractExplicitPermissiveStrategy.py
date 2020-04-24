@@ -268,7 +268,7 @@ class PermissiveStrategy:
                 # mapping_dict = {{'state_xy_map': ((x1, y1), (x2, y2))}, {'state_pos_map': None}}
                 # State.update({state_name: {'state_xy_map': ((x1, y1), (x2, y2))}})
                 # State.update({state_name: {'state_pos_map': None}})
-                State.update({state_name:mapping_dict})
+                State.update({state_name: mapping_dict})
 
             # create a transition list from state to the all the other states
             state_transits_to = []

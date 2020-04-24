@@ -3,7 +3,7 @@
 # 2. Check if the specification is realizable and if so apply the str to G to compute G_hat
 # 3. Compute the most optimal str that maximizes the reward while also satisfying the safety and liveness guarantees
 # 4. Map the optimal str back to G
-import time
+import copy
 
 from src.two_player_game import TwoPlayerGame
 from src.two_player_game import extractExplicitPermissiveStrategy
@@ -17,9 +17,10 @@ print_str_after_processing = True
 # flag to print state num and state_pos_map value
 print_state_pos_map = False
 # flag to print the update transition matrix
-print_updated_transition_function = True
+print_updated_transition_function = False
 
 def construct_game():
+    print("Constructing game G \n")
     # run the main function to build all the stuff in there
     game = TwoPlayerGame.main()
     # print(game.get_atomic_propositions())
@@ -28,6 +29,7 @@ def construct_game():
     return game
 
 def extract_permissive_str():
+    print("Extracting (maxiamlly) permissive strategy \n")
     slugsfile_path = "two_player_game/slugs_file/CoRL_1"
     str = extractExplicitPermissiveStrategy.PermissiveStrategy(slugsfile_path, run_local=False)
     str.convert_to_slugsin()
@@ -50,6 +52,9 @@ def create_xy_pos_mapping(x,y, nx, ny):
     Pos = nx*x + y
     return Pos
 
+def convert_pos_xy_mapping(pos_x, pos_y, nx, ny):
+    raise NotImplementedError
+
 # write a code that does post processing on the strategy we get from slugs to remove the following:
 # 1. The robot should not make any jumps. Although this does not appear in the str, its a safety measure to check for it
 # 2. The sys robot can control only the x variable of the position tuple (x, y ,t)
@@ -58,6 +63,7 @@ def create_xy_pos_mapping(x,y, nx, ny):
 def pre_processing_of_str(strategy, nx, ny):
     # strategy is a dict [State Num], attributes [state_y_map], [stare_pos_map], [child_nodes]
     # robot should not make in jumps
+    print("processing the raw strategy we get from slugs to remove undesired behavior \n")
     for k, v in strategy.items():
         pos_tuple = v['state_pos_map']
         # extract x, y, t
@@ -167,11 +173,9 @@ def _determine_action(game, curr_state, next_state):
         return 0
 
 def update_transition_function(game, strategy):
-
-    for k,v in strategy.items():
+    for k, v in strategy.items():
         # get the state number from the strategy corresponding to k (State n)
         curr_game_state = v['state_pos_map']
-
         # determine the action corresponding to the current transition
         for child_state_number in v['child_nodes']:
             # convert State n to (x, y, t) format
@@ -182,6 +186,65 @@ def update_transition_function(game, strategy):
             next_G_state = game.S[next_game_state[0]][next_game_state[1]][int(next_game_state[2])]
             game.set_transition_function(curr_state=curr_G_state, action=action, next_state=next_G_state)
 
+def create_G_hat(strategy, game):
+    # give a game G and strategy update the following:
+    # 1. Remove all the State from which there does not exists any transition (these are sink/ ghost states)
+    # 2. Remove all invalid states for System player
+    # 3. Remove all invalid states for env player
+    # 4. Remove all invalid initial states
+    # 5. Update Transition function
+    # 6. Update W = (L, True)
+    print("Creating G_hat game \n")
+    # get pos_x and pos_y values
+    pos_x_length = game.env.pos_x
+    pos_y_length = game.env.pos_y
+
+    # copy the game in
+    game_G_hat = copy.deepcopy(game)
+
+    # 1-4. Remove all the States that do no appear in the permissive for various reasons
+    # list to keep track of states to remove
+    invalid_states = []
+    # iterate over all the possible states and check that state does exist in the permissive
+    for ix in pos_x_length:
+        for iy in pos_y_length:
+            for p in range(0, 2):
+                # if this state does on exist in the strategy then remove it
+                exist_flag = False
+                for k, v in strategy.items():
+                    if v['state_pos_map'] == (ix, iy, str(p)):
+                        exist_flag = True
+                        # print(f"Removing state {ix, iy, p}")
+                # after searching through all the whole strategy remove the state if exist_flag is False
+                if not exist_flag:
+                    print(f"Removing state {ix, iy, p}")
+                    invalid_states.append((ix, iy, p))
+
+    # remove all the states not present in the strategy and also update system and env states list
+    for r_x, r_y, r_t in invalid_states:
+        # remove elements from the system state space
+        if r_t == 1:
+            game_G_hat.S_s.remove(game_G_hat.S[r_x][r_y][r_t])
+            # update the list of initial states to be states where both the sys robot and env robot
+            # cannot be in the same location
+
+            # as the states are shallow copied, removing objects form the sys_states list removes from the initial
+            # states list as well
+            # game_G_hat.Init.remove(game_G_hat.S[r_x][r_y][r_t])
+
+        # remove elements form the env state space
+        else:
+            game_G_hat.S_e.remove(game_G_hat.S[r_x][r_y][r_t])
+        # remove elements from the parent State space list
+        game_G_hat.S[r_x][r_y][r_t] = None
+
+    # 5. Update the transition function
+    update_transition_function(game_G_hat, strategy)
+
+    # 6. Update W
+    game_G_hat.set_W(phi=True)
+
+    return game_G_hat
 
 if __name__ == "__main__":
     # construct_game()
@@ -216,11 +279,14 @@ if __name__ == "__main__":
             print(f"{k}: {v}")
 
     # use these str to update the transition matrix
-    update_transition_function(game, sys_str)
+    # update_transition_function(game, sys_str)
+
+    # update Game G to get G_hat
+    game_G_hat = create_G_hat(strategy=sys_str, game=game)
 
     # print the updated transition matrix
     if print_updated_transition_function:
         print("The Updated transition matrix is: ")
-        game.print_transition_matrix()
+        game_G_hat.print_transition_matrix()
 
 

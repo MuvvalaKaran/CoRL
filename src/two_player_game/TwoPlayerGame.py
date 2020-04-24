@@ -62,8 +62,8 @@ class TwoPlayerGame:
         self.conf = {}
         self.env = None
         self.S = None
-        self.S_s = None
-        self.S_e = None
+        self.S_s = []
+        self.S_e = []
         self.A_c = None
         self.A_uc = None
         self.Init = None
@@ -201,17 +201,34 @@ class TwoPlayerGame:
     #     return self.A_c
 
     def set_initial_state(self):
-
-        # get a random state and assing it to the system where x != y
-        init_state = random.choice(random.choice(random.choice(self.S)))
-        while init_state.x == init_state.y:
-            init_state = random.choice(self.S)
-
-        init_state.set_state_player(init_state, player=1)
-        self.Init = init_state
+        # all states that belong to the system player are all by default the initial states which will later be pruned
+        # from the strategy we get from slugs
+        self.Init = self.get_sys_states()
 
     def get_initial_state(self):
         return self.Init
+
+    def _initialize_states(self):
+        # method to assign each player its respective states
+        for row_state in self.S:
+            for col_state in row_state:
+                for state in col_state:
+                    if state.t == 1:
+                        self._set_sys_state(state)
+                    else:
+                        self._set_env_state(state)
+
+    def _set_sys_state(self, state):
+        self.S_s.append(state)
+
+    def get_sys_states(self):
+        return self.S_s
+
+    def _set_env_state(self, state):
+        self.S_e.append(state)
+
+    def get_env_states(self):
+        return self.S_e
 
     def create_env(self):
         """
@@ -353,7 +370,7 @@ class TwoPlayerGame:
                 break
         return ele
 
-    def read_formula(self):
+    def _read_formula(self):
         """
         A function to prompt user to input a specification and use slugs to check if that winning condition
         is realizable for the constructed graph or not
@@ -366,6 +383,12 @@ class TwoPlayerGame:
             spec = "something gibberish for now"
 
         self.W.update({"spec": spec})
+
+    def set_W(self, phi):
+        self.W['spec'] = phi
+
+    def get_W(self):
+        return self.W
 
 def main():
 
@@ -383,6 +406,9 @@ def main():
 
     # initialize states
     game.initialize_states()
+
+    # assign states to their respective players
+    game._initialize_states()
 
     # set fake player states
     # TODO replace this in future with some useful feature
