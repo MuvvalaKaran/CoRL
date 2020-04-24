@@ -13,7 +13,7 @@ plot_graphs = False
 # flag to print length of child nodes
 print_child_node_length = False
 # flag to print strategy after preprocessing
-print_str_after_processing = False
+print_str_after_processing = True
 # flag to print state num and state_pos_map value
 print_state_pos_map = False
 # flag to print the update transition matrix
@@ -73,7 +73,12 @@ def pre_processing_of_str(strategy, nx, ny):
             target_tuple = strategy[f"State {node}"]['state_pos_map']
             target_x = target_tuple[0]
             target_y = target_tuple[1]
+            target_t = target_tuple[2]
 
+            # a player can only transit to states that belong to him
+            if t != target_t:
+                invalid_trans.append(node)
+                continue
             # check that the sys robot can only control the x variable
             if int(t) == 1:
                 # y should not change as the sys robot cannot control that variable
