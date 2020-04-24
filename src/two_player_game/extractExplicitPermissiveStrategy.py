@@ -15,7 +15,7 @@ print_output = False
 #flag to print the output from the slugs code using --extractExplcitPermissiveStrategy flag
 print_str = False
 # print states to x,y mapping flag
-print_state_mapping = False
+print_state_mapping = True
 # flag to be set true when you use explicit player representation
 explicit_rep = True
 
@@ -135,6 +135,8 @@ class PermissiveStrategy:
 
         # after the input section add all the input APs
         input_str = re.compile("\[INPUT\]")
+        x_str = re.compile("^x")
+        y_str = re.compile("^y")
         input_ap = []
         # after the output section add all the output APs
         output_str = re.compile("\[OUTPUT\]")
@@ -147,39 +149,58 @@ class PermissiveStrategy:
 
             if input_str.match(line) is not None:
                 # keep storing variables in the list till you encounter an empty line
-                #tmp_line = line
                 # ignore line with comment
                 tmp_il = il
+                x_ip_ap = []
+                y_ip_ap = []
                 while True:
-
                     tmp_il += 1
                     if comment_str.match(split_txt[tmp_il]) is not None:
                         continue
                     if split_txt[tmp_il] is "":
                         break
-                    input_ap.append(split_txt[tmp_il])
 
-                    # il = tmp_il
-                    #tmp_line = line[tmp_il]
+                    input_ap.append(split_txt[tmp_il])
+                    # check if the input ap belongs to x or y
+                    if x_str.match(split_txt[tmp_il]):
+                        # input_ap.append(split_txt[tmp_il])
+                        x_ip_ap.append(split_txt[tmp_il])
+                    if y_str.match(split_txt[tmp_il]):
+                        y_ip_ap.append(split_txt[tmp_il])
+
             if output_str.match(line) is not None:
                 # keep storing variables in the list till you encounter an empty line
                 tmp_il = il
+                x_op_ap = []
+                y_op_ap = []
                 while True:
                     tmp_il += 1
                     if comment_str.match(split_txt[tmp_il]) is not None:
                         continue
                     if split_txt[tmp_il] is "":
                         # once done with this lop breal
-                        return input_ap, output_ap
+                        return input_ap, output_ap, (x_ip_ap, y_ip_ap), (x_op_ap, y_op_ap)
 
                     output_ap.append(split_txt[tmp_il])
+                    # check if the input ap belongs to x or y
+                    if x_str.match(split_txt[tmp_il]):
+                        # input_ap.append(split_txt[tmp_il])
+                        x_op_ap.append(split_txt[tmp_il])
+                    if y_str.match(split_txt[tmp_il]):
+                        y_op_ap.append(split_txt[tmp_il])
 
-        return input_ap, output_ap
+        return input_ap, output_ap, (x_ip_ap, y_ip_ap), (x_op_ap, y_op_ap)
 
     # @staticmethod
     def interpret_strategy_output(self, file_name):
         # get the input and output atomic propositions
-        input_ap, output_ap = self.get_input_output_AP()
+        input_ap, output_ap, (x_ip_ap, y_ip_ap), (x_op_ap, y_op_ap) = self.get_input_output_AP()
+
+        # length of x and y atomic propositions in input and output
+        len_x_ip_ap = len(x_ip_ap)
+        len_y_ip_ap = len(y_ip_ap)
+        len_x_op_ap = len(x_op_ap)
+        len_y_op_ap = len(y_op_ap)
 
         # a dictionary mapping from a state to a pair of (x1,y1), (x2,y2) i.e Input AP and Output AP
         State = {}
@@ -189,7 +210,7 @@ class PermissiveStrategy:
             print(file_name)
         else:
             file_name = str(get_cwd_path() + file_name)
-        # intialize state counter
+        # initialize state counter
         state_counter = 0
         empty_state_counter = 0
 
@@ -201,12 +222,10 @@ class PermissiveStrategy:
 
         split_txt = output.split("\n")
         for il, line in enumerate(split_txt):
-
             # count the number state and map each state to its corresponding in (x1, y1), (x2, y2)
             if str_states.match(line) is not None:
                 state_encountered = True
                 # get state name
-
                 match = str_states.match(line)
                 state_name = match.string[match.regs[0][0]: match.regs[0][1]]
                 state_counter += 1
@@ -239,26 +258,26 @@ class PermissiveStrategy:
                     # sample format we storing the bits into
                     # t@0.0.1:0/1 y1@1:0/1 y1@0.0.3:0/1 x1@1:0/1 x1@0.0.3:0/1
                     p = input_bit[0]
-                    y1 = int(''.join(input_bit[1:3]), 2)
-                    x1 = int(''.join(input_bit[3:5]), 2)
+                    y1 = int(''.join(input_bit[1:1+len_y_ip_ap]), 2)
+                    x1 = int(''.join(input_bit[1+len_y_ip_ap:1 + len_y_ip_ap + len_x_ip_ap]), 2)
 
                     # output bit has no player so we start form the start
                     # sample format we are storing the bits into
                     # y2@1:0/1 y2@0.0.3:0/1 x2@1:0/1 x2@0.0.3:0/1
-                    y2 = int(''.join(output_bit[:2]), 2)
-                    x2 = int(''.join(output_bit[2:4]), 2)
+                    y2 = int(''.join(output_bit[:len_y_op_ap]), 2)
+                    x2 = int(''.join(output_bit[len_y_op_ap: len_y_op_ap + len_x_op_ap]), 2)
                 # if there is no explict player states in [INPUT]section of the slugs input file
                 else:
                     # sample format we storing the bits into
                     # y1@1:0/1 y1@0.0.3:0/1 x1@1:0/1 x1@0.0.3:0/1
-                    y1 = int(''.join(input_bit[:2]), 2)
-                    x1 = int(''.join(input_bit[2:4]), 2)
+                    y1 = int(''.join(input_bit[:len_y_ip_ap ]), 2)
+                    x1 = int(''.join(input_bit[len_y_ip_ap: len_y_ip_ap + len_x_ip_ap]), 2)
 
                     # output bit has no player so we start form the start
                     # sample format we are storing the bits into
                     # y2@1:0/1 y2@0.0.3:0/1 x2@1:0/1 x2@0.0.3:0/1
-                    y2 = int(''.join(output_bit[:2]), 2)
-                    x2 = int(''.join(output_bit[2:4]), 2)
+                    y2 = int(''.join(output_bit[:len_y_op_ap]), 2)
+                    x2 = int(''.join(output_bit[len_y_op_ap:len_y_op_ap + len_x_op_ap]), 2)
                 mapping_dict = {}
                 # x1,y1 belong to the env while x2,y2 belong to the controlled robot/system
                 mapping_dict.update({'state_xy_map': ((x2, y2), (x1, y1))})

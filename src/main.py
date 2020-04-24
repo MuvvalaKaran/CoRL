@@ -15,7 +15,7 @@ print_child_node_length = False
 # flag to print strategy after preprocessing
 print_str_after_processing = True
 # flag to print state num and state_pos_map value
-print_state_pos_map = False
+print_state_pos_map = True
 # flag to print the update transition matrix
 print_updated_transition_function = False
 
@@ -49,7 +49,7 @@ def extract_permissive_str():
 def create_xy_pos_mapping(x,y, nx, ny):
     # a method to map a respective x,y value on the grid to Pos
     # create a mapping from x,y grid position to Pos variable number : x_length*x + y
-    Pos = nx*x + y
+    Pos = nx*y + x
     return Pos
 
 def convert_pos_xy_mapping(pos_x, pos_y, nx, ny):

@@ -416,7 +416,7 @@ def main():
         game.set_state_players()
 
     # method to print all the states in the environment
-    #game.print_env_states()
+    game.print_env_states()
 
     # set controlled and uncontrolled action tuples
     game.set_controlled_actions()
