@@ -4,11 +4,12 @@
 # 3. Compute the most optimal str that maximizes the reward while also satisfying the safety and liveness guarantees
 # 4. Map the optimal str back to G
 import copy
+import warnings
 
 from src.two_player_game import TwoPlayerGame
 from src.two_player_game import extractExplicitPermissiveStrategy
 
-# flag to plot BDD disgram we get from the slugs file
+# flag to plot BDD diagram we get from the slugs file
 plot_graphs = False
 # flag to print length of child nodes
 print_child_node_length = False
@@ -64,51 +65,82 @@ def pre_processing_of_str(strategy, nx, ny):
     # strategy is a dict [State Num], attributes [state_y_map], [stare_pos_map], [child_nodes]
     # robot should not make in jumps
     print("processing the raw strategy we get from slugs to remove undesired behavior \n")
+    invalid_states = []
     for k, v in strategy.items():
         pos_tuple = v['state_pos_map']
+        xy_tuple = v['state_xy_map']
+        xy_sys = xy_tuple[0]
+        xy_env = xy_tuple[1]
         # extract x, y, t
         x = pos_tuple[0]
         y = pos_tuple[1]
         t = pos_tuple[2]
 
+        # the first pass is a sanity check to see if its a valid state or not.
+        # Remove the state itself if it lies beyond the girdworld. Slugs in general does satisfy the constraint of NOT
+        # transiting to states that lie beyond the world but the permissive strategy extension still compute trasitions
+        # from states/(x,y)  positions beyond the gridworld to other state. This happens because, slugs stores the
+        # variable into bit variable encoding which unfortunately gives rise extra values like [_,_] bit vectoring can
+        # express range up to 4 and hence it goes upto 0 ...4 but the constraint in the transitions restricts it to
+        # transit beyond the gridworld but not the other way around.
+
+        # default del_flag to false:
+        del_flag = False
+
+        # So, remove states that do not belong in the gridworld of size (n,m)
+        if xy_sys[0] >= nx or xy_sys[1] >= ny:
+            del_flag = True
+        if xy_env[0] >= nx or xy_env[1] >= ny:
+            del_flag = True
+
+        if del_flag:
+            # safety try and except mechanism
+            try:
+                invalid_states.append(k)
+                continue
+            except KeyError:
+                warnings.warn(f"State {k} not found in the strategy. This error should not occur")
+
         # go through the child nodes
         # list to keep track of invalid transitions:
         invalid_trans = []
         for node in v['child_nodes']:
-            # get the pos tuple of the child node
-            target_tuple = strategy[f"State {node}"]['state_pos_map']
-            target_x = target_tuple[0]
-            target_y = target_tuple[1]
-            target_t = target_tuple[2]
+            # there are children nodes to transit to. an empty children node list is give as [""]
+            if node is not "":
+                # get the pos tuple of the child node
+                target_tuple = strategy[f"State {node}"]['state_pos_map']
+                target_x = target_tuple[0]
+                target_y = target_tuple[1]
+                target_t = target_tuple[2]
 
-            # a player can only transit to states that belong to him
-            if t != target_t:
-                invalid_trans.append(node)
-                continue
-            # check that the sys robot can only control the x variable
-            if int(t) == 1:
-                # y should not change as the sys robot cannot control that variable
-                if y != target_y:
-                    # v['child_nodes'].remove(node)
+                # a player can only transit to states that belong to him
+                if t != target_t:
                     invalid_trans.append(node)
                     continue
-                if not (x + 1 == target_x or x - 1 == target_x or x + nx == target_x
-                        or x - nx == target_x or x == target_x):
-                    # its not a valid transition and hence should be removed from the strategy
-                    # v['child_nodes'].remove(node)
-                    invalid_trans.append(node)
-                    continue
-            # check that the env robot can only control the y variable
-            if int(t) == 0:
-                # x should not change as the env robot cannot control that variable
-                if x != target_x:
-                    # v['child_nodes'].remove(node)
-                    invalid_trans.append(node)
-                    continue
-                if not (y + 1 == target_y or y - 1 == target_y or y + nx == target_y or y - nx == target_y):
-                    # v['child_nodes'].remove(node)
-                    invalid_trans.append(node)
-                    continue
+                # check that the sys robot can only control the x variable
+                if int(t) == 1:
+                    # y should not change as the sys robot cannot control that variable
+                    if y != target_y:
+                        # v['child_nodes'].remove(node)
+                        invalid_trans.append(node)
+                        continue
+                    if not (x + 1 == target_x or x - 1 == target_x or x + nx == target_x
+                            or x - nx == target_x or x == target_x):
+                        # its not a valid transition and hence should be removed from the strategy
+                        # v['child_nodes'].remove(node)
+                        invalid_trans.append(node)
+                        continue
+                # check that the env robot can only control the y variable
+                if int(t) == 0:
+                    # x should not change as the env robot cannot control that variable
+                    if x != target_x:
+                        # v['child_nodes'].remove(node)
+                        invalid_trans.append(node)
+                        continue
+                    if not (y + 1 == target_y or y - 1 == target_y or y + nx == target_y or y - nx == target_y):
+                        # v['child_nodes'].remove(node)
+                        invalid_trans.append(node)
+                        continue
 
         # remove all the nodes from the invalid transitions list L
         for ele in invalid_trans:
@@ -127,6 +159,10 @@ def pre_processing_of_str(strategy, nx, ny):
             # if not (y + 1 == target_y or y - 1 == target_y or y + nx == target_y or y - nx == target_y):
             #     v['child_nodes'].remove(node)
             #     continue
+    print(f"Total states pruned as they lied outside the gridworld are {len(invalid_states)}.\n "
+          f"The current number of valid states for both players in strategy after pruning is {len(strategy) - len(invalid_states)} \n")
+    for s in invalid_states:
+        del strategy[s]
 
 def _determine_action(game, curr_state, next_state):
     # extract all attributes of the current state

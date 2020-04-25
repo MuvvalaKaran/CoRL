@@ -16,10 +16,10 @@ mry'+1>=mry
 mrx'!=srx' | mry'!=sry'
 
 ## no Collisions with the obstacles (part 1)
-mrx'!=4 | mry'<4
+# mrx'!=4 | mry'<4
 
 ## no Collisions with the obstacles (part 2)
-mrx'>3 | mry'!=1
+# mrx'>3 | mry'!=1
 
 [ENV_TRANS]
 srx+1>=srx'
@@ -31,18 +31,18 @@ sry'+1>=sry
 mrx!=srx' | mry!=sry'
 
 ## no Collisions with the obstacles (part 1)
-srx'!=4 | sry'<4
+# srx'!=4 | sry'<4
 
 ## no Collisions with the obstacles (part 2)
-srx'>3 | sry'!=1
+# srx'>3 | sry'!=1
 
 [SYS_LIVENESS]
-mrx=0 & mry=4
-mrx=7 & mry=4
+# mrx=0 & mry=4
+# mrx=7 & mry=4
 
-[ENV_LIVENESS]
+# [ENV_LIVENESS]
 # Add "| (srx<5 & sry=0)" in order to prevent the system from cornering the slave robot
-srx'!=srx | sry'!=sry | srx>mrx+1 | mrx>srx+1 | sry>mry+1 | mry>sry+1 
+# srx'!=srx | sry'!=sry | srx>mrx+1 | mrx>srx+1 | sry>mry+1 | mry>sry+1 
 
 [SYS_INIT]
 mrx = 0
