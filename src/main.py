@@ -24,14 +24,12 @@ def construct_game():
     print("Constructing game G \n")
     # run the main function to build all the stuff in there
     game = TwoPlayerGame.main()
-    # print(game.get_atomic_propositions())
-    # print(game.get_initial_state())
-    # print(game.get_players_data())
     return game
 
-def extract_permissive_str():
+def extract_permissive_str(slugsfile_path=None):
     print("Extracting (maxiamlly) permissive strategy \n")
-    slugsfile_path = "two_player_game/slugs_file/CoRL_1"
+    if slugsfile_path is None:
+        slugsfile_path = "two_player_game/slugs_file/CoRL_1"
     str = extractExplicitPermissiveStrategy.PermissiveStrategy(slugsfile_path, run_local=False)
     str.convert_to_slugsin()
     str.convert_slugsin_to_permissive_str()
@@ -279,6 +277,73 @@ def create_G_hat(strategy, game):
 
     # 6. Update W
     game_G_hat.set_W(phi=True)
+
+    return game_G_hat
+
+def updatestratetegy_w_state_pos_map(strategy, x_length, y_length):
+    # create a mapping from th state we get form the strategy and the state we have in our code
+
+    # create a tmp_state_tuple
+    for k, v in strategy.items():
+        xy_sys = v['state_xy_map'][0]
+        xy_env = v['state_xy_map'][1]
+        pos_sys = create_xy_pos_mapping(xy_sys[0], xy_sys[1], x_length, y_length)
+        pos_env = create_xy_pos_mapping(xy_env[0], xy_env[1], x_length, y_length)
+        # t = 1
+        t = v['player']
+        # print(f"{k} : {xy_sys}, {xy_env}0 : ({pos_env}, {pos_env}, {t})")
+
+        # update the state_pos mapping variable in sys_str
+        strategy[k]['state_pos_map'] = (pos_sys, pos_env, t)
+        if print_state_pos_map:
+            print(k, strategy[k]['state_pos_map'])
+
+
+def main():
+    # construct_game()
+    game = construct_game()
+    x_length = game.env.env_data["env_size"]["n"]
+    y_length = game.env.env_data["env_size"]["m"]
+    sys_str, env_str = extract_permissive_str()
+    a_c = game.get_controlled_actions()
+    updatestratetegy_w_state_pos_map(sys_str)
+    # # create a mapping from th state we get form the strategy and the state we have in our code
+    #
+    # # create a tmp_state_tuple
+    # for k, v in sys_str.items():
+    #     xy_sys = v['state_xy_map'][0]
+    #     xy_env = v['state_xy_map'][1]
+    #     pos_sys = create_xy_pos_mapping(xy_sys[0], xy_sys[1], x_length, y_length)
+    #     pos_env = create_xy_pos_mapping(xy_env[0], xy_env[1], x_length, y_length)
+    #     # t = 1
+    #     t = v['player']
+    #     # print(f"{k} : {xy_sys}, {xy_env}0 : ({pos_env}, {pos_env}, {t})")
+    #
+    #     # update the state_pos mapping variable in sys_str
+    #     sys_str[k]['state_pos_map'] = (pos_sys, pos_env, t)
+    #     if print_state_pos_map:
+    #         print(k, sys_str[k]['state_pos_map'])
+    #
+    #     # game.set_transition_function(game.S[pos_sys][pos_env][t], )
+
+    # do some preprocessing on the straetegy we get
+
+    sys_srt = pre_processing_of_str(sys_str, x_length, y_length)
+    if print_str_after_processing:
+        print("Strategy after removing all the invalid transitions")
+        for k, v in sys_str.items():
+            print(f"{k}: {v}")
+
+    # use these str to update the transition matrix
+    # update_transition_function(game, sys_str)
+
+    # update Game G to get G_hat
+    game_G_hat = create_G_hat(strategy=sys_str, game=game)
+
+    # print the updated transition matrix
+    if print_updated_transition_function:
+        print("The Updated transition matrix is: ")
+        game_G_hat.print_transition_matrix()
 
     return game_G_hat
 

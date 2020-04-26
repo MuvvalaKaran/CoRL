@@ -9,6 +9,7 @@ import matplotlib.image as mping
 import re
 import warnings
 import sys
+import math
 
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
@@ -72,10 +73,49 @@ class GridWorld:
         grid_map = np.zeros((self.height, self.width))
         grid_map[self.current_location[0], self.current_location[1]] = 1
         return grid_map
+    # write helper method to convert pos_to_xy map
+    def pos_to_xy_map(self, location):
+        """
+        A mthod to conver location of format (pos x pos x player) to (x1,y1) , (x2,y2)
+        :param location:
+        :type location:
+        :return: A tuple containing the system position and env position
+        :rtype: tuple
+        """
+        sys_pos = location[0]  # an integer value of a cell
+        env_pos = location[1]  # an integer value of a cell
+
+        # assuming that we are in a gridworld n = m and max(cell_value) = n**2 -1
+        # get original env width(n) and height(m)
+        org_n = int(math.sqrt(self.height))
+        # since its a square world
+        org_m = org_n
+        # convert pos to x,y
+        # finding a value of x and y that satifies pos = n*y + x
+        for x in range(org_n):
+            for y in range(org_m):
+                if org_n*y + x == sys_pos:
+                    sys_xy = (x, y)
+                if org_n*y + x == env_pos:
+                    env_xy = (x, y)
+
+        return (sys_xy, env_xy)
 
     def get_reward(self, new_location):
-        # reward is +1 is the both the robot are in diagonal poistion to each other else its zero
-        return self.grid[new_location[0], new_location[1]]
+        # reward is +1 is the both the robot are in diagonally opposite position to each other else its zero
+        # get the sys and env xy values
+        sys_xy, env_xy = self.pos_to_xy_map(new_location)
+        # system xy coordinates
+        x1 = sys_xy[0]
+        y1 = sys_xy[1]
+        # env xy coordinates
+        x2 = env_xy[0]
+        y2 = env_xy[1]
+        # two points X, Y are diagonally opposite if abs(x1 - x2) = abs(y1 - y2)
+        if abs(x1 - x2) == abs(y1 - y2):
+            return 1
+        else:
+            return 0
 
     def make_step(self, action):
         """Moves the agent in the specified direction. If agent is at a border, agent stays still
@@ -120,44 +160,6 @@ class GridWorld:
         reward = self.get_reward(self.current_location)
 
         return reward
-
-        # # UP
-        # if action == 'UP':
-        #     # If agent is at the top, stay still, collect reward
-        #     if last_location[0] == 0:
-        #         reward = self.get_reward(last_location)
-        #     else:
-        #         self.current_location = (self.current_location[0] - 1, self.current_location[1])
-        #         reward = self.get_reward(self.current_location)
-        #
-        # # DOWN
-        # elif action == 'DOWN':
-        #     # If agent is at bottom, stay still, collect reward
-        #     if last_location[0] == self.height - 1:
-        #         reward = self.get_reward(last_location)
-        #     else:
-        #         self.current_location = (self.current_location[0] + 1, self.current_location[1])
-        #         reward = self.get_reward(self.current_location)
-        #
-        # # LEFT
-        # elif action == 'LEFT':
-        #     # If agent is at the left, stay still, collect reward
-        #     if last_location[1] == 0:
-        #         reward = self.get_reward(last_location)
-        #     else:
-        #         self.current_location = (self.current_location[0], self.current_location[1] - 1)
-        #         reward = self.get_reward(self.current_location)
-        #
-        # # RIGHT
-        # elif action == 'RIGHT':
-        #     # If agent is at the right, stay still, collect reward
-        #     if last_location[1] == self.width - 1:
-        #         reward = self.get_reward(last_location)
-        #     else:
-        #         self.current_location = (self.current_location[0], self.current_location[1] + 1)
-        #         reward = self.get_reward(self.current_location)
-        #
-        # return reward
 
     def check_state(self):
         if self.current_location in self.terminal_states:
