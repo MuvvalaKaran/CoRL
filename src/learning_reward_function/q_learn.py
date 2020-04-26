@@ -6,25 +6,36 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.animation as anim
 import matplotlib.image as mping
+import re
+import warnings
+import sys
 
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
+
+from src import main
 
 # flag to plot while training
 plot_while_training = False
 # flaf to plot only after training
-plot_after_training = True
+plot_after_training = False
 # flag to add robot as patch
 use_robot_as_patch = True
 
 class GridWorld:
 
-    def __init__(self):
-        self.height = 5
-        self.width = 5
+    def __init__(self, height, width, sys_init, A_c=None, A_uc=None):
+        self.height = height
+        self.width = width
+        self.controlled_actions = A_c
+        self.uncontrolled_actions = A_uc
+        self.init_state = sys_init
         # -1 because thats the default reward in each state
         self.grid = np.zeros((self.height, self.width)) - 1
+        # randomly select an initial state
+        # sys_init is a list of valid initial states
+        self.initPosition = self._get_random_init_state()
 
-        self.current_location = (4, np.random.randint(0, 5))
+        self.current_location = self.initPosition
 
         # set location for bomb and the gold
         self.bomb_location = (1, 3)
@@ -36,18 +47,34 @@ class GridWorld:
         self.grid[self.gold_location[0], self.gold_location[1]] = 10
 
         # actions avaialble to the agent
-        self.actions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
+        # self.actions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
+    def _get_random_init_state(self):
+        rand_init_state = np.random.choice(self.init_state)
+        return (rand_init_state.x, rand_init_state.y)
 
-    def get_available_action(self):
-        return self.actions
+    def restart(self, height=None, width=None, sys_init=None, env_init=None):
+        if sys_init is not None:
+            self.initPosition = sys_init
+        else:
+            self.initPosition = self._get_random_init_state()
+
+        # if env_init is not None:
+        #     self.initPosition[1] = env_init
+
+    def get_available_sys_action(self):
+        return self.controlled_actions
+
+    def get_available_env_actions(self):
+        return self.uncontrolled_actions
 
     def agent_on_map(self):
-        grid = np.zeros((self.height, self.width))
-        grid[self.current_location[0], self.current_location[1]] = 1
-        return grid
+        grid_map = np.zeros((self.height, self.width))
+        grid_map[self.current_location[0], self.current_location[1]] = 1
+        return grid_map
 
     def get_reward(self, new_location):
+        # reward is +1 is the both the robot are in diagonal poistion to each other else its zero
         return self.grid[new_location[0], new_location[1]]
 
     def make_step(self, action):
@@ -56,43 +83,81 @@ class GridWorld:
         # Store previous location
         last_location = self.current_location
 
+        # A_c : [up_s, down_s, left_s, right_s, stay_s]
+        # A_uc: [up_e, down_e, left_e, right_e]
+        up_action = re.compile('^up')
+        down_action = re.compile('^down')
+        left_action = re.compile('^left')
+        right_action = re.compile('^right')
+        stay_action = re.compile('^stay')
+
         # UP
-        if action == 'UP':
-            # If agent is at the top, stay still, collect reward
-            if last_location[0] == 0:
-                reward = self.get_reward(last_location)
-            else:
-                self.current_location = (self.current_location[0] - 1, self.current_location[1])
-                reward = self.get_reward(self.current_location)
-
+        if up_action.match(action):
+            # agent is at the bottom of the cell
+            # self.current_location = (self.current_location[0], self.current_location[1] + 1)
+            self.current_location = (self.current_location[0] + 4, self.current_location[1])
         # DOWN
-        elif action == 'DOWN':
-            # If agent is at bottom, stay still, collect reward
-            if last_location[0] == self.height - 1:
-                reward = self.get_reward(last_location)
-            else:
-                self.current_location = (self.current_location[0] + 1, self.current_location[1])
-                reward = self.get_reward(self.current_location)
-
+        elif down_action.match(action):
+            # self.current_location = (self.current_location[0], self.current_location[1] - 1)
+            self.current_location = (self.current_location[0] - 4, self.current_location[1])
         # LEFT
-        elif action == 'LEFT':
-            # If agent is at the left, stay still, collect reward
-            if last_location[1] == 0:
-                reward = self.get_reward(last_location)
-            else:
-                self.current_location = (self.current_location[0], self.current_location[1] - 1)
-                reward = self.get_reward(self.current_location)
-
+        elif left_action.match(action):
+            self.current_location = (self.current_location[0] - 1, self.current_location[1])
+            # self.current_location = (self.current_location[0] - 1, self.current_location[1])
         # RIGHT
-        elif action == 'RIGHT':
-            # If agent is at the right, stay still, collect reward
-            if last_location[1] == self.width - 1:
-                reward = self.get_reward(last_location)
-            else:
-                self.current_location = (self.current_location[0], self.current_location[1] + 1)
-                reward = self.get_reward(self.current_location)
+        elif right_action.match(action):
+            self.current_location = (self.current_location[0] + 1, self.current_location[1])
+            # self.current_location = (self.current_location[0] + 1, self.current_location[1])
+        # STAY
+        elif stay_action.match(action):
+            self.current_location = (self.current_location[0], self.current_location[1])
+            # self.current_location = self.current_location
+        # Not a valid action
+        else:
+            warnings.warn("Encountered a invalid action. This should have never occured. Exiting progrem")
+            sys.exit(1)
+
+        reward = self.get_reward(self.current_location)
 
         return reward
+
+        # # UP
+        # if action == 'UP':
+        #     # If agent is at the top, stay still, collect reward
+        #     if last_location[0] == 0:
+        #         reward = self.get_reward(last_location)
+        #     else:
+        #         self.current_location = (self.current_location[0] - 1, self.current_location[1])
+        #         reward = self.get_reward(self.current_location)
+        #
+        # # DOWN
+        # elif action == 'DOWN':
+        #     # If agent is at bottom, stay still, collect reward
+        #     if last_location[0] == self.height - 1:
+        #         reward = self.get_reward(last_location)
+        #     else:
+        #         self.current_location = (self.current_location[0] + 1, self.current_location[1])
+        #         reward = self.get_reward(self.current_location)
+        #
+        # # LEFT
+        # elif action == 'LEFT':
+        #     # If agent is at the left, stay still, collect reward
+        #     if last_location[1] == 0:
+        #         reward = self.get_reward(last_location)
+        #     else:
+        #         self.current_location = (self.current_location[0], self.current_location[1] - 1)
+        #         reward = self.get_reward(self.current_location)
+        #
+        # # RIGHT
+        # elif action == 'RIGHT':
+        #     # If agent is at the right, stay still, collect reward
+        #     if last_location[1] == self.width - 1:
+        #         reward = self.get_reward(last_location)
+        #     else:
+        #         self.current_location = (self.current_location[0], self.current_location[1] + 1)
+        #         reward = self.get_reward(self.current_location)
+        #
+        # return reward
 
     def check_state(self):
         if self.current_location in self.terminal_states:
@@ -100,17 +165,27 @@ class GridWorld:
 
 class Q_Agent:
 
-    def __init__(self, env, epsilon=0.05, alpha=0.1, gamma=1):
+    def __init__(self, env, transition_dict ,epsilon=0.05, alpha=0.1, gamma=1):
         self.environment = env
         self.q_table = dict()
-
-        for x in range(env.height):
-            for y in range(env.width):
-                self.q_table[(x,y)] = {'UP': 0, 'DOWN': 0, 'LEFT': 0, 'RIGHT': 0}
+        self.transition_dict = transition_dict
+        # for x in range(env.height):
+        #     for y in range(env.width):
+        #         self.q_table[(x,y)] = {'UP': 0, 'DOWN': 0, 'LEFT': 0, 'RIGHT': 0}
 
         self.epsilon = epsilon
         self.alpha = alpha
         self.gamma = gamma
+
+        self._update_q_table()
+
+    def _update_q_table(self):
+        for x in range(env.width):
+            for y in range(env.height):
+                # only populating states that belong to system player
+
+                self.q_table[(x, y)] = {a: 0 for a, a_v in self.transition_dict[(x, y, 1)].items() if a_v is not None}
+
 
     def choose_action(self, available_actions):
         if np.random.uniform(0, 1) < self.epsilon:
@@ -153,7 +228,10 @@ def play(env, agent, trials=500, max_steps_per_episode=1000, learn=False):
         game_over = False
         while step < max_steps_per_episode and game_over is not True:
             old_state = env.current_location
-            action = agent.choose_action(env.actions)
+            # pass in only available actions at a give state
+            available_action = [k for k, v in agent.transition_dict[(old_state[0], old_state[1], 1)].items() if v is not None]
+            # for k, v, in agent.transition_dict[()]
+            action = agent.choose_action(available_action)
             reward = env.make_step(action)
             new_state = env.current_location
 
@@ -168,7 +246,8 @@ def play(env, agent, trials=500, max_steps_per_episode=1000, learn=False):
             step += 1
 
             if env.check_state() == 'TERMINAL':
-                env.__init__()
+                # hardcoding these values for now but need to add a reset method in the env class
+                env.restart()
                 game_over = True
 
         reward_per_episode.append(cumulative_reward)
@@ -182,11 +261,13 @@ def roll_out_policy(agent, env):
     final_reward = 0
     # plot the basic gridworld
     fig, ax = plot_gridworld_with_labels(env)
+    iter = 1
     if use_robot_as_patch:
         robot_patch = mping.imread("misc_files/robot_emoji_1.jpg")
 
     # find the best action at the currest state, execute it do this repeatedly
-    while 1:
+    while 1 and iter < 10:
+        iter += 1
         # select action a with max q value at S
         q_value_of_the_state = agent.q_table[curr_state]
         max_value = max(q_value_of_the_state.values())
@@ -201,7 +282,7 @@ def roll_out_policy(agent, env):
 
         final_reward += reward
 
-        if env.check_state() == 'TERMINAL':
+        if env.check_state() == 'TERMINAL' or iter == 10:
             print("Reached the final state")
             plt.close()
             fig, ax = plot_gridworld_with_labels(env)
@@ -283,9 +364,11 @@ def plot_arrow(ax, xy, action, color='blue'):
 
 
 def get_best_Action(curr_state, q_table):
+    action = None
     q_value_of_the_state = q_table[curr_state]
-    max_value = max(q_value_of_the_state.values())
-    action = np.random.choice([k for k, v in q_value_of_the_state.items() if v == max_value])
+    if len(q_value_of_the_state.keys()) != 0:
+        max_value = max(q_value_of_the_state.values())
+        action = np.random.choice([k for k, v in q_value_of_the_state.items() if v == max_value])
     return action
 
 
@@ -300,9 +383,10 @@ def plotQ(ax, gridworld, qs, plot_square):
             color_square(ax, xy, color="green")
             # find the optimal action and draw an arrow in that direction
             best_action = get_best_Action(curr_state=(x, y), q_table=qs)
-            plot_arrow(ax, xy, best_action)
-            plt.draw()
-            plt.pause(0.1)
+            if best_action:
+                plot_arrow(ax, xy, best_action)
+                plt.draw()
+                plt.pause(0.1)
 
     plt.show()
 
@@ -402,34 +486,25 @@ def plot_gridworld_with_labels(env, **kwargs):
 
 
 if __name__ == "__main__":
-    env = GridWorld()
-    agent = Q_Agent(env)
+
+    game = main.construct_game()
+    x_length = game.env.env_data["env_size"]["n"]
+    y_length = game.env.env_data["env_size"]["m"]
+    slugsfile_path = "../two_player_game/slugs_file/CoRL_1"
+    sys_str, _ = main.extract_permissive_str(slugsfile_path)
+    main.updatestratetegy_w_state_pos_map(sys_str, x_length, y_length)
+    main.pre_processing_of_str(sys_str, x_length, y_length)
+    width = game.env.pos_x.stop
+    height = game.env.pos_y.stop
+
+    G_hat = main.create_G_hat(strategy=sys_str, game=game)
+    env = GridWorld(height, width, G_hat.Init)
+    agent = Q_Agent(env, G_hat.T)
 
     reward_per_episode = play(env, agent, trials=500, learn=True)
     print("Done training \n")
     roll_out_policy(agent, env)
     # plot the final policy learned
-
-
-
-
     plt.plot(reward_per_episode)
-    # plot_gridworld_with_labels(env)
-
-    # fig, ax = grid_plot(env)
-    # # lets annotate the gridworld
-    # for x in range(env.width):
-    #     for y in range(env.height):
-    #         xy_coord = gridworld_to_xy(x, y)
-    #         plot_num(ax, xy_coord, np.array((1, 1)), f'{x,y}')
-    #
-    #         if (x,y) == env.bomb_location:
-    #             color_square(ax, xy_coord, (85/255, 120/255, 0/255))
-    #
-    #         if (x,y) == env.gold_location:
-    #             color_square(ax, xy_coord, (255/ 255, 191/ 255, 0 / 255))
-
-    # fig.show()
-
     plt.show()
 
