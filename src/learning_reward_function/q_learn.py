@@ -76,9 +76,9 @@ class GridWorld:
     # write helper method to convert pos_to_xy map
     def pos_to_xy_map(self, location):
         """
-        A mthod to conver location of format (pos x pos x player) to (x1,y1) , (x2,y2)
-        :param location:
-        :type location:
+        A method to convert location of format (pos x pos x player) to (x1,y1) , (x2,y2)
+        :param location: a tuple of type (pos x pos x player)
+        :type location: tuple
         :return: A tuple containing the system position and env position
         :rtype: tuple
         """
