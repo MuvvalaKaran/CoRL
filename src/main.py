@@ -378,6 +378,7 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
         sys_reward_per_episode.append(sys_cumulative_reward)
         env_reward_per_episode.append(env_cumulative_reward)
 
+    print(sys_player.V)
     return sys_reward_per_episode, env_reward_per_episode
 
 
