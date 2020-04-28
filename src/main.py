@@ -6,9 +6,12 @@
 import copy
 import warnings
 import numpy as np
+import matplotlib.pyplot as plt
+import pylab as pl
 
 from src.learning_reward_function.Players.minimaxq_player import MinimaxQPlayer as minimax_agent
 from src.learning_reward_function.Players.random_player import RandomPLayer as rand_agent
+from src.learning_reward_function.Players.qplayer import QPlayer as q_agent
 from src.learning_reward_function.MakovGame.diagonal_players import Gridworld
 from src.two_player_game import TwoPlayerGame
 from src.two_player_game import extractExplicitPermissiveStrategy
@@ -303,17 +306,20 @@ def testGame(sys_player, env_player, game, iterations, episode_len=1000):
             # get the initial state
             currentState = game.currentPosition
 
-            # get the actions for both the player
+            # get the action for the system player
             sys_action = sys_player.chooseAction(player=0, state=currentState)
-            # evolve on the game
+            # evolve on the game according to system's play
             game.play_one_player_at_a_time(0, sys_action)
-            env_action = env_player.chooseAction(player=1, state=currentState)
-            # evolve on the game
-            currentState = game.currentPosition # get the new updated position
-            game.play_one_player_at_a_time(1, env_action)
 
-            # move according to the action picked and get the reward
-            reward = game.play(sys_action, env_action)
+            # now env player chooses action from the new intermediate state
+            intermediateState = game.currentPosition
+            env_action = env_player.chooseAction(player=1, state=intermediateState)
+            # evolve on the game
+            # currentState = game.currentPosition  # get the new updated position
+            reward = game.play_one_player_at_a_time(1, env_action)
+
+            # move according to the actions picked and get the reward
+            # reward = game.play(sys_action, env_action)
 
             # update cummulatve reward value
             cumulative_reward += reward
@@ -327,6 +333,54 @@ def testGame(sys_player, env_player, game, iterations, episode_len=1000):
 
     return reward_per_episode
 
+def test_q_learn_alternating_markov_game(sys_player, env_player, game, iterations, episode_len=1000):
+    sys_reward_per_episode = []
+    env_reward_per_episode = []
+
+    for episode in range(iterations):
+        sys_cumulative_reward = 0
+        env_cumulative_reward = 0
+        # print after 10 % iteration being completed
+        if (episode % (iterations / 10) == 0):
+            print("%d%%" % (episode * 100 / iterations))
+        game.restart()
+        step = 0
+        while step < episode_len:
+            step += 1
+            # get the initial state
+            oldState = game.currentPosition
+
+            # get the system action
+            sys_action = sys_player.chooseAction(player=0, state=oldState)
+
+            # evolve according to the system action and get the reward
+            sys_reward = game.play_one_player_at_a_time(player=0, action=sys_action)
+
+            #  system learns
+            sys_player.learn(oldState, game.currentPosition, sys_action, sys_reward)
+
+            # update currentState in the gridworld
+            oldState = game.currentPosition
+
+            # get the env action
+            env_action = env_player.chooseAction(player=1, state=oldState)
+
+            # evolve according to the env action and get the reward
+            env_reward = game.play_one_player_at_a_time(player=1, action=env_action)
+
+            # env learns
+            env_player.learn(oldState, game.currentPosition, env_action, -1*env_reward)
+
+            # update the cumulative reward
+            sys_cumulative_reward += sys_reward
+            env_cumulative_reward += env_reward
+
+        sys_reward_per_episode.append(sys_cumulative_reward)
+        env_reward_per_episode.append(env_cumulative_reward)
+
+    return sys_reward_per_episode, env_reward_per_episode
+
+
 
 def compute_optimal_strategy_using_rl(game_G_hat, iterations=10**5):
     # define some initial values
@@ -338,16 +392,37 @@ def compute_optimal_strategy_using_rl(game_G_hat, iterations=10**5):
     rand_init_state = np.random.choice(game_G_hat.Init)
 
     # create agents
-    sys_agent = minimax_agent(game_G_hat.T, decay=decay)
-    env_agent = rand_agent(game_G_hat.T)
+    # sys_agent = minimax_agent(game_G_hat.T, decay=decay)
+    # env_agent = rand_agent(game_G_hat.T)
+    sys_agent = q_agent(game_G_hat.T, player=0, decay=decay)
+    env_agent = q_agent(game_G_hat.T, player=1, decay=decay)
 
     # create the gridworld
     game = Gridworld(height, width, rand_init_state.x, rand_init_state.y, game_G_hat.Init)
 
     # call a function that runs tests for you
-    reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
+    # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
+    reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent, game, iterations=4*10**5, episode_len=30)
 
     # display result
+    # finc max of sys and env reward for plotting purposes
+    # x1 = max(reward_per_episode[0])
+    # x2 = max(reward_per_episode[1])
+    #
+    # plt.plot(reward_per_episode[0])
+    # plt.plot(reward_per_episode[1])
+    # plt.show()
+    fig_title = "Rewards per episode for each player"
+    fig = pl.figure(num=fig_title)
+    ax = fig.add_subplot(111)
+
+    pl.hist(reward_per_episode[0], density=False, bins=30)
+    pl.hist(reward_per_episode[1], density=False, bins=30)
+    # ax.plot(reward_per_episode[0], label="sys reward")
+    # ax.plot(reward_per_episode[1], label="env reward")
+    # ax.legend()
+
+    plt.show()
 
     # plot policy of sys_player
 

@@ -74,6 +74,7 @@ class Gridworld:
     def play_one_player_at_a_time(self, player, action):
         self.move(player, action)
 
+        return self._get_reward(self.currentPosition)
 
     def play(self, sys_action, env_action):
         """
