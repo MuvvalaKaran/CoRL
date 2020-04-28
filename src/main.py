@@ -5,7 +5,11 @@
 # 4. Map the optimal str back to G
 import copy
 import warnings
+import numpy as np
 
+from src.learning_reward_function.Players.minimaxq_player import MinimaxQPlayer as minimax_agent
+from src.learning_reward_function.Players.random_player import RandomPLayer as rand_agent
+from src.learning_reward_function.MakovGame.diagonal_players import Gridworld
 from src.two_player_game import TwoPlayerGame
 from src.two_player_game import extractExplicitPermissiveStrategy
 
@@ -27,7 +31,7 @@ def construct_game():
     return game
 
 def extract_permissive_str(slugsfile_path=None):
-    print("Extracting (maxiamlly) permissive strategy \n")
+    print("Extracting (maximally) permissive strategy \n")
     if slugsfile_path is None:
         slugsfile_path = "two_player_game/slugs_file/CoRL_1"
     str = extractExplicitPermissiveStrategy.PermissiveStrategy(slugsfile_path, run_local=False)
@@ -162,6 +166,7 @@ def pre_processing_of_str(strategy, nx, ny):
     for s in invalid_states:
         del strategy[s]
 
+
 def _determine_action(game, curr_state, next_state):
     # extract all attributes of the current state
     curr_x = curr_state[0]
@@ -206,6 +211,7 @@ def _determine_action(game, curr_state, next_state):
         print("********************invalid transition**********************")
         return 0
 
+
 def update_transition_function(game, strategy):
     for k, v in strategy.items():
         # get the state number from the strategy corresponding to k (State n)
@@ -219,6 +225,7 @@ def update_transition_function(game, strategy):
             curr_G_state = game.S[curr_game_state[0]][curr_game_state[1]][int(curr_game_state[2])]
             next_G_state = game.S[next_game_state[0]][next_game_state[1]][int(next_game_state[2])]
             game.set_transition_function(curr_state=curr_G_state, action=action, next_state=next_G_state)
+
 
 def create_G_hat(strategy, game):
     # give a game G and strategy update the following:
@@ -280,6 +287,73 @@ def create_G_hat(strategy, game):
 
     return game_G_hat
 
+
+def testGame(sys_player, env_player, game, iterations, episode_len=1000):
+    reward_per_episode = []
+
+    for episode in range(iterations):
+        cumulative_reward = 0
+        # print after 10 % iteration being completed
+        if (episode % (iterations /10) == 0):
+            print("%d%%" % (episode * 100 / iterations))
+        game.restart()
+        step = 0
+        while step < episode_len:
+            step += 1
+            # get the initial state
+            currentState = game.currentPosition
+
+            # get the actions for both the player
+            sys_action = sys_player.chooseAction(player=0, state=currentState)
+            # evolve on the game
+            game.play_one_player_at_a_time(0, sys_action)
+            env_action = env_player.chooseAction(player=1, state=currentState)
+            # evolve on the game
+            currentState = game.currentPosition # get the new updated position
+            game.play_one_player_at_a_time(1, env_action)
+
+            # move according to the action picked and get the reward
+            reward = game.play(sys_action, env_action)
+
+            # update cummulatve reward value
+            cumulative_reward += reward
+
+            # get the next state
+            nextState = game.currentPosition
+
+            # update Q and V values
+            sys_player.learn(currentState, nextState, actions=[sys_action, env_action], reward=reward)
+            env_player.learn(currentState, nextState, actions=[sys_action, env_action], reward=-reward)
+
+    return reward_per_episode
+
+
+def compute_optimal_strategy_using_rl(game_G_hat, iterations=10**5):
+    # define some initial values
+    decay = 10**(-2. / iterations * 0.05)
+    height = game_G_hat.env.pos_x.stop
+    width = game_G_hat.env.pos_y.stop
+
+    # randomly choose an initial state
+    rand_init_state = np.random.choice(game_G_hat.Init)
+
+    # create agents
+    sys_agent = minimax_agent(game_G_hat.T, decay=decay)
+    env_agent = rand_agent(game_G_hat.T)
+
+    # create the gridworld
+    game = Gridworld(height, width, rand_init_state.x, rand_init_state.y, game_G_hat.Init)
+
+    # call a function that runs tests for you
+    reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
+
+    # display result
+
+    # plot policy of sys_player
+
+    # plot policy
+
+
 def updatestratetegy_w_state_pos_map(strategy, x_length, y_length):
     # create a mapping from th state we get form the strategy and the state we have in our code
 
@@ -307,27 +381,6 @@ def main():
     sys_str, env_str = extract_permissive_str()
     a_c = game.get_controlled_actions()
     updatestratetegy_w_state_pos_map(sys_str)
-    # # create a mapping from th state we get form the strategy and the state we have in our code
-    #
-    # # create a tmp_state_tuple
-    # for k, v in sys_str.items():
-    #     xy_sys = v['state_xy_map'][0]
-    #     xy_env = v['state_xy_map'][1]
-    #     pos_sys = create_xy_pos_mapping(xy_sys[0], xy_sys[1], x_length, y_length)
-    #     pos_env = create_xy_pos_mapping(xy_env[0], xy_env[1], x_length, y_length)
-    #     # t = 1
-    #     t = v['player']
-    #     # print(f"{k} : {xy_sys}, {xy_env}0 : ({pos_env}, {pos_env}, {t})")
-    #
-    #     # update the state_pos mapping variable in sys_str
-    #     sys_str[k]['state_pos_map'] = (pos_sys, pos_env, t)
-    #     if print_state_pos_map:
-    #         print(k, sys_str[k]['state_pos_map'])
-    #
-    #     # game.set_transition_function(game.S[pos_sys][pos_env][t], )
-
-    # do some preprocessing on the straetegy we get
-
     sys_srt = pre_processing_of_str(sys_str, x_length, y_length)
     if print_str_after_processing:
         print("Strategy after removing all the invalid transitions")
@@ -390,4 +443,5 @@ if __name__ == "__main__":
         print("The Updated transition matrix is: ")
         game_G_hat.print_transition_matrix()
 
+    compute_optimal_strategy_using_rl(game_G_hat)
 

@@ -1,4 +1,6 @@
 import numpy as np
+import pulp
+import sys
 
 class MinimaxQPlayer:
 
@@ -18,9 +20,10 @@ class MinimaxQPlayer:
         self.transition_dict = transition_dict
         self.learning = True
 
-        # initialize pi
+        # initialize pi, state Q table and state value function V
         self._initialize_pi()
         self._initialize_Q()
+        self._initialize_V()
 
     def _initialize_pi(self):
         """
@@ -33,7 +36,7 @@ class MinimaxQPlayer:
             self.pi[state] = {}
             numOfValidActions = 0
             valid_action_list = []
-            for action, child_state in state.items():
+            for action, child_state in actions.items():
                 if child_state is not None:
                     numOfValidActions += 1
                     valid_action_list.append(action)
@@ -67,7 +70,7 @@ class MinimaxQPlayer:
                 for valid_env_action in actions[1]:
                     self.Q[state][valid_sys_action].update({valid_env_action: 1})
 
-    def _initialixe_V(self):
+    def _initialize_V(self):
         """
         A function that maps a given state to its state-value function
         """
@@ -114,7 +117,7 @@ class MinimaxQPlayer:
             t = 1
         else:
             t = 0
-        for k, v in self.transition_dict(state[0], state[1], t):
+        for k, v in self.transition_dict[(state[0], state[1], t)].items():
             if v is not None:
                 available_actions.append(k)
         return available_actions
@@ -135,16 +138,18 @@ class MinimaxQPlayer:
             # randomly choose an action
             action = np.random.choice(available_actions)
         else:
-            action = self._get_best_action(state)
+            action = self._weighted_action_choice(state)
         return action
 
     def _weighted_action_choice(self, state):
         rand = np.random.rand()
-        cum_sum_prob = np.cumsum(self.pi[state].values())
+        cum_sum_prob = np.cumsum(list(self.pi[state].values()))
         action = 0
-        while rand > cum_sum_prob[0]:
+        while rand > cum_sum_prob[action]:
             action += 1
-        return action
+        # return the corresponding action string e,g "Up_s"
+        lst = list(self.pi[state].keys())
+        return lst[action]
 
     def learn(self, currentState, newState, actions, reward):
         if not self.learning:
@@ -153,11 +158,57 @@ class MinimaxQPlayer:
         sys_action, env_action = actions
         self.Q[currentState][sys_action][env_action] = (1 - self.alpha) * self.Q[currentState][sys_action][env_action] + \
                                                        self.alpha * (reward + self.gamma * self.V[newState])
-        self.V[currentState] = self.updatePolicy()
+        self.V[currentState] = self.updatePolicy(currentState)
         self.alpha *= self.decay
 
-    def updatePolicy(self):
-        raise NotImplementedError
+    def updatePolicy(self, state):
+        # compute pi and then update Value of the state
+        self.pi[state] = self._compute_pi(state=state)
+        # get env actions
+        EnvActions = self._get_valid_actions(player=1, state=state)
+        SysActions = self._get_valid_actions(player=0, state=state)
+        min_expected_value = sys.maxsize
+
+        for env_action in EnvActions:
+            expected_value = sum([self.pi[state][sys_action] * self.Q[state][sys_action][env_action] for sys_action in SysActions])
+
+            if expected_value < min_expected_value:
+                min_expected_value = expected_value
+
+        return min_expected_value
+
+    def _compute_pi(self, state):
+
+        # get available actions for system player
+        # numSysActions = len(self._get_valid_actions(player=0, state=state))
+        SysActions = self._get_valid_actions(player=0, state=state)
+        EnvActions = self._get_valid_actions(player=1, state=state)
+        numEnvActions = len(EnvActions)
+        numSysActions = len(SysActions)
+        pi = pulp.LpVariable.dict("pi", range(numSysActions), 0, 1)
+        max_min_value = pulp.LpVariable("max_min_value")
+        lp_prob = pulp.LpProblem("Maxmin Problem", pulp.LpMaximize)
+        lp_prob += (max_min_value, "objective")
+
+        lp_prob += (sum([pi[i] for i in range(numSysActions)]) == 1)
+
+        for env_action in EnvActions:
+            label = "{}".format(env_action)
+            values = pulp.lpSum([pi[idx] * self.Q[state][sys_action][env_action] for idx, sys_action in enumerate(SysActions)])
+            condition = max_min_value <= values
+            lp_prob += condition
+
+        lp_prob.solve()
+
+        # return the respective action and action probability value
+        action_dict = {}
+        for i in range(len(pi.keys())):
+            action_dict.update({SysActions[i] : pi[i].value()})
+
+        return action_dict
 
     def policyForState(self):
         raise NotImplementedError
+
+if __name__ == "__main__":
+    print("***********************main file to implement minimaxq player agent***********************")

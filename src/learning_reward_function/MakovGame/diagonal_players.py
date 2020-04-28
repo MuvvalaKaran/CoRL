@@ -71,6 +71,10 @@ class Gridworld:
         # TODO check if this initializes in the format (x, y, 1). The 'one' should be present in the tuple
         self.currentPosition = deepcopy(self.initPosition)
 
+    def play_one_player_at_a_time(self, player, action):
+        self.move(player, action)
+
+
     def play(self, sys_action, env_action):
         """
         A method to get the next state on the gridworld given an action for the  system and the env robot. This method
@@ -157,8 +161,8 @@ class Gridworld:
                     env_xy = (x, y)
 
         if isinstance(sys_xy, type(None)) or isinstance(env_xy, type(None)):
-            warnings.warn("Could not convert the pos value of system or env robot to its respective (x,y) values. "
-                          "Ideally this should have never occurred. The system pos value is", sys_pos, "and the env "
+            warnings.warn("Could not convert the pos value of system or env robot to its respective (x,y) values. " \
+                          "Ideally this should have never occurred. The system pos value is", sys_pos, "and the env " \
                           "pos values is", env_pos, ". Exiting code")
             sys.exit(-1)
         return sys_xy, env_xy
