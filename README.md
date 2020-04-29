@@ -37,4 +37,4 @@ This project is a work in progress and any kind of feedback is mostly welcome. C
 
 ## Reference 
 
-[1] Min Wen, Rüdiger Ehlers, and Ufuk Topcu. “Correct-by-synthesis reinforcement learning with  temporal logic constraints”. In: 2015 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS). IEEE. 2015, pp. 4983–4990.
+[1]: Min Wen, Rüdiger Ehlers, and Ufuk Topcu. “Correct-by-synthesis reinforcement learning with  temporal logic constraints”. In: 2015 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS). IEEE. 2015, pp. 4983–4990.

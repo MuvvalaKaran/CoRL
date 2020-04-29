@@ -33,7 +33,9 @@ class PermissiveStrategy:
         if run_local:
             self.local_file_path_to_slugs = "../../lib/slugs/"
         else:
+            # when running from main "../lib/slugs/"
             self.local_file_path_to_slugs = "../lib/slugs/"
+            # when running from the learning folder
         self.compiler_file_path = "tools/StructuredSlugsParser/compiler.py"
 
     @staticmethod
