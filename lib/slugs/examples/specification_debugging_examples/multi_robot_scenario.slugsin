@@ -26,10 +26,10 @@ $ 7 ^ 1 sry@0.0.4' & 1 sry@0.0.4' ^ sry@1' ? 1 & sry@1' ? 1 ^ sry@2' ? 3 & sry@2
 | $ 1 ! & ! ^ mrx@2 srx@2' & ! ^ mrx@1 srx@1' & ! ^ mrx@0.0.7 srx@0.0.7' 1 $ 1 ! & ! ^ mry@2 sry@2' & ! ^ mry@1 sry@1' & ! ^ mry@0.0.4 sry@0.0.4' 1
 
 ## no Collisions with the obstacles (part 1)
-# srx'!=4 | sry'<4
+| $ 1 ! & ! ^ srx@2' 1 & ! ^ srx@1' 0 & ! ^ srx@0.0.7' 0 1 $ 1 | & ! sry@2' 1 & | 1 ! sry@2' | & ! sry@1' 0 & | 0 ! sry@1' | & ! sry@0.0.4' 0 & | 0 ! sry@0.0.4' 0
 
 ## no Collisions with the obstacles (part 2)
-# srx'>3 | sry'!=1
+| $ 1 | srx@2' | & srx@1' ! 1 & | ! 1 srx@1' | & srx@0.0.7' ! 1 & | ! 1 srx@0.0.7' 0 $ 1 ! & ! sry@2' & ! sry@1' & ! ^ sry@0.0.4' 1 1
 
 
 ## Variable limits: 0<=sry'<=4
@@ -52,10 +52,10 @@ $ 7 ^ 1 mry@0.0.4' & 1 mry@0.0.4' ^ mry@1' ? 1 & mry@1' ? 1 ^ mry@2' ? 3 & mry@2
 | $ 1 ! & ! ^ mrx@2' srx@2' & ! ^ mrx@1' srx@1' & ! ^ mrx@0.0.7' srx@0.0.7' 1 $ 1 ! & ! ^ mry@2' sry@2' & ! ^ mry@1' sry@1' & ! ^ mry@0.0.4' sry@0.0.4' 1
 
 ## no Collisions with the obstacles (part 1)
-# mrx'!=4 | mry'<4
+| $ 1 ! & ! ^ mrx@2' 1 & ! ^ mrx@1' 0 & ! ^ mrx@0.0.7' 0 1 $ 1 | & ! mry@2' 1 & | 1 ! mry@2' | & ! mry@1' 0 & | 0 ! mry@1' | & ! mry@0.0.4' 0 & | 0 ! mry@0.0.4' 0
 
 ## no Collisions with the obstacles (part 2)
-# mrx'>3 | mry'!=1
+| $ 1 | mrx@2' | & mrx@1' ! 1 & | ! 1 mrx@1' | & mrx@0.0.7' ! 1 & | ! 1 mrx@0.0.7' 0 $ 1 ! & ! mry@2' & ! mry@1' & ! ^ mry@0.0.4' 1 1
 
 ## Variable limits: 0<=mry'<=4
 | ! mry@2' & ! mry@1' | ! mry@0.0.4' 0
@@ -67,12 +67,13 @@ $ 1 & ! ^ mry@2 1 & ! ^ mry@1 0 & ! ^ mry@0.0.4 0 1
 ## Variable limits: 0<=mry<=4
 | ! mry@2 & ! mry@1 | ! mry@0.0.4 0
 
-[SYS_LIVENESS]
-# mrx=0 & mry=4
-# mrx=7 & mry=4
-
-# [ENV_LIVENESS]
+[ENV_LIVENESS]
 # Add "| (srx<5 & sry=0)" in order to prevent the system from cornering the slave robot
-# srx'!=srx | sry'!=sry | srx>mrx+1 | mrx>srx+1 | sry>mry+1 | mry>sry+1
+| | | | | $ 1 ! & ! ^ srx@2' srx@2 & ! ^ srx@1' srx@1 & ! ^ srx@0.0.7' srx@0.0.7 1 $ 1 ! & ! ^ sry@2' sry@2 & ! ^ sry@1' sry@1 & ! ^ sry@0.0.4' sry@0.0.4 1 $ 7 ^ 1 mrx@0.0.7 & 1 mrx@0.0.7 ^ mrx@1 ? 1 & mrx@1 ? 1 ^ mrx@2 ? 3 & mrx@2 ? 3 & ! ? 5 | & srx@2 ! ? 4 & | ! ? 4 srx@2 | & srx@1 ! ? 2 & | ! ? 2 srx@1 | & srx@0.0.7 ! ? 0 & | ! ? 0 srx@0.0.7 0 $ 7 ^ 1 srx@0.0.7 & 1 srx@0.0.7 ^ srx@1 ? 1 & srx@1 ? 1 ^ srx@2 ? 3 & srx@2 ? 3 & ! ? 5 | & mrx@2 ! ? 4 & | ! ? 4 mrx@2 | & mrx@1 ! ? 2 & | ! ? 2 mrx@1 | & mrx@0.0.7 ! ? 0 & | ! ? 0 mrx@0.0.7 0 $ 7 ^ 1 mry@0.0.4 & 1 mry@0.0.4 ^ mry@1 ? 1 & mry@1 ? 1 ^ mry@2 ? 3 & mry@2 ? 3 & ! ? 5 | & sry@2 ! ? 4 & | ! ? 4 sry@2 | & sry@1 ! ? 2 & | ! ? 2 sry@1 | & sry@0.0.4 ! ? 0 & | ! ? 0 sry@0.0.4 0 $ 7 ^ 1 sry@0.0.4 & 1 sry@0.0.4 ^ sry@1 ? 1 & sry@1 ? 1 ^ sry@2 ? 3 & sry@2 ? 3 & ! ? 5 | & mry@2 ! ? 4 & | ! ? 4 mry@2 | & mry@1 ! ? 2 & | ! ? 2 mry@1 | & mry@0.0.4 ! ? 0 & | ! ? 0 mry@0.0.4 0
+
+
+[SYS_LIVENESS]
+& $ 1 & ! mrx@2 & ! mrx@1 & ! mrx@0.0.7 1 $ 1 & ! ^ mry@2 1 & ! ^ mry@1 0 & ! ^ mry@0.0.4 0 1
+& $ 1 & ! ^ mrx@2 1 & ! ^ mrx@1 1 & ! ^ mrx@0.0.7 1 1 $ 1 & ! ^ mry@2 1 & ! ^ mry@1 0 & ! ^ mry@0.0.4 0 1
 
 
