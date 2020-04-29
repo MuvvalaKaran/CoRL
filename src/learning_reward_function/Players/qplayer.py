@@ -146,6 +146,33 @@ class QPlayer:
         self.V[initialState] = self.Q[initialState][bestAction]
         self.alpha *= self.decay
 
+    def get_Q(self):
+        return self.Q
+
+    def get_V(self, convert=True):
+        if convert:
+            return self._convert_V_to_numpy()
+        else:
+            return self.V
+
+    def get_Pi(self):
+        return self.pi
+
+    # helper method to conver V to a numpy array
+    def _convert_V_to_numpy(self):
+        # numofStates
+        numOfState = len(self.V.keys())
+        new_V = np.ndarray(int(numOfState/2), dtype=float)
+
+        idx = 0
+        for (k, v), ik in zip(self.V.items(), range(numOfState)):
+            # store values for states that belong to player 1
+            if k[2] == 1:
+                new_V[idx] = v
+                idx += 1
+
+        return new_V
+
 
 if __name__ == "__main__":
     print("***********************main file to implement q learning player agent***********************")

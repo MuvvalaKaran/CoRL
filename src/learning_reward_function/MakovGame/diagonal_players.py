@@ -29,6 +29,12 @@ class Gridworld:
         self.initPosition = (sys_init, env_init, 1)
         self.currentPosition = self.initPosition
         self.initStates = init_state_list
+        self.org_n = int(math.sqrt(self.height))
+        self.org_m = self.org_n
+
+        # assert that both the original width and height of the gridworld should be integer values
+        assert type(self.org_n) == int, f"{self.org_n} should be of type int"
+        assert type(self.org_m) == int, f"{self.org_m} should be of type int"
 
     def restart(self, sys_robot=None, env_robot=None):
         """
@@ -120,13 +126,13 @@ class Gridworld:
         # A_c : [up_s, down_s, left_s, right_s, stay_s]
         # A_uc: [up_e, down_e, left_e, right_e]
         switch_case = {
-            "up_s": +4,
-            "down_s": -4,
+            "up_s": +self.org_n,
+            "down_s": -self.org_n,
             "left_s": -1,
             "right_s": +1,
             "stay_s": 0,
-            "up_e": +4,
-            "down_e": -4,
+            "up_e": +self.org_n,
+            "down_e": -self.org_n,
             "left_e": -1,
             "right_e": +1,
         }
@@ -149,22 +155,23 @@ class Gridworld:
         env_xy = None
         # assuming that we are in a gridworld n = m and max(cell_value) = n**2 -1
         # get original env width(n) and height(m)
-        org_n = int(math.sqrt(self.height))
-        # since its a square world
-        org_m = org_n
+        # self.org_n = int(math.sqrt(self.height))
+        # # since its a square world
+        # self.org_m = self.org_n
+
         # convert pos to x,y
         # finding a value of x and y that satifies pos = n*y + x
-        for x in range(org_n):
-            for y in range(org_m):
-                if org_n * y + x == sys_pos:
+        for x in range(self.org_n):
+            for y in range(self.org_m):
+                if self.org_n * y + x == sys_pos:
                     sys_xy = (x, y)
-                if org_n * y + x == env_pos:
+                if self.org_n * y + x == env_pos:
                     env_xy = (x, y)
 
         if isinstance(sys_xy, type(None)) or isinstance(env_xy, type(None)):
             warnings.warn("Could not convert the pos value of system or env robot to its respective (x,y) values. " \
-                          "Ideally this should have never occurred. The system pos value is", sys_pos, "and the env " \
-                          "pos values is", env_pos, ". Exiting code")
+                          "Ideally this should have never occurred. The system pos value is" + sys_pos + "and the env " \
+                          "pos values is" + env_pos + ". Exiting code")
             sys.exit(-1)
         return sys_xy, env_xy
 

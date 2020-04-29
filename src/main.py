@@ -8,6 +8,7 @@ import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 import pylab as pl
+import re
 
 from src.learning_reward_function.Players.minimaxq_player import MinimaxQPlayer as minimax_agent
 from src.learning_reward_function.Players.random_player import RandomPLayer as rand_agent
@@ -333,11 +334,31 @@ def testGame(sys_player, env_player, game, iterations, episode_len=1000):
 
     return reward_per_episode
 
-def test_q_learn_alternating_markov_game(sys_player, env_player, game, iterations, episode_len=1000):
+def test_q_learn_alternating_markov_game(sys_player, env_player, game, iterations, episode_len=1000, tol=1e-10):
+    # tolerance has to be this high to ensure that state values converge to the ideal value
     sys_reward_per_episode = []
     env_reward_per_episode = []
+    delta = []
+
+    # get the previous step V for system robot
+    old_sys_V = sys_player.get_V()
 
     for episode in range(iterations):
+        # increment episode number
+        episode += 1
+        # compute max V change after every 10**4 iterations
+        if episode % 10**4 == 0:
+
+            max_diff = max(abs(old_sys_V - new_sys_V))
+            delta.append(max_diff)
+
+            if max_diff < tol:
+                print(f"Breaking at iteration : {episode}. Thw current current delta V = {max_diff}")
+                break
+
+            # update the old value with the current value
+            old_sys_V = new_sys_V
+
         sys_cumulative_reward = 0
         env_cumulative_reward = 0
         # print after 10 % iteration being completed
@@ -345,8 +366,10 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
             print("%d%%" % (episode * 100 / iterations))
         game.restart()
         step = 0
+
         while step < episode_len:
             step += 1
+
             # get the initial state
             oldState = game.currentPosition
 
@@ -375,15 +398,16 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
             sys_cumulative_reward += sys_reward
             env_cumulative_reward += env_reward
 
+        # check if V for the system converged or now
+        new_sys_V = sys_player.get_V()
         sys_reward_per_episode.append(sys_cumulative_reward)
         env_reward_per_episode.append(env_cumulative_reward)
 
     print(sys_player.V)
-    return sys_reward_per_episode, env_reward_per_episode
+    return sys_reward_per_episode, env_reward_per_episode, delta
 
 
-
-def compute_optimal_strategy_using_rl(game_G_hat, iterations=10**5):
+def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10**5):
     # define some initial values
     decay = 10**(-2. / iterations * 0.05)
     height = game_G_hat.env.pos_x.stop
@@ -403,7 +427,10 @@ def compute_optimal_strategy_using_rl(game_G_hat, iterations=10**5):
 
     # call a function that runs tests for you
     # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
-    reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent, game, iterations=4*10**5, episode_len=30)
+    reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent,
+                                                              game=game,
+                                                              iterations=4*10**5,
+                                                              episode_len=30)
 
     # display result
     # finc max of sys and env reward for plotting purposes
@@ -415,19 +442,64 @@ def compute_optimal_strategy_using_rl(game_G_hat, iterations=10**5):
     # plt.show()
     fig_title = "Rewards per episode for each player"
     fig = pl.figure(num=fig_title)
-    ax = fig.add_subplot(111)
+    ax1 = fig.add_subplot(111)
 
-    pl.hist(reward_per_episode[0], density=False, bins=30)
-    pl.hist(reward_per_episode[1], density=False, bins=30)
-    # ax.plot(reward_per_episode[0], label="sys reward")
+    # pl.hist(reward_per_episode[0], density=False, bins=30)
+    # pl.hist(reward_per_episode[1], density=False, bins=30)
+    ax1.plot(reward_per_episode[2], label="max V change")
+    ax1.set_yscale('log')
     # ax.plot(reward_per_episode[1], label="env reward")
-    # ax.legend()
+    ax1.legend()
+
+    # compute desired state values
+    desired_values = get_desired_v_value(k=game_G_hat.env.env_data["env_size"]["n"] - 1)
+    # plot policy of sys_player
+    fig = pl.figure(num="State Value")
+    ax2 = fig.add_subplot(111)
+    plot_state_value(sys_str, sys_agent.V, desired_values, ax2)
 
     plt.show()
-
-    # plot policy of sys_player
-
     # plot policy
+
+def get_desired_v_value(k):
+    """
+    The Reward function used in the paper is a sum of discounted reward of the sum(k, gamma.k * reward) which
+    converges to the formula gamma**k/ (1 - gamme) where k = N - 1.
+    :param k:
+    :type k: int
+    :return: a list of the desired state values that the system agent should converge to
+    :rtype: list
+    """
+
+    def reward_func(k, gamma=0.9):
+        return gamma ** k / (1 - gamma)
+
+    k_vals = [i for i in range(k+1)]
+    desired_values = list(map(reward_func, k_vals))
+
+    return desired_values
+
+# helper method to plot the scatter plot of state and its state value
+def plot_state_value(sys_str, V, desired_V, ax):
+
+    state_num_list = []
+    value_list = []
+    # process the state value for system player only
+    for state, state_value in V.items():
+        # get the respective state number for a  pos value state (Pos x Pos x t)
+
+        # find the matching State
+        for k, v in sys_str.items():
+            # add only those that belong to the system player
+            if state[2] == 1 and v['state_pos_map'] == (state[0], state[1], str(state[2])):
+                num = re.findall(r'\d+', k)
+                state_num_list.append(num)
+                value_list.append(state_value)
+
+    x =[i for i in range(len(value_list))]
+    ax.scatter(x, value_list, marker='*', c="blue")
+    ax.grid(True, axis='y')
+    plt.yticks(desired_V)
 
 
 def updatestratetegy_w_state_pos_map(strategy, x_length, y_length):
@@ -519,5 +591,5 @@ if __name__ == "__main__":
         print("The Updated transition matrix is: ")
         game_G_hat.print_transition_matrix()
 
-    compute_optimal_strategy_using_rl(game_G_hat)
+    compute_optimal_strategy_using_rl(sys_str, game_G_hat)
 
