@@ -31,6 +31,9 @@ This project can be decoupled into two major sub-problems :
 - Compute a set of permissive (winning) strategies that are realizable for a given game
 - Choose a strategy that maximizes the underlying unknow reward function using maximin-Q learning algorithm.
 
+## RESULTS
+![](src/figures_and_gifs/N_4.gif)
+
 ## Conclusion
 
 This project is a work in progress and any kind of feedback is mostly welcome. Contact me at :karan.muvvala@colorado.edu

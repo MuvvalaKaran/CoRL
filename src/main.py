@@ -13,6 +13,9 @@ import sys
 import matplotlib.patches as patches
 import matplotlib.image as mping
 import pickle
+import os
+import imageio
+
 
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
@@ -105,6 +108,25 @@ class plotterClass():
         # set the gridlines at the minor xticks positions
         self.ax.yaxis.grid(True, which='minor')
         self.ax.xaxis.grid(True, which='minor')
+
+    @deprecated
+    def _fig2data(self):
+        """
+        @brief Convert a Matplotlib figure to a 4D numpy array with RGBA channels and return it
+        @param fig a matplotlib figure
+        @return a numpy 3D array of RGBA values
+        """
+        # draw the renderer
+        self.fig.canvas.draw()
+
+        # Get the RGBA buffer from the figure
+        w, h = self.fig.canvas.get_width_height()
+        buf = np.fromstring(self.fig.canvas.tostring_argb(), dtype=np.uint8)
+        buf.shape = (w, h, 4)
+
+        # canvas.tostring_argb give pixmap in ARGB mode. Roll the ALPHA channel to have it in RGBA mode
+        buf = np.roll(buf, 3, axis=2)
+        return buf
 
 
     def plot_grid_num(self,xy, value, offset=None, **kwargs):
@@ -235,20 +257,6 @@ class plotterClass():
         n = int(env.env.env_data["env_size"]["n"])
         m = int(env.env.env_data["env_size"]["m"])
 
-        # A_c : [up_s, down_s, left_s, right_s, stay_s]
-        # A_uc: [up_e, down_e, left_e, right_e]
-        # switch_case = {
-        #     "up_s": +n,
-        #     "down_s": -n,
-        #     "left_s": -1,
-        #     "right_s": +1,
-        #     "stay_s": 0,
-        #     "up_e": +n,
-        #     "down_e": -n,
-        #     "left_e": -1,
-        #     "right_e": +1,
-        # }
-
         # plot the basic gridworld first
         self.gridworld(env, plot_title)
         # A function to visualize the learned for the both the robot
@@ -269,8 +277,12 @@ class plotterClass():
         # plot this position on the gridworld
         self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_sys_xy)))
         self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
-
+        plt.savefig(f"frames/grid_{time_step}.png", dpi=200)
+        self.ax.clear()
+        self.gridworld(env, plot_title)
         while time_step < ep_len:
+            # save the figure at each time step and then use that to make a gif.
+
             # increment the counter by 1
             time_step += 1
 
@@ -298,19 +310,33 @@ class plotterClass():
             _, curr_env_xy = self._convert_pos_to_xy(game.currentPosition, n, m)
 
             # plot the action take by the env robot
-            self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)) , color='blue')
+            self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
 
             plt.draw()
             plt.pause(0.5)
-
+            plt.savefig(f"frames/grid_{time_step}.png", dpi=200)
             # clear the give screen
             self.ax.clear()
 
             # plot a fresh figure after each player has played his turn
             self.gridworld(env, plot_title)
 
-        plt.close(self.fig)
 
+        plt.close(self.fig)
+        # plt.show()
+        self.make_gif('./frames/', f'./figures_and_gifs/N_{n}.gif')
+
+    def make_gif(self, input_folder, save_filepath):
+        episode_frames = []
+        time_per_step = 0.5
+        for root, _, files in os.walk(input_folder):
+            file_paths = [os.path.join(root, file) for file in files]
+            # sorted by modified time
+            file_paths = sorted(file_paths, key=lambda x: os.path.getmtime(x))
+            episode_frames = [imageio.imread(file_path)
+                              for file_path in file_paths if file_path.endswith('.png')]
+        episode_frames = np.array(episode_frames)
+        imageio.mimsave(save_filepath, episode_frames, duration=time_per_step)
 
 class dump_and_load:
 
@@ -797,7 +823,7 @@ def play_game(env, init_state_list, sys_player, env_player, game):
     # create plotter object
     final_plot = plotterClass(fig_title="Learned policy visualization")
     final_plot.roll_out_final_policy(env, init_state_list, sys_player, env_player,
-                              game, ep_len=50)
+                              game, ep_len=10)
     plt.show()
 
 
@@ -931,5 +957,5 @@ if __name__ == "__main__":
         print("The Updated transition matrix is: ")
         game_G_hat.print_transition_matrix()
 
-    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=False)
+    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=True)
 

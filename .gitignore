@@ -11,8 +11,11 @@ src/two_player_game/slugs_file/CoRL_3.slugsin
 src/two_player_game/slugs_file/CoRL_3.structuredslugs
 src/two_player_game/slugs_file/CoRL_3.txt
 
-# ignorea all cache files
+# ignore all cache files
 **__pycache__
 src/two_player_game/__pycache__/
 
 *.pyc
+
+# ignore the frame folder
+src/frames
