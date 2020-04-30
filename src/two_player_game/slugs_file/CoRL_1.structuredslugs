@@ -1,19 +1,19 @@
 # Variable controlled by the env robot
 [INPUT]
-x1:0...3
-y1:0...3
+x1:0...9
+y1:0...9
 t:0...1
 
 # Variable controlled by the system robot
 [OUTPUT]
-x2:0...3
-y2:0...3
+x2:0...9
+y2:0...9
 
 [SYS_TRANS]
-x2+1>=x2'
-x2'+1>=x2
-y2+1>=y2'
-y2'+1>=y2
+x2 < 9 -> x2+1>=x2'
+x2 > 0 -> x2'+1>=x2
+y2 < 9 -> y2+1>=y2'
+y2 > 0 -> y2'+1>=y2
 x2!=x2' -> y2=y2'
 
 # system robot should not enforce collision with the env robot
@@ -22,10 +22,10 @@ x1!=x2 | y1!=y2
 
 # the env cannot stay in its cell as it need to keep on moving 
 [ENV_TRANS]
-x1+1>=x1'
-x1'+1>=x1
-y1+1>=y1'
-y1'+1>=y1
+x1 < 9 -> x1+1>=x1'
+x1 > 0 -> x1'+1>=x1
+y1 < 9 -> y1+1>=y1'
+y1 > 0 -> y1'+1>=y1
 x1!=x1' -> y1=y1'
 
 # *********************There are no liveness assumptions****************************
@@ -37,8 +37,6 @@ y2 = 0
 
 #lets assumes env robot starts at the top right cell
 [ENV_INIT]
-x1 = 3
-y1 = 3
-
-
+x1 = 9
+y1 = 9
 

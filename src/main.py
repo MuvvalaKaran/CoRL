@@ -9,6 +9,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pylab as pl
 import re
+import sys
+import matplotlib.patches as patches
+import matplotlib.image as mping
+
+from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
 from src.learning_reward_function.Players.minimaxq_player import MinimaxQPlayer as minimax_agent
 from src.learning_reward_function.Players.random_player import RandomPLayer as rand_agent
@@ -27,6 +32,284 @@ print_str_after_processing = True
 print_state_pos_map = True
 # flag to print the update transition matrix
 print_updated_transition_function = False
+
+def deprecated(func):
+    """This is a decorator which can be used to mark functions
+    as deprecated. It will result in a warning being emmitted
+    when the function is used."""
+    def newFunc(*args, **kwargs):
+        warnings.warn("Call to deprecated function %s." % func.__name__,
+                      category=DeprecationWarning)
+        return func(*args, **kwargs)
+    newFunc.__name__ = func.__name__
+    newFunc.__doc__ = func.__doc__
+    newFunc.__dict__.update(func.__dict__)
+    return newFunc
+
+
+class plotterClass():
+
+    def __init__(self, fig_title, robo_file_path=None):
+        self.fig = None
+        self.ax = None
+        self.fig_title = fig_title
+
+        # initialize a figure an axes handle
+        self._create_ax_fig()
+        if robo_file_path is not None:
+            self.robot_patch = mping.imread(robo_file_path)
+
+    def _create_ax_fig(self):
+        self.fig = pl.figure(num=self.fig_title)
+        self.ax = self.fig.add_subplot(111)
+
+    def plot_gridworld_with_label(self):
+        raise NotImplementedError
+
+    def plot_policy(self):
+        raise NotImplementedError
+
+    def gridworld(self, env, print_grid_num=False, *args):
+        # the env here the original env of size (N x M)
+        # fig_title = args[0]
+
+        cmax = env.env.env_data["env_size"]["n"]
+        rmax = env.env.env_data["env_size"]["m"]
+
+        # flag to print the grid numbers
+        if print_grid_num:
+            # we need to offset both the x and y to print in the center of the grid
+            for x in range(cmax):
+                for y in range(rmax):
+                    off_x, off_y = x + 0.5, y + 0.5
+                    self.plot_grid_num((off_x, off_y), value=f"{x, y}")
+
+        # the location of the x_ticks is the middle of the grid
+        def offset_ticks(x, offset=0.5):
+            return x + offset
+        # ticks = locations of the ticks and labels = label of the ticks
+        self.ax.set_xticks(ticks=list(map(offset_ticks, range(cmax))), minor=False)
+        self.ax.set_xticklabels(labels=range(cmax))
+        self.ax.set_yticks(ticks=list(map(offset_ticks, range(rmax))), minor=False)
+        self.ax.set_yticklabels(labels=range(rmax))
+
+        # add points for gridline plotting
+        self.ax.set_xticks(ticks=range(cmax), minor=True)
+        self.ax.set_yticks(ticks=range(rmax), minor=True)
+
+        # set x and y limits to adjust the view
+        self.ax.set_xlim(left=0, right=cmax)
+        self.ax.set_ylim(bottom=0, top=rmax)
+
+        # set the gridlines at the minor xticks positions
+        self.ax.yaxis.grid(True, which='minor')
+        self.ax.xaxis.grid(True, which='minor')
+
+
+    def plot_grid_num(self,xy, value, offset=None, **kwargs):
+        x, y, = xy
+
+        self.ax.annotate(value, xy=(x, y), xycoords='data',
+                    horizontalalignment='center',
+                    verticalalignment='center',
+                    **kwargs)
+
+    def _add_patch(self, shape, xy, color='green', robo_image=None):
+        x, y = xy
+        shape_case = {
+            'circle': 1,
+            'rect': 2,
+            'arrow': 3,
+            'robot': 4
+        }
+
+        if shape_case[shape] == 1:
+            self.ax.add_patch(patches.Circle(
+                (x, y),
+                radius=0.2,
+                color=color,
+                alpha=1  # transparency value
+            ))
+        elif shape_case[shape] == 2:
+            self.ax.add_patch(patches.Rectangle(
+                (x, y),
+                0.1,
+                0.1,
+                facecolor=color,
+                edgecolor='black',
+                alpha=0.5 # transparency value
+            ))
+        elif shape_case[shape] == 3:
+            pass
+        elif shape_case[shape] == 4:
+            imageBox = OffsetImage(robo_image, zoom=0.1)
+            ab = AnnotationBbox(imageBox, xy, frameon=False)
+            self.ax.add_artist(ab)
+        else:
+            return warnings.warn("Not a valid shape. Need to add that patch to the _add_patch function")
+
+    def _convert_pos_to_xy(self, location, n, m):
+        """
+        A method to convert location of format (pos x pos x player) to (x1,y1) , (x2,y2)
+        :param location: a tuple of type (pos x pos x player)
+        :type location: tuple
+        :return: A tuple containing the system position and env position
+        :rtype: tuple
+        """
+        sys_pos = location[0]  # an integer value of a cell
+        env_pos = location[1]  # an integer value of a cell
+
+        # initialize sys_xy and env_xy
+        sys_xy = None
+        env_xy = None
+        # assuming that we are in a gridworld n = m and max(cell_value) = n**2 -1
+        # get original env width(n) and height(m)
+        # self.org_n = int(math.sqrt(self.height))
+        # # since its a square world
+        # self.org_m = self.org_n
+
+        # convert pos to x,y
+        # finding a value of x and y that satifies pos = n*y + x
+        for x in range(n):
+            for y in range(m):
+                if n * y + x == sys_pos:
+                    sys_xy = (x, y)
+                if n * y + x == env_pos:
+                    env_xy = (x, y)
+
+        if isinstance(sys_xy, type(None)) or isinstance(env_xy, type(None)):
+            warnings.warn("Could not convert the pos value of system or env robot to its respective (x,y) values. " \
+                          "Ideally this should have never occurred. The system pos value is" + sys_pos + "and the env " \
+                          "pos values is" + env_pos + ". Exiting code")
+            sys.exit(-1)
+
+        return sys_xy, env_xy
+
+    def roll_out_final_policy(self, env, init_state_list, sys_player, env_player,
+                              game,
+                              plot_title="Final Policy Evaluation",
+                              print_grid_num=False,
+                              sys_init=None,
+                              env_init=None,
+                              ep_len=30):
+        """
+        A method to visualize the learned policy.
+        :param env: Is the original env in the twoplayergame folder
+        :type env: @ gridWorld
+        :param init_state:
+        :type init_state: list
+        :param sys_player:
+        :type sys_player: @q_agent
+        :param env_player:
+        :type env_player: @q_agent
+        :param game:
+        :type game: @gridworld
+        :param plot_title:
+        :type plot_title: basestring
+        :param print_grid_num:
+        :type print_grid_num: bool
+        :param sys_init:
+        :type sys_init: int
+        :param env_init:
+        :type env_init: int
+        """
+        # init_state is set og valid initial states of the Game
+        # initialize the sys_player and the env_
+        # [init_sys_Pos_value, init_env_Pos_value, 1]
+        init_state = []
+        rand_init_state = np.random.choice(init_state_list)
+
+        if sys_init is None:
+            init_state.insert(0, rand_init_state.x)
+        else:
+            init_state.insert(0, sys_init)
+        if env_init is None:
+            init_state.insert(1, rand_init_state.y)
+        else:
+            init_state.insert(1, env_init)
+
+        # you always start in the state that belongs to system the player
+        init_state.insert(2, 1)
+
+        n = int(env.env.env_data["env_size"]["n"])
+        m = int(env.env.env_data["env_size"]["m"])
+
+        # A_c : [up_s, down_s, left_s, right_s, stay_s]
+        # A_uc: [up_e, down_e, left_e, right_e]
+        # switch_case = {
+        #     "up_s": +n,
+        #     "down_s": -n,
+        #     "left_s": -1,
+        #     "right_s": +1,
+        #     "stay_s": 0,
+        #     "up_e": +n,
+        #     "down_e": -n,
+        #     "left_e": -1,
+        #     "right_e": +1,
+        # }
+
+        # plot the basic gridworld first
+        self.gridworld(env, plot_title)
+        # A function to visualize the learned for the both the robot
+        # for x in range(n):
+        #     for y in range(m):
+        time_step = 0
+        # current state is of the form (Pos x Pos x 1)
+        currentState = init_state
+        game.restart(sys_robot=currentState[0], env_robot=currentState[1])
+
+        # write a helper code to convert Pos value to (x, y) coordinates
+        curr_sys_xy, curr_env_xy = self._convert_pos_to_xy(game.currentPosition, n, m)
+
+        # need to offset the location of plotting the patch to match the cell it is in
+        def offset_ticks(x, offset=0.5):
+            return x + offset
+
+        # plot this position on the gridworld
+        self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_sys_xy)))
+        self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
+
+        while time_step < ep_len:
+            # increment the counter by 1
+            time_step += 1
+
+            # get the best action for the current state and transit accordingly
+            best_sys_action = sys_player.chooseAction(player=0, state=game.currentPosition)
+
+            # evolve according to the system action
+            game.play_one_player_at_a_time(0, best_sys_action)
+            # newState = currentState[0] + switch_case[best_sys_action]
+            # currentState = newState
+
+            # convert the  newState into (x, y) format
+            curr_sys_xy, _ = self._convert_pos_to_xy(game.currentPosition, n, m)
+
+            # plot the action taken
+            self._add_patch(shape='circle', xy=tuple(map(offset_ticks,curr_sys_xy)))
+
+            # get env's response
+            best_evn_action = env_player.chooseAction(player=1, state=game.currentPosition)
+
+            # evolve according to the env action
+            # newState = currentState[1] + switch_case[best_evn_action]
+            game.play_one_player_at_a_time(1, best_evn_action)
+            # convert the new state into (x, y) format
+            _, curr_env_xy = self._convert_pos_to_xy(game.currentPosition, n, m)
+
+            # plot the action take by the env robot
+            self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)) , color='blue')
+
+            plt.draw()
+            plt.pause(0.5)
+
+            # clear the give screen
+            self.ax.clear()
+
+            # plot a fresh figure after each player has played his turn
+            self.gridworld(env, plot_title)
+
+        plt.close(self.fig)
+
 
 def construct_game():
     print("Constructing game G \n")
@@ -165,10 +448,10 @@ def pre_processing_of_str(strategy, nx, ny):
             # if not (y + 1 == target_y or y - 1 == target_y or y + nx == target_y or y - nx == target_y):
             #     v['child_nodes'].remove(node)
             #     continue
-            print(f"Total states pruned as they lied outside the gridworld are {len(invalid_states)}.\n "
-                  f"The current number of valid states for both players in strategy after pruning is {len(strategy) - len(invalid_states)} \n")
-            for s in invalid_states:
-                del strategy[s]
+    print(f"Total states pruned as they lied outside the gridworld are {len(invalid_states)}.\n "
+          f"The current number of valid states for both players in strategy after pruning is {len(strategy) - len(invalid_states)} \n")
+    for s in invalid_states:
+        del strategy[s]
 
 
 def _determine_action(game, curr_state, next_state):
@@ -291,7 +574,7 @@ def create_G_hat(strategy, game):
 
     return game_G_hat
 
-
+@deprecated
 def testGame(sys_player, env_player, game, iterations, episode_len=1000):
     reward_per_episode = []
 
@@ -419,17 +702,17 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10**5):
     # create agents
     # sys_agent = minimax_agent(game_G_hat.T, decay=decay)
     # env_agent = rand_agent(game_G_hat.T)
-    sys_agent = q_agent(game_G_hat.T, player=0, decay=decay)
+    sys_agent = q_agent(game_G_hat.T, player=0, decay=decay, epsilon=0.1)
     env_agent = q_agent(game_G_hat.T, player=1, decay=decay)
 
     # create the gridworld
-    game = Gridworld(height, width, rand_init_state.x, rand_init_state.y, game_G_hat.Init)
+    rl_game = Gridworld(height, width, rand_init_state.x, rand_init_state.y, game_G_hat.Init)
 
     # call a function that runs tests for you
     # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
     reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent,
-                                                              game=game,
-                                                              iterations=4*10**5,
+                                                              game=rl_game,
+                                                              iterations=4*10**3,
                                                               episode_len=30)
 
     # display result
@@ -458,8 +741,22 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10**5):
     ax2 = fig.add_subplot(111)
     plot_state_value(sys_str, sys_agent.V, desired_values, ax2)
 
-    plt.show()
+    # plt.show()
     # plot policy
+
+    # lets do some fancy visualization stuff here
+    print("Plotting the policy learnt")
+    play_game(env=game_G_hat, init_state_list=game_G_hat.Init, sys_player=sys_agent, env_player=env_agent, game=rl_game)
+    print("Done animating")
+
+def play_game(env, init_state_list, sys_player, env_player, game):
+
+    # create plotter object
+    final_plot = plotterClass(fig_title="Learned policy visualization")
+    final_plot.roll_out_final_policy(env, init_state_list, sys_player, env_player,
+                              game, ep_len=50)
+    plt.show()
+
 
 def get_desired_v_value(k):
     """
