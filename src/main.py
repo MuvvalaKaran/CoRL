@@ -12,6 +12,7 @@ import re
 import sys
 import matplotlib.patches as patches
 import matplotlib.image as mping
+import pickle
 
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
@@ -309,6 +310,27 @@ class plotterClass():
             self.gridworld(env, plot_title)
 
         plt.close(self.fig)
+
+
+class dump_and_load:
+
+    def __init__(self, file_name, path):
+        self.file_name = file_name
+        self.path = path
+        self._complete_path = path + file_name
+
+    def dump_file(self, object):
+        outfile = open(self._complete_path, 'w+b')
+        pickle.dump(object, outfile)
+        outfile.close()
+
+    def load_file(self):
+        infile = open(self._complete_path, 'rb')
+        unpickled_obj = pickle.load(infile)
+        infile.close()
+
+        return unpickled_obj
+
 
 
 def construct_game():
@@ -690,63 +712,84 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
     return sys_reward_per_episode, env_reward_per_episode, delta
 
 
-def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10**5):
-    # define some initial values
-    decay = 10**(-2. / iterations * 0.05)
-    height = game_G_hat.env.pos_x.stop
-    width = game_G_hat.env.pos_y.stop
+def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10**5, saved_flag=True):
+    # if the saved_flag is True then directly load binary filed from the 'saved_players' directory and use that to plot
+    # policy
 
-    # randomly choose an initial state
-    rand_init_state = np.random.choice(game_G_hat.Init)
+    # create instances to dump and load file
+    system_robot_dump = dump_and_load(file_name='sys_agent', path='saved_players/')
+    env_robot_dump = dump_and_load(file_name='env_agent', path='saved_players/')
+    rl_env_dump = dump_and_load(file_name='rl_gridworld', path='saved_players/')
 
-    # create agents
-    # sys_agent = minimax_agent(game_G_hat.T, decay=decay)
-    # env_agent = rand_agent(game_G_hat.T)
-    sys_agent = q_agent(game_G_hat.T, player=0, decay=decay, epsilon=0.1)
-    env_agent = q_agent(game_G_hat.T, player=1, decay=decay)
+    if not saved_flag:
+        # define some initial values
+        decay = 10**(-2. / iterations * 0.05)
+        height = game_G_hat.env.pos_x.stop
+        width = game_G_hat.env.pos_y.stop
 
-    # create the gridworld
-    rl_game = Gridworld(height, width, rand_init_state.x, rand_init_state.y, game_G_hat.Init)
+        # randomly choose an initial state
+        rand_init_state = np.random.choice(game_G_hat.Init)
 
-    # call a function that runs tests for you
-    # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
-    reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent,
-                                                              game=rl_game,
-                                                              iterations=4*10**3,
-                                                              episode_len=30)
+        # create agents
+        # sys_agent = minimax_agent(game_G_hat.T, decay=decay)
+        # env_agent = rand_agent(game_G_hat.T)
+        sys_agent = q_agent(game_G_hat.T, player=0, decay=decay, epsilon=0.1)
+        env_agent = q_agent(game_G_hat.T, player=1, decay=decay)
 
-    # display result
-    # finc max of sys and env reward for plotting purposes
-    # x1 = max(reward_per_episode[0])
-    # x2 = max(reward_per_episode[1])
-    #
-    # plt.plot(reward_per_episode[0])
-    # plt.plot(reward_per_episode[1])
-    # plt.show()
-    fig_title = "Rewards per episode for each player"
-    fig = pl.figure(num=fig_title)
-    ax1 = fig.add_subplot(111)
+        # create the gridworld
+        rl_game = Gridworld(height, width, rand_init_state.x, rand_init_state.y, game_G_hat.Init)
 
-    # pl.hist(reward_per_episode[0], density=False, bins=30)
-    # pl.hist(reward_per_episode[1], density=False, bins=30)
-    ax1.plot(reward_per_episode[2], label="max V change")
-    ax1.set_yscale('log')
-    # ax.plot(reward_per_episode[1], label="env reward")
-    ax1.legend()
+        # call a function that runs tests for you
+        # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
+        reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent,
+                                                                  game=rl_game,
+                                                                  iterations=4*10**3,
+                                                                  episode_len=30)
 
-    # compute desired state values
-    desired_values = get_desired_v_value(k=game_G_hat.env.env_data["env_size"]["n"] - 1)
-    # plot policy of sys_player
-    fig = pl.figure(num="State Value")
-    ax2 = fig.add_subplot(111)
-    plot_state_value(sys_str, sys_agent.V, desired_values, ax2)
+        # display result
+        # finc max of sys and env reward for plotting purposes
+        # x1 = max(reward_per_episode[0])
+        # x2 = max(reward_per_episode[1])
+        #
+        # plt.plot(reward_per_episode[0])
+        # plt.plot(reward_per_episode[1])
+        # plt.show()
+        fig_title = "Rewards per episode for each player"
+        fig = pl.figure(num=fig_title)
+        ax1 = fig.add_subplot(111)
+
+        # pl.hist(reward_per_episode[0], density=False, bins=30)
+        # pl.hist(reward_per_episode[1], density=False, bins=30)
+        ax1.plot(reward_per_episode[2], label="max V change")
+        ax1.set_yscale('log')
+        # ax.plot(reward_per_episode[1], label="env reward")
+        ax1.legend()
+
+        # compute desired state values
+        desired_values = get_desired_v_value(k=game_G_hat.env.env_data["env_size"]["n"] - 1)
+        # plot policy of sys_player
+        fig = pl.figure(num="State Value")
+        ax2 = fig.add_subplot(111)
+        plot_state_value(sys_str, sys_agent.V, desired_values, ax2)
+
+        # dump instances of the player classes - sys_player & env player and instance of the rl_game
+        env_robot_dump.dump_file(env_agent)
+        system_robot_dump.dump_file(sys_agent)
+        rl_env_dump.dump_file(rl_game)
+
+    # load the binary pickled file
+    unpickled_sys = system_robot_dump.load_file()
+    unpickled_env = env_robot_dump.load_file()
+    unpickled_rl_game = rl_env_dump.load_file()
+    # testing loading that player
 
     # plt.show()
     # plot policy
 
     # lets do some fancy visualization stuff here
     print("Plotting the policy learnt")
-    play_game(env=game_G_hat, init_state_list=game_G_hat.Init, sys_player=sys_agent, env_player=env_agent, game=rl_game)
+    play_game(env=game_G_hat, init_state_list=game_G_hat.Init, sys_player=unpickled_sys, env_player=unpickled_env,
+              game=unpickled_rl_game)
     print("Done animating")
 
 def play_game(env, init_state_list, sys_player, env_player, game):
@@ -888,5 +931,5 @@ if __name__ == "__main__":
         print("The Updated transition matrix is: ")
         game_G_hat.print_transition_matrix()
 
-    compute_optimal_strategy_using_rl(sys_str, game_G_hat)
+    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=False)
 
