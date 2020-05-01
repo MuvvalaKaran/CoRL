@@ -33,7 +33,10 @@ This project can be decoupled into two major sub-problems :
 
 ## RESULTS
 
-Task : The system robot (green) should always in cell diagonal to the env robot
+Task : The system robot (green) should always be in a cell diagonally opposite to the env robot
+
+![](src/figures_and_gifs/N_3.gif "3x3 gridworld")
+----
 ![](src/figures_and_gifs/N_4.gif "4x4 gridworld")
 ----
 ![](src/figures_and_gifs/N_5.gif "5x5 gridworld")
