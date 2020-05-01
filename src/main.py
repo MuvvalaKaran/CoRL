@@ -777,7 +777,7 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10*10**5, 
         # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
         reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent,
                                                                   game=rl_game,
-                                                                  iterations=10*10**5,
+                                                                  iterations=20*10**5,
                                                                   episode_len=30)
 
         # display result
@@ -965,5 +965,5 @@ if __name__ == "__main__":
         print("The Updated transition matrix is: ")
         game_G_hat.print_transition_matrix()
 
-    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=True)
+    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=False)
 

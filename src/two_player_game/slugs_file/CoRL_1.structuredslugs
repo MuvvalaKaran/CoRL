@@ -1,18 +1,18 @@
 # Variable controlled by the env robot
 [INPUT]
-x1:0...4
-y1:0...4
+x1:0...5
+y1:0...5
 t:0...1
 
 # Variable controlled by the system robot
 [OUTPUT]
-x2:0...4
-y2:0...4
+x2:0...5
+y2:0...5
 
 [SYS_TRANS]
-x2 < 4 -> x2+1>=x2'
+x2 < 5 -> x2+1>=x2'
 x2 > 0 -> x2'+1>=x2
-y2 < 4 -> y2+1>=y2'
+y2 < 5 -> y2+1>=y2'
 y2 > 0 -> y2'+1>=y2
 x2!=x2' -> y2=y2'
 
@@ -22,9 +22,9 @@ x1!=x2 | y1!=y2
 
 # the env cannot stay in its cell as it need to keep on moving 
 [ENV_TRANS]
-x1 < 4 -> x1+1>=x1'
+x1 < 5 -> x1+1>=x1'
 x1 > 0 -> x1'+1>=x1
-y1 < 4 -> y1+1>=y1'
+y1 < 5 -> y1+1>=y1'
 y1 > 0 -> y1'+1>=y1
 x1!=x1' -> y1=y1'
 
@@ -37,6 +37,5 @@ y2 = 0
 
 #lets assumes env robot starts at the top right cell
 [ENV_INIT]
-x1 = 4
-y1 = 4
-
+x1 = 5
+y1 = 5
