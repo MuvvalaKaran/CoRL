@@ -43,6 +43,9 @@ Task : The system robot (green) should always be in a cell diagonally opposite t
 ----
 ![](src/figures_and_gifs/N_6.gif "6x6 gridworld")
 ----
+![](src/figures_and_gifs/N_7.gif "7x7 gridworld")
+----
+![](src/figures_and_gifs/N_10.gif "10x10 gridworld")
 
 ## Conclusion
 

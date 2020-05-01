@@ -303,7 +303,7 @@ class PermissiveStrategy:
                     if match is not None:
                         state_transits_to.append(match.string[match.regs[0][0]: match.regs[0][1]])
                     if split_txt[tmp_il] is "":
-                        # once done set flag to flase
+                        # once done set flag to false
                         state_encountered = False
 
                         # update State dictionary

@@ -89,11 +89,11 @@ class plotterClass():
                     self.plot_grid_num((off_x, off_y), value=f"{x, y}")
 
                     # add the obstacle - 1 patch to the gridworld
-                    if y == 0 and (x<4 or x >2):
+                    if y == 0 and (x<5 and x >2):
                         self._add_obstables((x, y))
 
                     # add the obstacle -2 patch to the gridworld
-                    if y == 5 and x < 3:
+                    if y == 5 and (x>0 and x < 3):
                         self._add_obstables((x, y))
 
         # the location of the x_ticks is the middle of the grid
@@ -178,8 +178,8 @@ class plotterClass():
         elif shape_case[shape] == 2:
             rect = patches.Rectangle(
                 (x, y),
-                0.1,
-                0.1,
+                0.99,
+                0.99,
                 facecolor=color,
                 edgecolor='black',
                 alpha=0.5  # transparency value
@@ -621,11 +621,11 @@ def create_G_hat(strategy, game):
                     invalid_states.append((ix, iy, p))
 
                 # remove all the states that are blocked by the obstcles
-                if ix == 3 or ix == 4 or ix == 35 or ix == 36 or ix == 37:
+                if ix == 3 or ix == 4 or ix == 36 or ix == 37:
                     invalid_states.append((ix, iy, p))
 
                 if (iy == 3 and ix != 3) or (iy == 4 and ix != 4) \
-                        or (iy == 35 and ix != 35) or (iy == 36 and ix != 36) \
+                        or (iy == 36 and ix != 36) \
                         or (iy == 37 and ix != 37):
                     invalid_states.append((ix, iy, p))
 
@@ -741,8 +741,7 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
 
             # get the initial state
             oldState = game.currentPosition
-            print(oldState)
-
+            # print(oldState)
             # get the system action
             sys_action = sys_player.chooseAction(player=0, state=oldState)
 
@@ -857,7 +856,7 @@ def processing_w_obstacles(strategy):
     :rtype:
     """
     # cell that belong to the obstacle
-    obs_cell_lst = [3, 4, 35, 36, 37]
+    obs_cell_lst = [3, 4, 36, 37]
 
     # a list to keep track of the invalid
     invalid_states = []
@@ -1020,7 +1019,7 @@ if __name__ == "__main__":
         game_G_hat.print_transition_matrix()
 
     try:
-        compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=False)
+        compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=True)
     except:
         type, valye, tb = sys.exc_info()
         traceback.print_exc()
