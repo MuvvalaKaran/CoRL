@@ -88,6 +88,14 @@ class plotterClass():
                     off_x, off_y = x + 0.5, y + 0.5
                     self.plot_grid_num((off_x, off_y), value=f"{x, y}")
 
+                    # add the obstacle - 1 patch to the gridworld
+                    if y == 0 and (x<4 or x >2):
+                        self._add_obstables((x, y))
+
+                    # add the obstacle -2 patch to the gridworld
+                    if y == 5 and x < 3:
+                        self._add_obstables((x, y))
+
         # the location of the x_ticks is the middle of the grid
         def offset_ticks(x, offset=0.5):
             return x + offset
@@ -187,6 +195,11 @@ class plotterClass():
             self.ax.add_artist(ab)
         else:
             return warnings.warn("Not a valid shape. Need to add that patch to the _add_patch function")
+
+    def _add_obstables(self, xy):
+
+        # add a black patch to the square that belongs to obstacle at location x, y
+        self._add_patch('rect', xy, color='black')
 
     def _convert_pos_to_xy(self, location, n, m):
         """
@@ -506,20 +519,7 @@ def pre_processing_of_str(strategy, nx, ny):
         # remove all the nodes from the invalid transitions list L
         for ele in invalid_trans:
             v['child_nodes'].remove(ele)
-            # if state belongs to sys then only the x variable can change
 
-            # compare x and y for any jump and if any exists, remove them
-            # if not (x + 1 == target_x or x - 1 == target_x or x + nx == target_x or x - nx == target_x):
-            #     # you can stay in the same cell if you are the sys player
-            #     if int(t) == 1 and x == target_x:
-            #         continue
-            #     else:
-            #         # its not a valid transition and hence should be removed from the strategy
-            #         v['child_nodes'].remove(node)
-            #         continue
-            # if not (y + 1 == target_y or y - 1 == target_y or y + nx == target_y or y - nx == target_y):
-            #     v['child_nodes'].remove(node)
-            #     continue
     print(f"Total states pruned as they lied outside the gridworld are {len(invalid_states)}.\n "
           f"The current number of valid states for both players in strategy after pruning is {len(strategy) - len(invalid_states)} \n")
     for s in invalid_states:
@@ -602,7 +602,7 @@ def create_G_hat(strategy, game):
     # copy the game in
     game_G_hat = copy.deepcopy(game)
 
-    # 1-4. Remove all the States that do no appear in the permissive for various reasons
+    # 1-4. Remove all the States that do no appear in the permissive strategy for various reasons
     # list to keep track of states to remove
     invalid_states = []
     # iterate over all the possible states and check that state does exist in the permissive
@@ -619,6 +619,19 @@ def create_G_hat(strategy, game):
                 if not exist_flag:
                     print(f"Removing state {ix, iy, p}")
                     invalid_states.append((ix, iy, p))
+
+                # remove all the states that are blocked by the obstcles
+                if ix == 3 or ix == 4 or ix == 35 or ix == 36 or ix == 37:
+                    invalid_states.append((ix, iy, p))
+
+                if (iy == 3 and ix != 3) or (iy == 4 and ix != 4) \
+                        or (iy == 35 and ix != 35) or (iy == 36 and ix != 36) \
+                        or (iy == 37 and ix != 37):
+                    invalid_states.append((ix, iy, p))
+
+    # remove duplicates from the list
+    invalid_states = list(dict.fromkeys(invalid_states))
+
 
     # remove all the states not present in the strategy and also update system and env states list
     for r_x, r_y, r_t in invalid_states:
@@ -644,6 +657,7 @@ def create_G_hat(strategy, game):
     # 6. Update W
     game_G_hat.set_W(phi=True)
 
+    print("Done Constructing G_hat game")
     return game_G_hat
 
 @deprecated
@@ -727,6 +741,7 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
 
             # get the initial state
             oldState = game.currentPosition
+            print(oldState)
 
             # get the system action
             sys_action = sys_player.chooseAction(player=0, state=oldState)
@@ -833,6 +848,35 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5,
     play_game(env=game_G_hat, init_state_list=game_G_hat.Init, sys_player=unpickled_sys, env_player=unpickled_env,
               game=unpickled_rl_game)
     print("Done animating")
+
+def processing_w_obstacles(strategy):
+    """
+    Although we do not transit to the obstacle state, permissive stratetegy does into consideration starting from these
+    states. So we need to prune those states from the strategy which belong to the obstacle
+    :return:
+    :rtype:
+    """
+    # cell that belong to the obstacle
+    obs_cell_lst = [3, 4, 35, 36, 37]
+
+    # a list to keep track of the invalid
+    invalid_states = []
+    for k, v in strategy.items():
+        # get the state number from the strategy corresponding to k (State n)
+        curr_game_state = v['state_pos_map']
+        x = curr_game_state[0]
+        y = curr_game_state[1]
+        # (x, y, t) if x or u belong to {3, 4, 35, 36, 37} then remove that state from the strategy
+        if x in obs_cell_lst:
+            invalid_states.append(k)
+        if y in obs_cell_lst:
+            invalid_states.append(k)
+
+    # remove redundant elements from the list
+    invalid_states = list(dict.fromkeys(invalid_states))
+
+    for ele in invalid_states:
+        del strategy[ele]
 
 def play_game(env, init_state_list, sys_player, env_player, game):
 
@@ -956,8 +1000,9 @@ if __name__ == "__main__":
             print(k, sys_str[k]['state_pos_map'])
 
         # game.set_transition_function(game.S[pos_sys][pos_env][t], )
-    # do some preprocessing on the straetegy we get
+    # do some pre-processing on the strategy we get
     sys_srt = pre_processing_of_str(sys_str, x_length, y_length)
+    processing_w_obstacles(sys_str)
     if print_str_after_processing:
         print("Strategy after removing all the invalid transitions")
         for k, v in sys_str.items():
@@ -974,5 +1019,9 @@ if __name__ == "__main__":
         print("The Updated transition matrix is: ")
         game_G_hat.print_transition_matrix()
 
-    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=True)
-
+    try:
+        compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=False)
+    except:
+        type, valye, tb = sys.exc_info()
+        traceback.print_exc()
+        pdb.post_mortem(tb)

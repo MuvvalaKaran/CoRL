@@ -1,43 +1,48 @@
-# Variable controlled by the env robot
 [INPUT]
-x1:0...2
-y1:0...2
+x1:0...6
+y1:0...6
 t:0...1
 
-# Variable controlled by the system robot
 [OUTPUT]
-x2:0...2
-y2:0...2
+x2:0...6
+y2:0...6
 
 [SYS_TRANS]
-x2 < 2 -> x2+1>=x2'
-x2 > 0 -> x2'+1>=x2
-y2 < 2 -> y2+1>=y2'
-y2 > 0 -> y2'+1>=y2
+x2+1>=x2'
+x2'+1>=x2
+y2+1>=y2'
+y2'+1>=y2
 x2!=x2' -> y2=y2'
 
-# system robot should not enforce collision with the env robot
-x1'!=x2' | y1'!=y2'
-x1!=x2 | y1!=y2
+# Master must not try to enforce a collision
+x2'!=x1' | y2'!=y1'
 
-# the env cannot stay in its cell as it need to keep on moving 
+## no Collisions with the obstacles on top (part 1)
+y2'!=5 | x2'> 2
+
+## no Collisions with the obstacles (part 2)
+y2'!=0 | x2'> 4 | x2'< 3 
+
 [ENV_TRANS]
-x1 < 2 -> x1+1>=x1'
-x1 > 0 -> x1'+1>=x1
-y1 < 2 -> y1+1>=y1'
-y1 > 0 -> y1'+1>=y1
+x1+1>=x1'
+x1'+1>=x1
+y1+1>=y1'
+y1'+1>=y1
 x1!=x1' -> y1=y1'
 
-# *********************There are no liveness assumptions****************************
+## Slave must not try to enforce a collision
+x2!=x1' | y2!=y1'
 
-# let's assume system robot starts at the bottom left cell 
+## no Collisions with the obstacles (part 1)
+y1'!=5 | x1'> 2
+
+## no Collisions with the obstacles (part 2)
+y1'!=0 | x1'> 4 | x1' < 3 
+
 [SYS_INIT]
 x2 = 0
 y2 = 0
 
-#lets assumes env robot starts at the top right cell
 [ENV_INIT]
-x1 = 2
-y1 = 2
-
-
+x1 = 6
+y1 = 6
