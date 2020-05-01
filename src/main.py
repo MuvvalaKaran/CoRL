@@ -277,6 +277,11 @@ class plotterClass():
         # plot this position on the gridworld
         self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_sys_xy)))
         self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
+        sys_reward = 0
+        # add a text counter to the figure
+
+        self.ax.text(0.7, 1, f"system reward: {sys_reward}", fontsize=14, transform=self.ax.transAxes)
+
         plt.savefig(f"frames/grid_{time_step}.png", dpi=200)
         self.ax.clear()
         self.gridworld(env, plot_title)
@@ -290,7 +295,7 @@ class plotterClass():
             best_sys_action = sys_player.chooseAction(player=0, state=game.currentPosition)
 
             # evolve according to the system action
-            game.play_one_player_at_a_time(0, best_sys_action)
+            sys_reward += game.play_one_player_at_a_time(0, best_sys_action)
             # newState = currentState[0] + switch_case[best_sys_action]
             # currentState = newState
 
@@ -300,6 +305,7 @@ class plotterClass():
             # plot the action taken
             self._add_patch(shape='circle', xy=tuple(map(offset_ticks,curr_sys_xy)))
 
+            # plt.savefig(f"frames/grid_{time_step}_1.png", dpi=200)
             # get env's response
             best_evn_action = env_player.chooseAction(player=1, state=game.currentPosition)
 
@@ -312,6 +318,7 @@ class plotterClass():
             # plot the action take by the env robot
             self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
 
+            self.ax.text(0.7, 1, f"system reward: {sys_reward}", fontsize=14, transform=self.ax.transAxes)
             plt.draw()
             plt.pause(0.5)
             plt.savefig(f"frames/grid_{time_step}.png", dpi=200)
@@ -738,14 +745,15 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
     return sys_reward_per_episode, env_reward_per_episode, delta
 
 
-def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10**5, saved_flag=True):
+def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10*10**5, saved_flag=True):
     # if the saved_flag is True then directly load binary filed from the 'saved_players' directory and use that to plot
     # policy
+    n = game_G_hat.env.env_data["env_size"]["n"]
 
     # create instances to dump and load file
-    system_robot_dump = dump_and_load(file_name='sys_agent', path='saved_players/')
-    env_robot_dump = dump_and_load(file_name='env_agent', path='saved_players/')
-    rl_env_dump = dump_and_load(file_name='rl_gridworld', path='saved_players/')
+    system_robot_dump = dump_and_load(file_name=f'sys_agent_N_{n}', path='saved_players/')
+    env_robot_dump = dump_and_load(file_name=f'env_agent_N_{n}', path='saved_players/')
+    rl_env_dump = dump_and_load(file_name=f'rl_gridworld_N_{n}', path='saved_players/')
 
     if not saved_flag:
         # define some initial values
@@ -769,7 +777,7 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10**5, sav
         # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
         reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent,
                                                                   game=rl_game,
-                                                                  iterations=4*10**3,
+                                                                  iterations=10*10**5,
                                                                   episode_len=30)
 
         # display result
@@ -823,7 +831,7 @@ def play_game(env, init_state_list, sys_player, env_player, game):
     # create plotter object
     final_plot = plotterClass(fig_title="Learned policy visualization")
     final_plot.roll_out_final_policy(env, init_state_list, sys_player, env_player,
-                              game, ep_len=10)
+                              game, ep_len=30)
     plt.show()
 
 

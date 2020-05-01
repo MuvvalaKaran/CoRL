@@ -32,7 +32,17 @@ This project can be decoupled into two major sub-problems :
 - Choose a strategy that maximizes the underlying unknow reward function using maximin-Q learning algorithm.
 
 ## RESULTS
-![](src/figures_and_gifs/N_4.gif)
+
+Task : The system robot (green) should always in cell diagonal to the env robot
+![](src/figures_and_gifs/N_4.gif "4x4 gridworld")
+----
+![](src/figures_and_gifs/N_5.gif "5x5 gridworld")
+----
+![](src/figures_and_gifs/N_6.gif "6x6 gridworld")
+----
+![](src/figures_and_gifs/N_8.gif "8x8 gridworld")
+----
+![](src/figures_and_gifs/N_10.gif "10x10 gridworld")
 
 ## Conclusion
 
