@@ -16,7 +16,7 @@ import pickle
 import os
 import imageio
 import time
-
+import yaml
 
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
@@ -91,11 +91,17 @@ class plotterClass():
 
                     if cmax == 7:
                         # add the obstacle - 1 patch to the gridworld
-                        if y == 0 and (5 > x > 2):
+                        if y == 0 and (5 > x > 1):
+                            self._add_obstables((x, y))
+
+                        if y == 1 and x == 2:
+                            self._add_obstables((x, y))
+
+                        if y == 4 and x == 3:
                             self._add_obstables((x, y))
 
                         # add the obstacle -2 patch to the gridworld
-                        if y == 5 and (0 < x < 3):
+                        if y == 5 and (0 < x < 4):
                             self._add_obstables((x, y))
 
         # the location of the x_ticks is the middle of the grid
@@ -371,8 +377,8 @@ class plotterClass():
         episode_frames = np.array(episode_frames)
         imageio.mimsave(save_filepath, episode_frames, duration=time_per_step)
 
-class dump_and_load:
 
+class dump_and_load:
     def __init__(self, file_name, path):
         # self.fileDir = os.path.dirname(os.path.realpath('__file__'))
         # sys.path.append(self.fileDir + path)
@@ -395,7 +401,6 @@ class dump_and_load:
             infile.close()
 
         return unpickled_obj
-
 
 
 def construct_game():
@@ -624,12 +629,15 @@ def create_G_hat(strategy, game):
                     invalid_states.append((ix, iy, p))
 
                 # remove all the states that are blocked by the obstcles
-                # if ix == 3 or ix == 4 or ix == 36 or ix == 37:
+                # if ix == 2 or ix == 3 or ix == 4 or ix == 9 or ix == 31 or ix == 36 or ix == 37 or ix == 38:
                 #     invalid_states.append((ix, iy, p))
                 #
-                # if (iy == 3 and ix != 3) or (iy == 4 and ix != 4) \
+                # if (iy == 2 and ix != 2) or (iy == 3 and ix != 3) or (iy == 4 and ix != 4) \
+                #         or (iy == 9 and ix != 9) \
+                #         or (iy == 31 and ix != 31) \
                 #         or (iy == 36 and ix != 36) \
-                #         or (iy == 37 and ix != 37):
+                #         or (iy == 37 and ix != 37) \
+                #         or (iy == 38 and ix != 38):
                 #     invalid_states.append((ix, iy, p))
 
     # remove duplicates from the list
@@ -777,17 +785,18 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
     return sys_reward_per_episode, env_reward_per_episode, delta
 
 
-def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5, saved_flag=True):
+def compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag, iterations):
     # if the saved_flag is True then directly load binary filed from the 'saved_players' directory and use that to plot
     # policy
     n = game_G_hat.env.env_data["env_size"]["n"]
-
+    rl_time = None
     # create instances to dump and load file
     system_robot_dump = dump_and_load(file_name=f'sys_agent_N_{n}', path='saved_players/')
     env_robot_dump = dump_and_load(file_name=f'env_agent_N_{n}', path='saved_players/')
     rl_env_dump = dump_and_load(file_name=f'rl_gridworld_N_{n}', path='saved_players/')
 
     if not saved_flag:
+        print("*********************Starting learning routine to learn the optimal strategy*********************")
         # define some initial values
         decay = 10**(-2. / iterations * 0.05)
         height = game_G_hat.env.pos_x.stop
@@ -813,7 +822,8 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5,
                                                                   iterations=iterations,
                                                                   episode_len=30)
         stop = time.clock()
-        print(f"Took {stop - start} s to compute the optimal strategy using q-learning for the controlled agent")
+        rl_time = stop - start
+        print(f"Took {rl_time} s to compute the optimal strategy using q-learning for the controlled agent")
 
         # display result
         del_V_plot = plotterClass(fig_title="max del_V_per_10k")
@@ -852,6 +862,8 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5,
               game=unpickled_rl_game)
     print("Done animating")
 
+    return rl_time, iterations
+
 def processing_w_obstacles(strategy):
     """
     Although we do not transit to the obstacle state, permissive stratetegy does into consideration starting from these
@@ -860,7 +872,7 @@ def processing_w_obstacles(strategy):
     :rtype:
     """
     # cell that belong to the obstacle
-    obs_cell_lst = [3, 4, 36, 37]
+    obs_cell_lst = [2, 3, 4, 9, 31, 36, 37, 38]
 
     # a list to keep track of the invalid
     invalid_states = []
@@ -869,7 +881,7 @@ def processing_w_obstacles(strategy):
         curr_game_state = v['state_pos_map']
         x = curr_game_state[0]
         y = curr_game_state[1]
-        # (x, y, t) if x or u belong to {3, 4, 35, 36, 37} then remove that state from the strategy
+        # (x, y, t) if x or u belong to obs_cell_lst then remove that state from the strategy
         if x in obs_cell_lst:
             invalid_states.append(k)
         if y in obs_cell_lst:
@@ -979,6 +991,7 @@ def main():
 
     return game_G_hat
 
+
 def parse_addition_args(args):
     """
     A method to parse the additional arguements passed by the user
@@ -990,14 +1003,33 @@ def parse_addition_args(args):
     :return:
     :rtype:
     """
-    script_name = args[0]
-    save_flag = args[1]
-    grid_size = int(args[2])
-
+    if len(args) > 1:
+        script_name = args[0]
+        if args[1] == 'False':
+            save_flag = False
+        else:
+            save_flag = True
+        grid_size = int(args[2])
+    else:
+        save_flag = None
+        grid_size = 7
     return save_flag, grid_size
 
-def dump_to_yaml_file():
-    raise NotImplementedError
+
+def dump_to_yaml_file(grid_size, slugs_time, rl_time, iterations, total_states, sys_states):
+
+    data = dict(
+        grid_size=grid_size,
+        slugs_time=float(slugs_time),
+        rl_time=rl_time,
+        iterations=iterations,
+        total_states=total_states,
+        sys_states=sys_states
+    )
+
+    with open(r'results/log.yaml', 'a') as file:
+        yaml.dump(data, file)
+
 
 def print_code_logo():
     print("********     ********     ****       ** \n\
@@ -1026,7 +1058,8 @@ if __name__ == "__main__":
     start = time.clock()
     sys_str, env_str = extract_permissive_str()
     stop = time.clock()
-    print(f"Took {stop - start} s to compute the (maximally) permissive strategy from slugs tool")
+    slugs_time = stop - start
+    print(f"Took {slugs_time} s to compute the (maximally) permissive strategy from slugs tool")
     time.sleep(2)
     a_c = game.get_controlled_actions()
     # create a mapping from th state we get form the strategy and the state we have in our code
@@ -1055,4 +1088,9 @@ if __name__ == "__main__":
 
     time.sleep(2)
     print("*********************Computing the optimal strategy*********************")
-    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=save_flag)
+    rl_time, iters = compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5, saved_flag=save_flag)
+
+    # after the computations is done dump the result to a yaml file
+    dump_to_yaml_file(grid_size=grid_size, slugs_time=slugs_time, rl_time=rl_time, iterations=iters,
+                      total_states=game_G_hat.get_total_state_count(),
+                      sys_states=game_G_hat.get_total_sys_state_count())

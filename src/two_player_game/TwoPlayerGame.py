@@ -392,6 +392,29 @@ class TwoPlayerGame:
     def get_W(self):
         return self.W
 
+    def get_total_state_count(self):
+        # S is 3D list
+        count = 0
+        for s_r in self.S:
+            for s_c in s_r:
+                for p in s_c:
+                    count += 1
+
+        return count
+
+    def get_total_sys_state_count(self):
+        # S_s is 1D list
+        return len(self.S_s)
+
+    def get_total_env_state_count(self):
+        # S_s is 1D list
+        return len(self.S_e)
+
+    def get_total_init_state_count(self):
+        # S_s is 1D list
+        return len(self.Init)
+
+
 def main():
 
     # create yaml paths
