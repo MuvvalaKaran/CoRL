@@ -195541,5 +195541,4 @@ x1@0.0.6:1, x1@1:1, x1@2:1, y1@0.0.6:1, y1@1:1, y1@2:1, t@0.0.1:1, x2@0.0.6:1, x
 
 State 7831 with rank 0
 x1@0.0.6:1, x1@1:1, x1@2:1, y1@0.0.6:1, y1@1:1, y1@2:1, t@0.0.1:1, x2@0.0.6:1, x2@1:1, x2@2:1, y2@0.0.6:1, y2@1:1, y2@2:1
->>>>>>> testing learnign with obastcles. Facing some primary problems related to diagonal states not being removed from the strategy.
 

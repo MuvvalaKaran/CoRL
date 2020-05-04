@@ -15,6 +15,7 @@ import matplotlib.image as mping
 import pickle
 import os
 import imageio
+import time
 
 
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
@@ -31,9 +32,9 @@ plot_graphs = False
 # flag to print length of child nodes
 print_child_node_length = False
 # flag to print strategy after preprocessing
-print_str_after_processing = True
+print_str_after_processing = False
 # flag to print state num and state_pos_map value
-print_state_pos_map = True
+print_state_pos_map = False
 # flag to print the update transition matrix
 print_updated_transition_function = False
 
@@ -88,13 +89,14 @@ class plotterClass():
                     off_x, off_y = x + 0.5, y + 0.5
                     self.plot_grid_num((off_x, off_y), value=f"{x, y}")
 
-                    # add the obstacle - 1 patch to the gridworld
-                    if y == 0 and (x<5 and x >2):
-                        self._add_obstables((x, y))
+                    if cmax == 7:
+                        # add the obstacle - 1 patch to the gridworld
+                        if y == 0 and (5 > x > 2):
+                            self._add_obstables((x, y))
 
-                    # add the obstacle -2 patch to the gridworld
-                    if y == 5 and (x>0 and x < 3):
-                        self._add_obstables((x, y))
+                        # add the obstacle -2 patch to the gridworld
+                        if y == 5 and (0 < x < 3):
+                            self._add_obstables((x, y))
 
         # the location of the x_ticks is the middle of the grid
         def offset_ticks(x, offset=0.5):
@@ -397,13 +399,13 @@ class dump_and_load:
 
 
 def construct_game():
-    print("Constructing game G \n")
+    # print("Constructing game G \n")
     # run the main function to build all the stuff in there
     game = TwoPlayerGame.main()
     return game
 
 def extract_permissive_str(slugsfile_path=None):
-    print("Extracting (maximally) permissive strategy \n")
+    print("*********************Extracting (maximally) permissive strategy********************* \n")
     if slugsfile_path is None:
         slugsfile_path = "two_player_game/slugs_file/CoRL_1"
     str = extractExplicitPermissiveStrategy.PermissiveStrategy(slugsfile_path, run_local=False)
@@ -419,6 +421,7 @@ def extract_permissive_str(slugsfile_path=None):
             file_name = f"two_player_game/graphs/state{i}.dot"
             str.plot_graphs_from_dot_files(file_name, view=True)
 
+    print("*********************Done Extracting strategy from Slugs tool********************* \n")
     return system_str, env_str
 
 def create_xy_pos_mapping(x,y, nx, ny):
@@ -621,17 +624,16 @@ def create_G_hat(strategy, game):
                     invalid_states.append((ix, iy, p))
 
                 # remove all the states that are blocked by the obstcles
-                if ix == 3 or ix == 4 or ix == 36 or ix == 37:
-                    invalid_states.append((ix, iy, p))
-
-                if (iy == 3 and ix != 3) or (iy == 4 and ix != 4) \
-                        or (iy == 36 and ix != 36) \
-                        or (iy == 37 and ix != 37):
-                    invalid_states.append((ix, iy, p))
+                # if ix == 3 or ix == 4 or ix == 36 or ix == 37:
+                #     invalid_states.append((ix, iy, p))
+                #
+                # if (iy == 3 and ix != 3) or (iy == 4 and ix != 4) \
+                #         or (iy == 36 and ix != 36) \
+                #         or (iy == 37 and ix != 37):
+                #     invalid_states.append((ix, iy, p))
 
     # remove duplicates from the list
     invalid_states = list(dict.fromkeys(invalid_states))
-
 
     # remove all the states not present in the strategy and also update system and env states list
     for r_x, r_y, r_t in invalid_states:
@@ -772,7 +774,6 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
         sys_reward_per_episode.append(sys_cumulative_reward)
         env_reward_per_episode.append(env_cumulative_reward)
 
-    # print(sys_player.V)
     return sys_reward_per_episode, env_reward_per_episode, delta
 
 
@@ -806,10 +807,13 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5,
 
         # call a function that runs tests for you
         # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5) # deprecated
+        start = time.clock()
         reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent,
                                                                   game=rl_game,
                                                                   iterations=iterations,
                                                                   episode_len=30)
+        stop = time.clock()
+        print(f"Took {stop - start} s to compute the optimal strategy using q-learning for the controlled agent")
 
         # display result
         del_V_plot = plotterClass(fig_title="max del_V_per_10k")
@@ -843,7 +847,7 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5,
     unpickled_rl_game = rl_env_dump.load_file()
 
     # lets do some fancy visualization stuff here
-    print("Plotting the policy learnt")
+    print("Plotting the policy learned")
     play_game(env=game_G_hat, init_state_list=game_G_hat.Init, sys_player=unpickled_sys, env_player=unpickled_env,
               game=unpickled_rl_game)
     print("Done animating")
@@ -928,7 +932,7 @@ def plot_state_value(sys_str, V, desired_V, ax):
     plt.yticks(desired_V)
 
 
-def updatestratetegy_w_state_pos_map(strategy, x_length, y_length):
+def update_strategy_w_state_pos_map(strategy, x_length, y_length):
     # create a mapping from th state we get form the strategy and the state we have in our code
 
     # create a tmp_state_tuple
@@ -954,7 +958,8 @@ def main():
     y_length = game.env.env_data["env_size"]["m"]
     sys_str, env_str = extract_permissive_str()
     a_c = game.get_controlled_actions()
-    updatestratetegy_w_state_pos_map(sys_str)
+    # updatestratetegy_w_state_pos_map(sys_str)
+    update_strategy_w_state_pos_map(sys_str)
     sys_srt = pre_processing_of_str(sys_str, x_length, y_length)
     if print_str_after_processing:
         print("Strategy after removing all the invalid transitions")
@@ -974,42 +979,72 @@ def main():
 
     return game_G_hat
 
+def parse_addition_args(args):
+    """
+    A method to parse the additional arguements passed by the user
+    1. save_flag = a flag to use the saved player from the src/saved_players directory
+    2. gridsize = integer number depiciting which gridsize to load - 3,4,5,6 load normal grid env while 7 loads the
+    fancy obstacle env
+    :param args: list
+    :type args:
+    :return:
+    :rtype:
+    """
+    script_name = args[0]
+    save_flag = args[1]
+    grid_size = int(args[2])
+
+    return save_flag, grid_size
+
+def dump_to_yaml_file():
+    raise NotImplementedError
+
+def print_code_logo():
+    print("********     ********     ****       ** \n\
+********     ********     ******     ** \n\
+***          **    **     **   **    ** \n\
+***          **    **     **  **     ** \n\
+***          **    **     ** **      ** \n\
+***          **    **     ***        ** \n\
+***          **    **     ****       ** \n\
+********     ********     ** **      ******* \n\
+********     ********     **  **     *******")
+
 if __name__ == "__main__":
-    # construct_game()
+
+    additional_args = sys.argv
+    save_flag, grid_size = parse_addition_args(additional_args)
+    print("************************************************")
+    print_code_logo()
+    print("************************************************")
+    time.sleep(2)
+    print("*********************Constructing games G*********************")
     game = construct_game()
+    time.sleep(1)
     x_length = game.env.env_data["env_size"]["n"]
     y_length = game.env.env_data["env_size"]["m"]
+    start = time.clock()
     sys_str, env_str = extract_permissive_str()
+    stop = time.clock()
+    print(f"Took {stop - start} s to compute the (maximally) permissive strategy from slugs tool")
+    time.sleep(2)
     a_c = game.get_controlled_actions()
     # create a mapping from th state we get form the strategy and the state we have in our code
+    update_strategy_w_state_pos_map(sys_str, x_length, y_length)
 
-    # create a tmp_state_tuple
-    for k, v in sys_str.items():
-        xy_sys = v['state_xy_map'][0]
-        xy_env = v['state_xy_map'][1]
-        pos_sys = create_xy_pos_mapping(xy_sys[0], xy_sys[1], x_length, y_length)
-        pos_env = create_xy_pos_mapping(xy_env[0], xy_env[1], x_length, y_length)
-        # t = 1
-        t = v['player']
-        # print(f"{k} : {xy_sys}, {xy_env}0 : ({pos_env}, {pos_env}, {t})")
-
-        # update the state_pos mapping variable in sys_str
-        sys_str[k]['state_pos_map'] = (pos_sys, pos_env, t)
-        if print_state_pos_map:
-            print(k, sys_str[k]['state_pos_map'])
-
-        # game.set_transition_function(game.S[pos_sys][pos_env][t], )
     # do some pre-processing on the strategy we get
-    sys_srt = pre_processing_of_str(sys_str, x_length, y_length)
-    processing_w_obstacles(sys_str)
+    print("*********************Processing strategy we get from slugs to remove invalid "
+          "transitions*********************\n")
+    pre_processing_of_str(sys_str, x_length, y_length)
+
+    if grid_size == 7:
+        processing_w_obstacles(sys_str)
     if print_str_after_processing:
-        print("Strategy after removing all the invalid transitions")
+        print("*********************Strategy after removing all the invalid transitions*********************")
         for k, v in sys_str.items():
             print(f"{k}: {v}")
-
-    # use these str to update the transition matrix
-    # update_transition_function(game, sys_str)
-
+    time.sleep(2)
+    print("*********************Constructing game G_hat*********************")
     # update Game G to get G_hat
     game_G_hat = create_G_hat(strategy=sys_str, game=game)
 
@@ -1018,9 +1053,6 @@ if __name__ == "__main__":
         print("The Updated transition matrix is: ")
         game_G_hat.print_transition_matrix()
 
-    try:
-        compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=True)
-    except:
-        type, valye, tb = sys.exc_info()
-        traceback.print_exc()
-        pdb.post_mortem(tb)
+    time.sleep(2)
+    print("*********************Computing the optimal strategy*********************")
+    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=save_flag)

@@ -13,6 +13,8 @@ from itertools import product
 random.seed(1)
 prompt_user = False
 
+# print the env states constructed
+print_env_states = False
 # set random state players flag to test features
 set_fake_state_player = False
 
@@ -416,7 +418,8 @@ def main():
         game.set_state_players()
 
     # method to print all the states in the environment
-    game.print_env_states()
+    if print_env_states:
+        game.print_env_states()
 
     # set controlled and uncontrolled action tuples
     game.set_controlled_actions()

@@ -15,7 +15,7 @@ print_output = False
 #flag to print the output from the slugs code using --extractExplcitPermissiveStrategy flag
 print_str = False
 # print states to x,y mapping flag
-print_state_mapping = True
+print_state_mapping = False
 # flag to be set true when you use explicit player representation
 explicit_rep = True
 
