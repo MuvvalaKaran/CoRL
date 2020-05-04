@@ -62,7 +62,6 @@ class PermissiveStrategy:
             s.view()
             time.sleep(1)
 
-
     def convert_to_slugsin(self):
         compiler_path = self.get_compiler_file_path()
         # open a terminal and execute the command

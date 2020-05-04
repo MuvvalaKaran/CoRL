@@ -1,0 +1,54 @@
+[INPUT]
+x1:0...6
+y1:0...6
+t:0...1
+
+[OUTPUT]
+x2:0...6
+y2:0...6
+
+[SYS_TRANS]
+x2+1>=x2'
+x2'+1>=x2
+y2+1>=y2'
+y2'+1>=y2
+x2!=x2' -> y2=y2'
+
+# Master must not try to enforce a collision
+x2'!=x1' | y2'!=y1'
+x1 !=x2  | y1 !=y2
+
+## no Collisions with the obstacles on top (part 1)
+y2'!=5 | x2'> 3 | x2'< 1
+y2'!=4 | x2'!= 3
+
+## no Collisions with the obstacles (part 2)
+y2'!=0 | x2'> 4 | x2'< 2
+y2'!=1 | x2'!=2 
+
+
+[ENV_TRANS]
+x1+1>=x1'
+x1'+1>=x1
+y1+1>=y1'
+y1'+1>=y1
+x1!=x1' -> y1=y1'
+
+## Slave must not try to enforce a collision
+x2!=x1' | y2!=y1'
+
+## no Collisions with the obstacles (part 1)
+y1'!=5 | x1'> 3 | x1' < 1
+y1'!=4 | x1'!= 3
+
+## no Collisions with the obstacles (part 2)
+y1'!=0 | x1'> 4 | x1' < 2 
+y1'!=1 | x1'!=2
+
+[SYS_INIT]
+x2 = 0
+y2 = 0
+
+[ENV_INIT]
+x1 = 6
+y1 = 6

@@ -54,10 +54,12 @@ def deprecated(func):
 
 class plotterClass():
 
-    def __init__(self, fig_title, robo_file_path=None):
+    def __init__(self, fig_title, robo_file_path=None, xlabel=None, ylabel=None):
         self.fig = None
         self.ax = None
         self.fig_title = fig_title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
 
         # initialize a figure an axes handle
         self._create_ax_fig()
@@ -67,14 +69,73 @@ class plotterClass():
     def _create_ax_fig(self):
         self.fig = pl.figure(num=self.fig_title)
         self.ax = self.fig.add_subplot(111)
+        self.ax.set_xlabel(self.xlabel)
+        self.ax.set_ylabel(self.ylabel)
 
-    def plot_gridworld_with_label(self):
-        raise NotImplementedError
 
-    def plot_policy(self):
-        raise NotImplementedError
+    def plot_policy(self, env, sys_player, sys_str):
+        width = env.env.pos_x.stop
+        height = env.env.pos_y.stop
 
-    def gridworld(self, env, print_grid_num=False, *args):
+        self.plot_game_world(width, height, print_grid_num=True)
+        # current position is a tuple of the format (x, y, t=1)
+
+        # for x in env.env.pos_x:
+        #     for y in env.env.pos_y:
+        for k, v in sys_str.items():
+            x = v['state_pos_map'][0]
+            y = v['state_pos_map'][1]
+            t = int(v['state_pos_map'][2])
+            if t == 1:
+                sys_best_action = sys_player.chooseAction(player=0, state=(x, y, t))
+                xy = (x, y)
+                # color square as light green
+                self._add_patch(shape='rect', xy=xy, color='green')
+                self._add_patch(shape='arrow', xy=xy, action=sys_best_action, color='blue')
+
+    def plot_game_world(self, width, height, print_grid_num=True):
+        # flag to print the grid numbers
+        if print_grid_num:
+            # we need to offset both the x and y to print in the center of the grid
+            for x in range(width):
+                for y in range(height):
+                    off_x, off_y = x + 0.5, y + 0.5
+                    self.plot_grid_num((off_x, off_y), value=f"{x, y}")
+
+                    # add obstacles to the gridworld when n = 7
+                    if width == 49:
+                        # list containing the cell number of obstacle to be plotted
+                        obs_cell_list = [2, 3, 4, 9, 31, 36, 37, 38]
+                        # add black patch to these cells
+                        if y in obs_cell_list:
+                            self._add_obstables((x, y))
+
+                        if x in obs_cell_list:
+                            self._add_obstables((x, y))
+
+        # the location of the x_ticks is the middle of the grid
+        def offset_ticks(x, offset=0.5):
+            return x + offset
+
+        # ticks = locations of the ticks and labels = label of the ticks
+        self.ax.set_xticks(ticks=list(map(offset_ticks, range(width))), minor=False)
+        self.ax.set_xticklabels(labels=range(width))
+        self.ax.set_yticks(ticks=list(map(offset_ticks, range(width))), minor=False)
+        self.ax.set_yticklabels(labels=range(width))
+
+        # add points for gridline plotting
+        self.ax.set_xticks(ticks=range(width), minor=True)
+        self.ax.set_yticks(ticks=range(height), minor=True)
+
+        # set x and y limits to adjust the view
+        self.ax.set_xlim(left=0, right=width)
+        self.ax.set_ylim(bottom=0, top=height)
+
+        # set the gridlines at the minor xticks positions
+        self.ax.yaxis.grid(True, which='minor')
+        self.ax.xaxis.grid(True, which='minor')
+
+    def plot_gridworld(self, env, print_grid_num=False, *args):
         # the env here the original env of size (N x M)
         # fig_title = args[0]
 
@@ -89,6 +150,7 @@ class plotterClass():
                     off_x, off_y = x + 0.5, y + 0.5
                     self.plot_grid_num((off_x, off_y), value=f"{x, y}")
 
+                    # add obstacles to the gridworld when n = 7
                     if cmax == 7:
                         # add the obstacle - 1 patch to the gridworld
                         if y == 0 and (5 > x > 1):
@@ -164,7 +226,7 @@ class plotterClass():
         """
         plt.savefig(name, dpi=dpi)
 
-    def _add_patch(self, shape, xy, color='green', robo_image=None):
+    def _add_patch(self, shape, xy, color='green', robo_image=None, action=None, alpha=0.5):
         x, y = xy
         shape_case = {
             'circle': 1,
@@ -190,13 +252,46 @@ class plotterClass():
                 0.99,
                 facecolor=color,
                 edgecolor='black',
-                alpha=0.5  # transparency value
+                alpha=alpha  # transparency value
             )
             self.ax.add_patch(rect)
 
             return rect
         elif shape_case[shape] == 3:
-            pass
+            # A_c : [up_s, down_s, left_s, right_s, stay_s]
+            def plot_arrow():
+                # create an arrow starting form x,y and extending in dx and dy accordingly
+                off = 0.5
+                arrow = patches.Arrow(
+                    off + x, off + y, dx=dx, dy=dy, width=.3, facecolor=color
+                )
+
+                self.ax.add_patch(arrow)
+
+            if action == "right_s":
+                dx = 0.3
+                dy = 0
+
+                plot_arrow()
+            elif action == "up_s":
+                dx = 0
+                dy = 0.3
+
+                plot_arrow()
+            elif action == "down_s":
+                dx = 0
+                dy = -0.3
+
+                plot_arrow()
+            elif action == "left_s":
+                dx = -0.3
+                dy = 0
+
+                plot_arrow()
+            else:
+                pass
+                # self.ax.text(x + 0.5, y + 0.5, "stay action", fontsize=7, transform=self.ax.transAxes)
+
         elif shape_case[shape] == 4:
             imageBox = OffsetImage(robo_image, zoom=0.1)
             ab = AnnotationBbox(imageBox, xy, frameon=False)
@@ -205,7 +300,6 @@ class plotterClass():
             return warnings.warn("Not a valid shape. Need to add that patch to the _add_patch function")
 
     def _add_obstables(self, xy):
-
         # add a black patch to the square that belongs to obstacle at location x, y
         self._add_patch('rect', xy, color='black')
 
@@ -296,7 +390,7 @@ class plotterClass():
         m = int(env.env.env_data["env_size"]["m"])
 
         # plot the basic gridworld first
-        self.gridworld(env, plot_title)
+        self.plot_gridworld(env, plot_title)
         # A function to visualize the learned for the both the robot
         # for x in range(n):
         #     for y in range(m):
@@ -403,21 +497,21 @@ class dump_and_load:
         return unpickled_obj
 
 
-def construct_game():
-    # print("Constructing game G \n")
+def construct_game(grid_size):
     # run the main function to build all the stuff in there
+    TwoPlayerGame.TwoPlayerGame.dump_yaml_file('two_player_game/config/env.yaml', n=grid_size, m=grid_size)
     game = TwoPlayerGame.main()
     return game
 
-def extract_permissive_str(slugsfile_path=None):
+def extract_permissive_str(grid_size):
     print("*********************Extracting (maximally) permissive strategy********************* \n")
-    if slugsfile_path is None:
-        slugsfile_path = "two_player_game/slugs_file/CoRL_1"
+    # if slugsfile_path is 3:
+    slugsfile_path = f"two_player_game/slugs_file/CoRL_{grid_size}"
     str = extractExplicitPermissiveStrategy.PermissiveStrategy(slugsfile_path, run_local=False)
     str.convert_to_slugsin()
     str.convert_slugsin_to_permissive_str()
     env_str = None
-    system_str = str.interpret_strategy_output("/slugs_file/CoRL_1.txt")
+    system_str = str.interpret_strategy_output(f"/slugs_file/CoRL_{grid_size}.txt")
     if print_child_node_length:
         for k, v in system_str.items():
             print(k , len(v['child_nodes']))
@@ -434,9 +528,6 @@ def create_xy_pos_mapping(x,y, nx, ny):
     # create a mapping from x,y grid position to Pos variable number : x_length*x + y
     Pos = nx*y + x
     return Pos
-
-def convert_pos_xy_mapping(pos_x, pos_y, nx, ny):
-    raise NotImplementedError
 
 # write a code that does post processing on the strategy we get from slugs to remove the following:
 # 1. The robot should not make any jumps. Although this does not appear in the str, its a safety measure to check for it
@@ -628,18 +719,6 @@ def create_G_hat(strategy, game):
                     print(f"Removing state {ix, iy, p}")
                     invalid_states.append((ix, iy, p))
 
-                # remove all the states that are blocked by the obstcles
-                # if ix == 2 or ix == 3 or ix == 4 or ix == 9 or ix == 31 or ix == 36 or ix == 37 or ix == 38:
-                #     invalid_states.append((ix, iy, p))
-                #
-                # if (iy == 2 and ix != 2) or (iy == 3 and ix != 3) or (iy == 4 and ix != 4) \
-                #         or (iy == 9 and ix != 9) \
-                #         or (iy == 31 and ix != 31) \
-                #         or (iy == 36 and ix != 36) \
-                #         or (iy == 37 and ix != 37) \
-                #         or (iy == 38 and ix != 38):
-                #     invalid_states.append((ix, iy, p))
-
     # remove duplicates from the list
     invalid_states = list(dict.fromkeys(invalid_states))
 
@@ -726,7 +805,7 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
         # increment episode number
         episode += 1
         # compute max V change after every 10**4 iterations
-        if episode % 10**4 == 0:
+        if episode % 10**3 == 0:
 
             max_diff = max(abs(old_sys_V - new_sys_V))
             delta.append(max_diff)
@@ -741,7 +820,7 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
         sys_cumulative_reward = 0
         env_cumulative_reward = 0
         # print after 10 % iteration being completed
-        if (episode % (iterations / 10) == 0):
+        if (episode % (iterations / 100) == 0):
             print("%d%%" % (episode * 100 / iterations))
         game.restart()
         step = 0
@@ -782,18 +861,20 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
         sys_reward_per_episode.append(sys_cumulative_reward)
         env_reward_per_episode.append(env_cumulative_reward)
 
-    return sys_reward_per_episode, env_reward_per_episode, delta
+    return sys_reward_per_episode, env_reward_per_episode, delta, episode
 
 
 def compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag, iterations):
     # if the saved_flag is True then directly load binary filed from the 'saved_players' directory and use that to plot
     # policy
     n = game_G_hat.env.env_data["env_size"]["n"]
+    reward_per_episode = [None]
     rl_time = None
     # create instances to dump and load file
     system_robot_dump = dump_and_load(file_name=f'sys_agent_N_{n}', path='saved_players/')
     env_robot_dump = dump_and_load(file_name=f'env_agent_N_{n}', path='saved_players/')
     rl_env_dump = dump_and_load(file_name=f'rl_gridworld_N_{n}', path='saved_players/')
+    reward_dump = dump_and_load(file_name=f'reward_per_ep_N_{n}', path='saved_players/')
 
     if not saved_flag:
         print("*********************Starting learning routine to learn the optimal strategy*********************")
@@ -824,9 +905,11 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag, iteration
         stop = time.clock()
         rl_time = stop - start
         print(f"Took {rl_time} s to compute the optimal strategy using q-learning for the controlled agent")
-
+        # dump the context
+        reward_dump.dump_file(reward_per_episode)
         # display result
-        del_V_plot = plotterClass(fig_title="max del_V_per_10k")
+        del_V_plot = plotterClass(fig_title="max del_V_per_10k", ylabel="max $\Delta V$/$10^{3}$ ",
+                                  xlabel="Iterations (x $10^{3}$)")
         del_V_plot.ax.plot(reward_per_episode[2], label="max V change")
         del_V_plot.ax.set_yscale('log')
         del_V_plot.ax.legend()
@@ -839,7 +922,7 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag, iteration
         desired_values = get_desired_v_value(k=game_G_hat.env.env_data["env_size"]["n"] - 1)
 
         # plot policy of sys_player
-        V_plot = plotterClass(fig_title="State Value")
+        V_plot = plotterClass(fig_title="State Value", ylabel="State Value", xlabel="$s_{i} \in \^S_{s}$")
         plot_state_value(sys_str, sys_agent.V, desired_values, V_plot.ax)
         V_plot.save_fig(f"two_player_game/plots/{V_plot.fig_title}_N_{n}.png")
         # pause for 0.5 seconds for visualization and then close the figure
@@ -862,7 +945,14 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag, iteration
               game=unpickled_rl_game)
     print("Done animating")
 
-    return rl_time, iterations
+    # plot the game policy learned
+    plot_pi = plotterClass(fig_title=f"Policy for G_hat_N_{n}", xlabel='$pos_x$', ylabel='$pos_y$')
+    plot_pi.plot_policy(env=game_G_hat, sys_player=unpickled_sys, sys_str=sys_str)
+    plot_pi.save_fig(f"two_player_game/plots/{plot_pi.fig_title}_N_{n}.png")
+    plt.pause(0.5)
+    plt.close()
+
+    return rl_time, reward_per_episode[-1]
 
 def processing_w_obstacles(strategy):
     """
@@ -896,7 +986,7 @@ def processing_w_obstacles(strategy):
 def play_game(env, init_state_list, sys_player, env_player, game):
 
     # create plotter object
-    final_plot = plotterClass(fig_title="Learned policy visualization")
+    final_plot = plotterClass(fig_title="Learned policy visualization", xlabel='x', ylabel='y')
     final_plot.roll_out_final_policy(env, init_state_list, sys_player, env_player,
                               game, ep_len=30)
     plt.show()
@@ -961,35 +1051,35 @@ def update_strategy_w_state_pos_map(strategy, x_length, y_length):
         strategy[k]['state_pos_map'] = (pos_sys, pos_env, t)
         if print_state_pos_map:
             print(k, strategy[k]['state_pos_map'])
-
-
-def main():
-    # construct_game()
-    game = construct_game()
-    x_length = game.env.env_data["env_size"]["n"]
-    y_length = game.env.env_data["env_size"]["m"]
-    sys_str, env_str = extract_permissive_str()
-    a_c = game.get_controlled_actions()
-    # updatestratetegy_w_state_pos_map(sys_str)
-    update_strategy_w_state_pos_map(sys_str)
-    sys_srt = pre_processing_of_str(sys_str, x_length, y_length)
-    if print_str_after_processing:
-        print("Strategy after removing all the invalid transitions")
-        for k, v in sys_str.items():
-            print(f"{k}: {v}")
-
-    # use these str to update the transition matrix
-    # update_transition_function(game, sys_str)
-
-    # update Game G to get G_hat
-    game_G_hat = create_G_hat(strategy=sys_str, game=game)
-
-    # print the updated transition matrix
-    if print_updated_transition_function:
-        print("The Updated transition matrix is: ")
-        game_G_hat.print_transition_matrix()
-
-    return game_G_hat
+#
+#
+# def main():
+#     # construct_game()
+#     game = construct_game()
+#     x_length = game.env.env_data["env_size"]["n"]
+#     y_length = game.env.env_data["env_size"]["m"]
+#     sys_str, env_str = extract_permissive_str()
+#     a_c = game.get_controlled_actions()
+#     # updatestratetegy_w_state_pos_map(sys_str)
+#     update_strategy_w_state_pos_map(sys_str)
+#     sys_srt = pre_processing_of_str(sys_str, x_length, y_length)
+#     if print_str_after_processing:
+#         print("Strategy after removing all the invalid transitions")
+#         for k, v in sys_str.items():
+#             print(f"{k}: {v}")
+#
+#     # use these str to update the transition matrix
+#     # update_transition_function(game, sys_str)
+#
+#     # update Game G to get G_hat
+#     game_G_hat = create_G_hat(strategy=sys_str, game=game)
+#
+#     # print the updated transition matrix
+#     if print_updated_transition_function:
+#         print("The Updated transition matrix is: ")
+#         game_G_hat.print_transition_matrix()
+#
+#     return game_G_hat
 
 
 def parse_addition_args(args):
@@ -1011,8 +1101,9 @@ def parse_addition_args(args):
             save_flag = True
         grid_size = int(args[2])
     else:
-        save_flag = None
-        grid_size = 7
+        print("Uusin default argument values : N = 3 ; saved_player = False(will train from scratch)")
+        save_flag = True
+        grid_size = 3
     return save_flag, grid_size
 
 
@@ -1051,12 +1142,12 @@ if __name__ == "__main__":
     print("************************************************")
     time.sleep(2)
     print("*********************Constructing games G*********************")
-    game = construct_game()
+    game = construct_game(grid_size)
     time.sleep(1)
     x_length = game.env.env_data["env_size"]["n"]
     y_length = game.env.env_data["env_size"]["m"]
     start = time.clock()
-    sys_str, env_str = extract_permissive_str()
+    sys_str, env_str = extract_permissive_str(grid_size=grid_size)
     stop = time.clock()
     slugs_time = stop - start
     print(f"Took {slugs_time} s to compute the (maximally) permissive strategy from slugs tool")
@@ -1088,7 +1179,7 @@ if __name__ == "__main__":
 
     time.sleep(2)
     print("*********************Computing the optimal strategy*********************")
-    rl_time, iters = compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5, saved_flag=save_flag)
+    rl_time, iters = compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10*10**5, saved_flag=save_flag)
 
     # after the computations is done dump the result to a yaml file
     dump_to_yaml_file(grid_size=grid_size, slugs_time=slugs_time, rl_time=rl_time, iterations=iters,

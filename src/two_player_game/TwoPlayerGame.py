@@ -6,6 +6,7 @@ import yaml
 import re
 import os
 import numpy as np
+import warnings
 
 from itertools import product
 
@@ -83,6 +84,29 @@ class TwoPlayerGame:
 
         return data_loaded
 
+    @staticmethod
+    def dump_yaml_file(configFiles, **kwargs):
+        """
+        updates the give yaml file
+        :param configFiles:
+        :type configFiles:
+        """
+        n = kwargs['n']  # make sure n is int
+        m = kwargs['m']  # make sure m is int
+
+        if not isinstance(n, int) or not isinstance(m, int):
+            warnings.warn("Make sure n and m are both integer values")
+            sys.exit(-1)
+
+        with open(configFiles, 'r') as stream:
+            data = yaml.safe_load(stream)
+
+        env = data['env_size']
+        env['n'] = n
+        env['m'] = m
+
+        with open(configFiles, 'w') as stream:
+            yaml.dump(data, stream)
 
     def print_env_states(self):
         """
