@@ -19,12 +19,12 @@ import imageio
 
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
-from src.learning_reward_function.Players.minimaxq_player import MinimaxQPlayer as minimax_agent
-from src.learning_reward_function.Players.random_player import RandomPLayer as rand_agent
-from src.learning_reward_function.Players.qplayer import QPlayer as q_agent
-from src.learning_reward_function.MakovGame.diagonal_players import Gridworld
-from src.two_player_game import TwoPlayerGame
-from src.two_player_game import extractExplicitPermissiveStrategy
+from learning_reward_function.Players.minimaxq_player import MinimaxQPlayer as minimax_agent
+from learning_reward_function.Players.random_player import RandomPLayer as rand_agent
+from learning_reward_function.Players.qplayer import QPlayer as q_agent
+from learning_reward_function.MakovGame.diagonal_players import Gridworld
+from two_player_game import TwoPlayerGame
+from two_player_game import extractExplicitPermissiveStrategy
 
 # flag to plot BDD diagram we get from the slugs file
 plot_graphs = False
@@ -137,6 +137,17 @@ class plotterClass():
                     verticalalignment='center',
                     **kwargs)
 
+    def save_fig(self, name, dpi=200):
+        """
+        A method to save the figure plotted in a given directory within src/
+        :param name: should be of the format two_player_game/plots/name_of_the_plot.png
+        :type name: basestring
+        :param dpi: Dots per inches (dpi) determines how many pixels the figure comprises. The default dpi in
+        matplotlib is 100.
+        :type dpi: int
+        """
+        plt.savefig(name, dpi=dpi)
+
     def _add_patch(self, shape, xy, color='green', robo_image=None):
         x, y = xy
         shape_case = {
@@ -147,21 +158,27 @@ class plotterClass():
         }
 
         if shape_case[shape] == 1:
-            self.ax.add_patch(patches.Circle(
+            circle = patches.Circle(
                 (x, y),
                 radius=0.2,
                 color=color,
                 alpha=1  # transparency value
-            ))
+            )
+            self.ax.add_patch(circle)
+
+            return circle
         elif shape_case[shape] == 2:
-            self.ax.add_patch(patches.Rectangle(
+            rect = patches.Rectangle(
                 (x, y),
                 0.1,
                 0.1,
                 facecolor=color,
                 edgecolor='black',
-                alpha=0.5 # transparency value
-            ))
+                alpha=0.5  # transparency value
+            )
+            self.ax.add_patch(rect)
+
+            return rect
         elif shape_case[shape] == 3:
             pass
         elif shape_case[shape] == 4:
@@ -275,19 +292,17 @@ class plotterClass():
             return x + offset
 
         # plot this position on the gridworld
-        self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_sys_xy)))
-        self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
+        sys_patch = self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_sys_xy)))
+        env_patch = self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
         sys_reward = 0
         # add a text counter to the figure
-
-        self.ax.text(0.7, 1, f"system reward: {sys_reward}", fontsize=14, transform=self.ax.transAxes)
-
+        counter = self.ax.text(0.7, 1, f"system reward: {sys_reward}", fontsize=14, transform=self.ax.transAxes)
+        # save the initial figure to plot
         plt.savefig(f"frames/grid_{time_step}.png", dpi=200)
-        self.ax.clear()
-        self.gridworld(env, plot_title)
+        counter.remove()
         while time_step < ep_len:
             # save the figure at each time step and then use that to make a gif.
-
+            sys_patch.remove()
             # increment the counter by 1
             time_step += 1
 
@@ -296,41 +311,37 @@ class plotterClass():
 
             # evolve according to the system action
             sys_reward += game.play_one_player_at_a_time(0, best_sys_action)
-            # newState = currentState[0] + switch_case[best_sys_action]
-            # currentState = newState
 
             # convert the  newState into (x, y) format
             curr_sys_xy, _ = self._convert_pos_to_xy(game.currentPosition, n, m)
-
+            # update counter variable
+            counter = self.ax.text(0.7, 1, f"system reward: {sys_reward}", fontsize=14, transform=self.ax.transAxes)
             # plot the action taken
-            self._add_patch(shape='circle', xy=tuple(map(offset_ticks,curr_sys_xy)))
+            sys_patch = self._add_patch(shape='circle', xy=tuple(map(offset_ticks,curr_sys_xy)))
+            plt.savefig(f"frames/grid_{time_step}_1.png", dpi=200)
+            counter.remove()
 
-            # plt.savefig(f"frames/grid_{time_step}_1.png", dpi=200)
             # get env's response
             best_evn_action = env_player.chooseAction(player=1, state=game.currentPosition)
 
             # evolve according to the env action
-            # newState = currentState[1] + switch_case[best_evn_action]
             game.play_one_player_at_a_time(1, best_evn_action)
             # convert the new state into (x, y) format
             _, curr_env_xy = self._convert_pos_to_xy(game.currentPosition, n, m)
 
-            # plot the action take by the env robot
-            self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
+            # remove the old sys robot patch
+            env_patch.remove()
 
-            self.ax.text(0.7, 1, f"system reward: {sys_reward}", fontsize=14, transform=self.ax.transAxes)
+            # plot the action take by the env robot
+            env_patch = self._add_patch(shape='circle', xy=tuple(map(offset_ticks, curr_env_xy)), color='blue')
+            # update the counter variable
+            counter = self.ax.text(0.7, 1, f"system reward: {sys_reward}", fontsize=14, transform=self.ax.transAxes)
             plt.draw()
             plt.pause(0.5)
-            plt.savefig(f"frames/grid_{time_step}.png", dpi=200)
-            # clear the give screen
-            self.ax.clear()
-
-            # plot a fresh figure after each player has played his turn
-            self.gridworld(env, plot_title)
-
+            plt.savefig(f"frames/grid_{time_step}_2.png", dpi=200)
+            counter.remove()
 
         plt.close(self.fig)
-        # plt.show()
         self.make_gif('./frames/', f'./figures_and_gifs/N_{n}.gif')
 
     def make_gif(self, input_folder, save_filepath):
@@ -348,19 +359,25 @@ class plotterClass():
 class dump_and_load:
 
     def __init__(self, file_name, path):
+        # self.fileDir = os.path.dirname(os.path.realpath('__file__'))
+        # sys.path.append(self.fileDir + path)
         self.file_name = file_name
         self.path = path
+        # for accessing the file in a folder contained in the current folder
         self._complete_path = path + file_name
 
     def dump_file(self, object):
-        outfile = open(self._complete_path, 'w+b')
-        pickle.dump(object, outfile)
-        outfile.close()
+        # outfile = open(self._complete_path, 'w+b')
+        with open(self._complete_path, 'w+b') as outfile:
+            pickle.dump(object, outfile)
+            outfile.close()
 
     def load_file(self):
-        infile = open(self._complete_path, 'rb')
-        unpickled_obj = pickle.load(infile)
-        infile.close()
+        # print(self._complete_path)
+        # infile = open(self._complete_path, 'rb')
+        with open(self._complete_path, 'rb') as infile:
+            unpickled_obj = pickle.load(infile)
+            infile.close()
 
         return unpickled_obj
 
@@ -681,7 +698,7 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
     # get the previous step V for system robot
     old_sys_V = sys_player.get_V()
 
-    for episode in range(iterations):
+    for episode in range(int(iterations)):
         # increment episode number
         episode += 1
         # compute max V change after every 10**4 iterations
@@ -741,11 +758,11 @@ def test_q_learn_alternating_markov_game(sys_player, env_player, game, iteration
         sys_reward_per_episode.append(sys_cumulative_reward)
         env_reward_per_episode.append(env_cumulative_reward)
 
-    print(sys_player.V)
+    # print(sys_player.V)
     return sys_reward_per_episode, env_reward_per_episode, delta
 
 
-def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10*10**5, saved_flag=True):
+def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=0.5*10**5, saved_flag=True):
     # if the saved_flag is True then directly load binary filed from the 'saved_players' directory and use that to plot
     # policy
     n = game_G_hat.env.env_data["env_size"]["n"]
@@ -774,37 +791,32 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10*10**5, 
         rl_game = Gridworld(height, width, rand_init_state.x, rand_init_state.y, game_G_hat.Init)
 
         # call a function that runs tests for you
-        # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5)
+        # reward_per_episode = testGame(sys_agent, env_agent, game, iterations=10**5) # deprecated
         reward_per_episode = test_q_learn_alternating_markov_game(sys_agent, env_agent,
                                                                   game=rl_game,
-                                                                  iterations=20*10**5,
+                                                                  iterations=iterations,
                                                                   episode_len=30)
 
         # display result
-        # finc max of sys and env reward for plotting purposes
-        # x1 = max(reward_per_episode[0])
-        # x2 = max(reward_per_episode[1])
-        #
-        # plt.plot(reward_per_episode[0])
-        # plt.plot(reward_per_episode[1])
-        # plt.show()
-        fig_title = "Rewards per episode for each player"
-        fig = pl.figure(num=fig_title)
-        ax1 = fig.add_subplot(111)
-
-        # pl.hist(reward_per_episode[0], density=False, bins=30)
-        # pl.hist(reward_per_episode[1], density=False, bins=30)
-        ax1.plot(reward_per_episode[2], label="max V change")
-        ax1.set_yscale('log')
-        # ax.plot(reward_per_episode[1], label="env reward")
-        ax1.legend()
-
-        # compute desired state values
+        del_V_plot = plotterClass(fig_title="max del_V_per_10k")
+        del_V_plot.ax.plot(reward_per_episode[2], label="max V change")
+        del_V_plot.ax.set_yscale('log')
+        del_V_plot.ax.legend()
+        # save both the plots in two_players_game/plot local directory
+        del_V_plot.save_fig(f"two_player_game/plots/{del_V_plot.fig_title}_N_{n}.png")
+        # pause for 0.5 seconds for visualization and then close the figure
+        plt.pause(0.5)
+        plt.close()
+        # compute desired state values to plot against on the y-axis
         desired_values = get_desired_v_value(k=game_G_hat.env.env_data["env_size"]["n"] - 1)
+
         # plot policy of sys_player
-        fig = pl.figure(num="State Value")
-        ax2 = fig.add_subplot(111)
-        plot_state_value(sys_str, sys_agent.V, desired_values, ax2)
+        V_plot = plotterClass(fig_title="State Value")
+        plot_state_value(sys_str, sys_agent.V, desired_values, V_plot.ax)
+        V_plot.save_fig(f"two_player_game/plots/{V_plot.fig_title}_N_{n}.png")
+        # pause for 0.5 seconds for visualization and then close the figure
+        plt.pause(0.5)
+        plt.close()
 
         # dump instances of the player classes - sys_player & env player and instance of the rl_game
         env_robot_dump.dump_file(env_agent)
@@ -815,10 +827,6 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, iterations=10*10**5, 
     unpickled_sys = system_robot_dump.load_file()
     unpickled_env = env_robot_dump.load_file()
     unpickled_rl_game = rl_env_dump.load_file()
-    # testing loading that player
-
-    # plt.show()
-    # plot policy
 
     # lets do some fancy visualization stuff here
     print("Plotting the policy learnt")
@@ -871,8 +879,9 @@ def plot_state_value(sys_str, V, desired_V, ax):
                 value_list.append(state_value)
 
     x =[i for i in range(len(value_list))]
-    ax.scatter(x, value_list, marker='*', c="blue")
+    ax.scatter(x, value_list, marker='*', c="blue", label='state')
     ax.grid(True, axis='y')
+    ax.legend()
     plt.yticks(desired_V)
 
 
@@ -965,5 +974,5 @@ if __name__ == "__main__":
         print("The Updated transition matrix is: ")
         game_G_hat.print_transition_matrix()
 
-    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=False)
+    compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag=True)
 

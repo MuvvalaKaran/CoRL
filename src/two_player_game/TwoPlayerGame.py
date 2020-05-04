@@ -1,5 +1,5 @@
 # file to construct the game and extract admissible strategies
-from src.two_player_game.GridWorld import GridWorld
+from two_player_game.GridWorld import GridWorld
 import sys
 import random
 import yaml
