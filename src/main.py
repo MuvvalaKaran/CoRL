@@ -144,7 +144,7 @@ class plotterClass():
         :rtype: int
         """
         fontsize_dict = {
-            '9': 12,
+            '9': 10,
             '16': 6,
             '25': 3,
             '36': 2,
