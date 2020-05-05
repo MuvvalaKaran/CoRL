@@ -77,7 +77,7 @@ class plotterClass():
         width = env.env.pos_x.stop
         height = env.env.pos_y.stop
 
-        self.plot_game_world(width, height, print_grid_num=True)
+        self.plot_game_world(width, height, print_grid_num=True, fontsize=self._font_size_dict(str(width)))
         # current position is a tuple of the format (x, y, t=1)
 
         # for x in env.env.pos_x:
@@ -93,14 +93,74 @@ class plotterClass():
                 self._add_patch(shape='rect', xy=xy, color='green')
                 self._add_patch(shape='arrow', xy=xy, action=sys_best_action, color='blue')
 
-    def plot_game_world(self, width, height, print_grid_num=True):
+    def plot_state_value(self, env, sys_player):
+        # plot the game world
+        width = env.env.pos_x.stop
+        height = env.env.pos_y.stop
+        self.plot_game_world(width, height, print_grid_num=False, fontsize=self._font_size_dict(str(width)))
+
+        offset = 0.5
+        # for each state in V print the number on the respective grid
+        for k, v in sys_player.V.items():
+            # only concerned with the system state values
+            if k[2] == 1:
+                x = k[0]
+                y = k[1]
+                # color square as light green
+                self._add_patch(shape='rect', xy=(x, y), color='green')
+                # annotate the box with the state value
+                self.ax.annotate(f"{v:.3f}", xy=(offset + x, offset + y), xycoords='data',
+                    horizontalalignment='center',
+                    verticalalignment='center', fontsize=self._font_size_dict(str(width)))
+
+    def plot_q_value(self, env, sys_player):
+        # plot the game world
+        width = env.env.pos_x.stop
+        height = env.env.pos_y.stop
+        self.plot_game_world(width, height, print_grid_num=False, fontsize=self._font_size_dict(str(width)))
+        offset = 0.5
+        for k, v in sys_player.pi.items():
+            # only concerned with the system state values
+            if k[2] == 1:
+                x = k[0]
+                y = k[1]
+                # color square as light green
+                self._add_patch(shape='rect', xy=(x, y), color='green')
+                for action in v.keys():
+                    # draw arrows for each transition
+                    if action == "stay_s":
+                        self.ax.annotate(f"stay", xy=(offset + x, offset + y), xycoords='data',
+                                         horizontalalignment='center',
+                                         verticalalignment='center', fontsize=self._font_size_dict(str(width)))
+                    else:
+                        self._add_patch(shape="arrow", action=action, xy=(x, y), color='blue')
+
+    def _font_size_dict(self,  grid_size):
+        """
+        Helper method to map a given grid size to its respective font size
+        :param grid_size: N**2 value
+        :type grid_size: basestring
+        :return: fontsize
+        :rtype: int
+        """
+        fontsize_dict = {
+            '9': 12,
+            '16': 6,
+            '25': 3,
+            '36': 2,
+            '49': 1,
+        }
+
+        return fontsize_dict[grid_size]
+
+    def plot_game_world(self, width, height, print_grid_num=True, fontsize=None):
         # flag to print the grid numbers
         if print_grid_num:
             # we need to offset both the x and y to print in the center of the grid
             for x in range(width):
                 for y in range(height):
                     off_x, off_y = x + 0.5, y + 0.5
-                    self.plot_grid_num((off_x, off_y), value=f"{x, y}")
+                    self.plot_grid_num((off_x, off_y), value=f"{x, y}", fontsize=fontsize)
 
                     # add obstacles to the gridworld when n = 7
                     if width == 49:
@@ -120,8 +180,10 @@ class plotterClass():
         # ticks = locations of the ticks and labels = label of the ticks
         self.ax.set_xticks(ticks=list(map(offset_ticks, range(width))), minor=False)
         self.ax.set_xticklabels(labels=range(width))
+        self.ax.xaxis.set_tick_params(labelsize=self._font_size_dict(str(width)))
         self.ax.set_yticks(ticks=list(map(offset_ticks, range(width))), minor=False)
         self.ax.set_yticklabels(labels=range(width))
+        self.ax.yaxis.set_tick_params(labelsize=self._font_size_dict(str(width)))
 
         # add points for gridline plotting
         self.ax.set_xticks(ticks=range(width), minor=True)
@@ -135,7 +197,7 @@ class plotterClass():
         self.ax.yaxis.grid(True, which='minor')
         self.ax.xaxis.grid(True, which='minor')
 
-    def plot_gridworld(self, env, print_grid_num=False, *args):
+    def plot_gridworld(self, env, print_grid_num=False, fontsize=None,  *args):
         # the env here the original env of size (N x M)
         # fig_title = args[0]
 
@@ -148,7 +210,7 @@ class plotterClass():
             for x in range(cmax):
                 for y in range(rmax):
                     off_x, off_y = x + 0.5, y + 0.5
-                    self.plot_grid_num((off_x, off_y), value=f"{x, y}")
+                    self.plot_grid_num((off_x, off_y), value=f"{x, y}", fontsize=fontsize)
 
                     # add obstacles to the gridworld when n = 7
                     if cmax == 7:
@@ -208,14 +270,24 @@ class plotterClass():
 
 
     def plot_grid_num(self,xy, value, offset=None, **kwargs):
+        """
+        A method to add text to the grid world
+        :param xy: (x, y) position of the text. No offset included in here
+        :type xy: tuple
+        :param value: The text that should go at each block
+        :type value: basestring
+        :param offset: how much to offset the values by in both x and y direction
+        :type offset: int
+        :param kwargs:
+        :type kwargs:
+        """
         x, y, = xy
-
         self.ax.annotate(value, xy=(x, y), xycoords='data',
                     horizontalalignment='center',
                     verticalalignment='center',
                     **kwargs)
 
-    def save_fig(self, name, dpi=200):
+    def save_fig(self, name, dpi=200, format='png'):
         """
         A method to save the figure plotted in a given directory within src/
         :param name: should be of the format two_player_game/plots/name_of_the_plot.png
@@ -224,7 +296,7 @@ class plotterClass():
         matplotlib is 100.
         :type dpi: int
         """
-        plt.savefig(name, dpi=dpi)
+        plt.savefig(name, dpi=dpi, format=format)
 
     def _add_patch(self, shape, xy, color='green', robo_image=None, action=None, alpha=0.5):
         x, y = xy
@@ -948,8 +1020,22 @@ def compute_optimal_strategy_using_rl(sys_str, game_G_hat, saved_flag, iteration
     # plot the game policy learned
     plot_pi = plotterClass(fig_title=f"Policy for G_hat_N_{n}", xlabel='$pos_x$', ylabel='$pos_y$')
     plot_pi.plot_policy(env=game_G_hat, sys_player=unpickled_sys, sys_str=sys_str)
-    plot_pi.save_fig(f"two_player_game/plots/{plot_pi.fig_title}_N_{n}.png")
-    plt.pause(0.5)
+    plot_pi.save_fig(f"two_player_game/plots/{plot_pi.fig_title}_N_{n}.png", dpi=500)
+    plt.pause(1)
+    plt.close()
+
+    # plot state value on the game G_hat
+    plot_v_opt = plotterClass(fig_title=f"State_Values_game_world_N_{n}", xlabel="$pos_x$", ylabel="$pos_y$")
+    plot_v_opt.plot_state_value(env=game_G_hat, sys_player=unpickled_sys)
+    plot_v_opt.save_fig(f"two_player_game/plots/{plot_v_opt.fig_title}.png", dpi=500)
+    plt.pause(1)
+    plt.close()
+
+    # plot state value on the game G_hat
+    plot_q_opt = plotterClass(fig_title=f"Action_Values_game_world_N_{n}", xlabel="$pos_x$", ylabel="$pos_y$")
+    plot_q_opt.plot_q_value(env=game_G_hat, sys_player=unpickled_sys)
+    plot_q_opt.save_fig(f"two_player_game/plots/{plot_q_opt.fig_title}.png", dpi=500)
+    plt.pause(1)
     plt.close()
 
     return rl_time, reward_per_episode[-1]
@@ -1051,35 +1137,6 @@ def update_strategy_w_state_pos_map(strategy, x_length, y_length):
         strategy[k]['state_pos_map'] = (pos_sys, pos_env, t)
         if print_state_pos_map:
             print(k, strategy[k]['state_pos_map'])
-#
-#
-# def main():
-#     # construct_game()
-#     game = construct_game()
-#     x_length = game.env.env_data["env_size"]["n"]
-#     y_length = game.env.env_data["env_size"]["m"]
-#     sys_str, env_str = extract_permissive_str()
-#     a_c = game.get_controlled_actions()
-#     # updatestratetegy_w_state_pos_map(sys_str)
-#     update_strategy_w_state_pos_map(sys_str)
-#     sys_srt = pre_processing_of_str(sys_str, x_length, y_length)
-#     if print_str_after_processing:
-#         print("Strategy after removing all the invalid transitions")
-#         for k, v in sys_str.items():
-#             print(f"{k}: {v}")
-#
-#     # use these str to update the transition matrix
-#     # update_transition_function(game, sys_str)
-#
-#     # update Game G to get G_hat
-#     game_G_hat = create_G_hat(strategy=sys_str, game=game)
-#
-#     # print the updated transition matrix
-#     if print_updated_transition_function:
-#         print("The Updated transition matrix is: ")
-#         game_G_hat.print_transition_matrix()
-#
-#     return game_G_hat
 
 
 def parse_addition_args(args):
@@ -1103,7 +1160,7 @@ def parse_addition_args(args):
     else:
         print("Uusin default argument values : N = 3 ; saved_player = False(will train from scratch)")
         save_flag = True
-        grid_size = 3
+        grid_size = 6
     return save_flag, grid_size
 
 
