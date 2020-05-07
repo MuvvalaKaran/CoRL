@@ -126,14 +126,16 @@ class plotterClass():
                 y = k[1]
                 # color square as light green
                 self._add_patch(shape='rect', xy=(x, y), color='green')
-                for action in v.keys():
-                    # draw arrows for each transition
-                    if action == "stay_s":
-                        self.ax.annotate(f"stay", xy=(offset + x, offset + y), xycoords='data',
-                                         horizontalalignment='center',
-                                         verticalalignment='center', fontsize=self._font_size_dict(str(width)))
-                    else:
-                        self._add_patch(shape="arrow", action=action, xy=(x, y), color='blue')
+                for action, action_value in v.items():
+                    # only plot those action that have probability of choosing as 1.
+                    if action_value == 1:
+                        # draw arrows for each transition
+                        if action == "stay_s":
+                            self.ax.annotate(f"stay", xy=(offset + x, offset + y), xycoords='data',
+                                             horizontalalignment='center',
+                                             verticalalignment='center', fontsize=self._font_size_dict(str(width)))
+                        else:
+                            self._add_patch(shape="arrow", action=action, xy=(x, y), color='blue')
 
     def _font_size_dict(self,  grid_size):
         """
@@ -1160,7 +1162,7 @@ def parse_addition_args(args):
     else:
         print("Uusin default argument values : N = 3 ; saved_player = False(will train from scratch)")
         save_flag = True
-        grid_size = 6
+        grid_size = 3
     return save_flag, grid_size
 
 

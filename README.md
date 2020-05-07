@@ -6,6 +6,57 @@ More information regarding the course can be found [here](https://sites.google.c
 
 The main aim of this project is implementation and evaluating the results for the examples discussed by the authors in the paper. 
 
+# Instructions to run 
+
+* **Installing the env** 
+Install anaconda on your OS and then run the below mentioned shell commands with conda comand path
+
+* Install dependencies - Install conda env
+
+Use the terminal or an Anaconda Prompt for the following steps:
+
+* Create the environment from the environment.yml file under conda/
+
+    ```conda env create -f CoRL_env.yml```
+
+* The first line of the yml file sets the new environment's name. In my case it is "dl_project_env". You could modify it before compiling this file.
+
+* Activate the new environment: note replace myenv with "dl_project_env" 
+
+    ```conda activate myenv```
+
+* Verify that the new environment was installed correctly. You should see a star('\*') in front the current active env
+
+    ```conda env list```
+
+* You can also use 
+    
+    ```conda info --envs```
+
+* **Running the code**
+
+cd into the src/ folder and type 
+
+```python3 main.py <save_flag> <grid_size>```
+
+For convenience I would recommend using `save_flag = True` and the value of `grid_size(N) = 3 - 7`.
+
+# Directory Hierarchy
+
+Root Directory : src - containts all the code relevant to the project
+				 lib - contains the source code for slugs tool
+				 conda -  contains the environment file necessary to reproduce the python env
+
+				 src - two_player_game - source code relevant to construction of two-player game
+				 	 - learning_reward_function - source code containing various player, learning algothing and the rl env.
+				 	 -figures_and_gifs - directory containing all the saved gifs for Example 1. and Example 2 (refer to the project report).
+				 	 - saved_player - binary files of learned player 
+				 	 - results - directory to dump the run time stats
+
+				 two_player_game - plots - directory containing all the high resolution plots of policy, Q plot, Valid transitions, max V change while learning
+
+# About the project
+
 ## Introduction 
 
 Autonomous systems are gradually becoming ubiquitous. Beyond simply
@@ -44,8 +95,6 @@ Task : The system robot (green) should always be in a cell diagonally opposite t
 ![](src/figures_and_gifs/N_6.gif "6x6 gridworld")
 ----
 ![](src/figures_and_gifs/N_7.gif "7x7 gridworld")
-----
-![](src/figures_and_gifs/N_10.gif "10x10 gridworld")
 
 ## Conclusion
 
