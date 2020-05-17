@@ -1,0 +1,41 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{titling}
+\usepackage{geometry}
+
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
+\setlength{\droptitle}{-10em}  
+
+\title{Result and Findings}
+\subtitle{Correct-by-synthesis reinforcement learning with temporal logic constraints}
+
+\author{\vspace{-10ex}Karan Muvvala }
+\date{\vspace{-5ex}}
+
+\geometry{
+ a4paper,
+ %total={170mm,257mm},
+ left=30mm,
+ right=30mm,
+ %top=20mm,
+ }
+
+\begin{document}
+
+    \maketitle
+        
+    \textbf{Results: } For this course project, my primary aim was to reproduce the results illustrated Example 1. in the original paper and verify that the strategies learned by the system robot operating in an adversarial environment with specification $\phi$ comprising of only safety assumptions $\phi^a$ on the system specification learns only the most optimal strategy $\mu^*$ i.e the system robot learns only the most optimal way to perform the given task - in our case the task is to always be in a diagonally opposite position to the environment robot as in equation 5. This optimal policy satisfies the temporal specification as per $\phi$ while also maximizing the rewards ensuring both qualitative (with respect to temporal specification) and quantitative (with respect to the underlying reward function) behaviors. This is evident by the plot in Fig 2. which shows a scatter plot of V (state values) of each state in $\hat{G}$ against the desired reward function $R$ which in our case is a sum of discounted reward function as in (3) with $\gamma = 0.9$. For a 6 x 6 grid world, I can reach a diagonally opposite cell in 5 steps or less. Thus the learned optimal policy $\mu^*$ converges to the state values $V$ as given by $\frac{1}{1-\gamma}\gamma^k$ for $k \in {1,..,5}$. The task used in Example 1. in my report is the same as the task in the original paper. Thus, the state values $V$ for each state $s \in \hat{G}$  eventually converges to desired optimal values.\\
+        
+        Example 2. is an extension of example 1 in which we include static obstacles in a 7 x 7 grid world to demonstrate that the strategy learned satisfies not only the temporal constraints  of always not colliding with each other, but also satisfies constraints such as always not collide with static obstacles. Even in this case, we observe that the strategy learned is optimal with respect to the underlying reward function.\\
+        
+        \textbf{Findings: }An interesting observation to note is that the number of total states $|S| \in \hat{G}$ in the original paper Table I is slightly lower than that in Table I in my report. I speculate that this could be due to the fact that the authors of the original paper manually remove some states that will eventually lead to collisions. Another interesting note is that the set of permissive strategies $\mu_p$ computed using Slugs are for turn-based games while the maximin\_Q learning algorithm that the authors cite in the original paper is for stochastic concurrent games (\textit{both players take actions simultaneously}). You can find the minimax\_Q (a variant of maximin\_Q) learning implementation in "learning\_reward\_function/Players/minimaxq\_player.py".  I did proceed with the minimax\_Q algorithm but encountered some compatibility issues as the strategies computed by the Slugs toolbox are for turn-based game and the players usually collided with each other during the learning routine when learning as per the mimimax\_Q learning algorithm thus failing to satisfy temporal constraints in Example 1. As the authors of the main paper also cite that there do exist convergence proof of Q-learning algorithm for alternating Markov games, it indeed gave me the same results as stated in Algorithm 1 of my report and as elaborated in the Examples section in my report. 
+        
+        
+
+\end{document}
